@@ -1,5 +1,5 @@
 {
-  "name": "astroship",
+  "name": "beridoor-kft-website",
   "type": "module",
   "version": "0.0.1",
   "private": true,
@@ -21,6 +21,7 @@
     "astro-icon": "^0.8.0",
     "astro-navbar": "^1.1.5",
     "astro-seo": "^0.7.0",
+    "daisyui": "^2.51.1",
     "tailwindcss": "^3.2.4"
   },
   "devDependencies": {
