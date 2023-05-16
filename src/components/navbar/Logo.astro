@@ -1,0 +1,13 @@
+---
+import logoImage from "assets/logo.png";
+import { Image } from "@astrojs/image/components";
+export interface Props {
+  width: number;
+  isInvisible?: boolean;
+}
+const { width, isInvisible } = Astro.props;
+const invisible = isInvisible ? "invisible": ""
+---
+<a href="/" class=`${invisible}`>
+  <Image src={logoImage} alt="logo" loading="eager" format="png" width={width} />
+</a>

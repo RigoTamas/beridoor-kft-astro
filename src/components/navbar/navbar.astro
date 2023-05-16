@@ -2,7 +2,10 @@
 import Container from "@components/container.astro";
 import Link from "@components/ui/link.astro";
 import Dropdown from "./dropdown.astro";
+import logoImage from "assets/logo.png";
 import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
+import { Image } from "@astrojs/image/components";
+import Logo from "./Logo.astro"
 
 const menuitems = [
   {
@@ -38,11 +41,7 @@ const isSticky = true
   <header class="flex flex-col lg:flex-row justify-between items-center">
     <Astronav>
       <div class="flex w-full lg:w-auto items-center justify-between">
-        <a href="/" class="text-lg"
-          ><span class="font-bold text-slate-800">Astro</span><span
-            class="text-slate-500">ship</span
-          >
-        </a>
+          <Logo width={200}/>
         <div class="block lg:hidden">
           <MenuIcon class="w-4 h-4 text-gray-800" />
         </div>
@@ -78,13 +77,8 @@ const isSticky = true
           <Link href="#" size="md" block>Sign up</Link>
         </div>
       </MenuItems>
+      <Logo width={200} isInvisible={true}/>
     </Astronav>
-    <div>
-      <div class="hidden lg:flex items-center gap-4">
-        <a href="#">Log in</a>
-        <Link href="#" size="md">Sign up</Link>
-      </div>
-    </div>
   </header>
 </Container>
 </div>
