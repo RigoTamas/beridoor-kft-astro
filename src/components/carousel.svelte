@@ -3,9 +3,6 @@
   export let images;
 
   let carousel; // for calling methods of the carousel instance
-  const handleNextClick = () => {
-    carousel.goToNext()
-  }
 </script>
 
 <Carousel
@@ -19,5 +16,3 @@
         <img {src} {alt} />
   {/each}
 </Carousel>
-
-<button on:click={handleNextClick}>Next</button>
