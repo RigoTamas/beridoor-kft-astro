@@ -4,7 +4,7 @@ import Link from "@components/ui/link.astro";
 import Dropdown from "./dropdown.astro";
 import logoImage from "assets/logo.png";
 import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
-import { Image } from "@astrojs/image/components";
+import { Image, Picture } from "@astrojs/image/components";
 import Logo from "./Logo.astro"
 
 const menuitems = [
@@ -30,7 +30,7 @@ const menuitems = [
     path: "/blog",
   },
   {
-    title: "Contact",
+    title: "Kapcsolat",
     path: "/contact",
   },
 ];
@@ -50,7 +50,7 @@ const isSticky = true
         <ul class="flex flex-col lg:flex-row lg:gap-3">
           {
             menuitems.map((item, index) => (
-              <>
+              <div class="navbar-items">
                 {item.children && (
                   <Dropdown
                     classList={["flex lg:px-3 py-2 text-gray-600 hover:text-gray-900"]}
@@ -68,7 +68,7 @@ const isSticky = true
                     </a>
                   </li>
                 )}
-              </>
+              </div>
             ))
           }
         </ul>
@@ -82,3 +82,16 @@ const isSticky = true
   </header>
 </Container>
 </div>
+<script>
+  import { animate } from "motion"
+  const elements = document.getElementsByClassName('navbar-items')
+  for(var i = 0; i < elements.length; i++) {
+    const elem = elements[i]
+    elem?.addEventListener('mouseover', (e) => {
+      animate(elem, { scale: 1.1 })
+    });
+    elem?.addEventListener('mouseout', (e) => {
+      animate(elem, { scale: 1.0 })
+    });
+  }
+</script>
