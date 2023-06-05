@@ -10,49 +10,66 @@ import Button from "./ui/button.astro";
   id="form"
   class="needs-validation"
   novalidate>
-  <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+  <input type="hidden" name="access_key" value="f48967c9-deda-4bc2-bd15-2156972269ac" />
   <!-- Create your free access key from https://web3forms.com/ -->
   <input type="checkbox" class="hidden" style="display:none" name="botcheck" />
   <div class="mb-5">
     <input
       type="text"
-      placeholder="Full Name"
+      placeholder="Teljes név"
       required
       class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
       name="name"
     />
     <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
-      Please provide your full name.
+      Kérlek add meg a teljes nevedet.
     </div>
   </div>
   <div class="mb-5">
-    <label for="email_address" class="sr-only">Email Address</label><input
+    <label for="email_address" class="sr-only">Email address</label><input
       id="email_address"
       type="email"
-      placeholder="Email Address"
+      placeholder="Email cím"
       name="email"
       required
       class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
     />
     <div class="empty-feedback text-red-400 text-sm mt-1">
-      Please provide your email address.
+      Kérlek add meg az Email címedet.
     </div>
     <div class="invalid-feedback text-red-400 text-sm mt-1">
-      Please provide a valid email address.
+      Kérlek egy valódi Email címet adj meg.
+    </div>
+  </div>
+  <div class="mb-5">
+    <label for="phone" class="sr-only">Phone number</label><input
+      id="phone"
+      type="tel"
+      placeholder="Telefonszám"
+      pattern="\\+?[0-9\\-]{5,}"
+      name="tel"
+      required
+      class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
+    />
+    <div class="empty-feedback text-red-400 text-sm mt-1">
+      Kérlek add meg a telefonszámodat.
+    </div>
+    <div class="invalid-feedback text-red-400 text-sm mt-1">
+      Formátum: +36-20-123-4567
     </div>
   </div>
   <div class="mb-3">
     <textarea
       name="message"
       required
-      placeholder="Your Message"
+      placeholder="Üzenet"
       class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none h-36 focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
     ></textarea>
     <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
-      Please enter your message.
+      Kérlek add meg az üzenetet.
     </div>
   </div>
-  <Button type="submit" size="lg" block>Send Message</Button>
+  <Button type="submit" size="lg" block>Üzenet elküldése</Button>
   <div id="result" class="mt-3 text-center"></div>
 </form>
 
@@ -78,6 +95,7 @@ import Button from "./ui/button.astro";
 
 <script is:inline>
   const form = document.getElementById("form");
+  console.log('form', form)
   const result = document.getElementById("result");
 
   form.addEventListener("submit", function (e) {
@@ -90,8 +108,9 @@ import Button from "./ui/button.astro";
     const formData = new FormData(form);
     const object = Object.fromEntries(formData);
     const json = JSON.stringify(object);
+    const emailFailedMessage = "Hoppá, nem sikerült az üzenetet elküldeni. Kérlek próbáld meg újra, vagy küldj egy email-t közvetlenül a beridoor@gmail.com-ra."
 
-    result.innerHTML = "Sending...";
+    result.innerHTML = "Üzenet küldése...";
 
     fetch("https://api.web3forms.com/submit", {
       method: "POST",
@@ -103,25 +122,23 @@ import Button from "./ui/button.astro";
     })
       .then(async (response) => {
         let json = await response.json();
-        if (response.status == 200) {
+        console.log('json', JSON.stringify(json, null, 2))
+        if (response.status === 200) {
           result.classList.add("text-green-500");
-          result.innerHTML = json.message;
+          result.innerHTML = "Üzenet elküldve.";
+          form.reset();
+          form.classList.remove("was-validated");
+          setTimeout(() => {
+            result.style.display = "none";
+          }, 5000);
         } else {
-          console.log(response);
           result.classList.add("text-red-500");
-          result.innerHTML = json.message;
+          result.innerHTML = emailFailedMessage;
         }
       })
       .catch((error) => {
         console.log(error);
-        result.innerHTML = "Something went wrong!";
+        result.innerHTML = emailFailedMessage;
       })
-      .then(function () {
-        form.reset();
-        form.classList.remove("was-validated");
-        setTimeout(() => {
-          result.style.display = "none";
-        }, 5000);
-      });
   });
 </script>
