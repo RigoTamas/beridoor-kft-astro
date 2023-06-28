@@ -5,13 +5,9 @@ import Button from "./ui/button.astro";
 <!-- To make this contact form work, create your free access key from https://web3forms.com/
      Then you will get all form submissions in your email inbox. -->
 <form
-  action="https://api.web3forms.com/submit"
-  method="POST"
   id="form"
   class="needs-validation"
   novalidate>
-  <input type="hidden" name="access_key" value="f48967c9-deda-4bc2-bd15-2156972269ac" />
-  <!-- Create your free access key from https://web3forms.com/ -->
   <input type="checkbox" class="hidden" style="display:none" name="botcheck" />
   <div class="mb-5">
     <input
@@ -45,9 +41,9 @@ import Button from "./ui/button.astro";
     <label for="phone" class="sr-only">Phone number</label><input
       id="phone"
       type="tel"
-      placeholder="Telefonszám"
-      pattern="\\+?[0-9\\-]{5,}"
-      name="tel"
+      placeholder="Telefonszám (formátum: +36201234567)"
+      pattern="\\+[0-9]{11}"
+      name="phone"
       required
       class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
     />
@@ -55,7 +51,19 @@ import Button from "./ui/button.astro";
       Kérlek add meg a telefonszámodat.
     </div>
     <div class="invalid-feedback text-red-400 text-sm mt-1">
-      Formátum: +36-20-123-4567
+      Formátum: +36201234567
+    </div>
+  </div>
+  <div class="mb-5">
+    <input
+      type="text"
+      placeholder="Tárgy"
+      required
+      class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
+      name="subject"
+    />
+    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
+      Kérlek add meg az üzenet tárgyát.
     </div>
   </div>
   <div class="mb-3">
@@ -67,6 +75,13 @@ import Button from "./ui/button.astro";
     ></textarea>
     <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
       Kérlek add meg az üzenetet.
+    </div>
+  </div>
+  <div class="mb-3">
+    <p>Fotó feltöltése: (max. 4 MB)</p>
+    <input type="file" name="image" id="image" accept="image/png, image/jpeg"/>
+    <div id="too-big-file-error-message" class="text-red-400 text-sm mt-1 hidden">
+      A feltöltött fotó nagyobb mint 4 MB. Kérlek tölts fel egy kisebb fájlt.
     </div>
   </div>
   <Button type="submit" size="lg" block>Üzenet elküldése</Button>
@@ -94,25 +109,57 @@ import Button from "./ui/button.astro";
 </style>
 
 <script is:inline>
+  function getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        let encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
+        if ((encoded.length % 4) > 0) {
+          encoded += '='.repeat(4 - (encoded.length % 4));
+        }
+        resolve(encoded);
+      };
+      reader.onerror = error => reject(error);
+    });
+  }
+
   const form = document.getElementById("form");
-  console.log('form', form)
   const result = document.getElementById("result");
 
-  form.addEventListener("submit", function (e) {
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
     form.classList.add("was-validated");
+    let tooBigFile = false;
+    const formData = new FormData(form);
+    const object = Object.fromEntries(formData);
+    const errorMessageDiv = document.getElementById('too-big-file-error-message')
+    if (object.image.size > 4_000_000) {
+      errorMessageDiv.classList.remove('hidden');
+      tooBigFile = true
+    } else {
+      errorMessageDiv.classList.add('hidden');
+      tooBigFile = false
+    }
     if (!form.checkValidity()) {
       form.querySelectorAll(":invalid")[0].focus();
       return;
     }
-    const formData = new FormData(form);
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
+    if (tooBigFile) {
+      return;
+    }
+
+    const base64Image = await getBase64(object.image)
+    const json = JSON.stringify({
+      ...object,
+      image: base64Image,
+      imageName: object.image.name,
+    });
     const emailFailedMessage = "Hoppá, nem sikerült az üzenetet elküldeni. Kérlek próbáld meg újra, vagy küldj egy email-t közvetlenül a beridoor@gmail.com-ra."
 
     result.innerHTML = "Üzenet küldése...";
 
-    fetch("https://api.web3forms.com/submit", {
+    fetch("https://peppy-manatee-2e0d65.netlify.app/.netlify/functions/email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
