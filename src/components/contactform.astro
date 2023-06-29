@@ -152,6 +152,9 @@ import Button from "./ui/button.astro";
       if (tooBigFile) {
         return;
       }
+      result.classList.remove("text-green-500");
+      result.classList.remove("text-red-500");
+      result.innerHTML = "Üzenet küldése...";
 
       const base64Image = await getBase64(object.image)
       const json = JSON.stringify({
@@ -159,10 +162,6 @@ import Button from "./ui/button.astro";
         image: base64Image,
         imageName: object.image.name,
       });
-
-      result.classList.remove("text-green-500");
-      result.classList.remove("text-red-500");
-      result.innerHTML = "Üzenet küldése...";
 
       const response = await fetch("https://peppy-manatee-2e0d65.netlify.app/.netlify/functions/email", {
         method: "POST",
@@ -189,7 +188,7 @@ import Button from "./ui/button.astro";
         result.innerHTML = emailFailedMessage;
       }
     } catch (e) {
-      console.log(error);
+      console.log(e);
       result.classList.remove("text-green-500");
       result.classList.add("text-red-500");
       result.innerHTML = emailFailedMessage;
