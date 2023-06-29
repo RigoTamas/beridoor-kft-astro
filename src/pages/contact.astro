@@ -6,10 +6,10 @@ import Sectionhead from "@components/sectionhead.astro";
 import Contactform from "@components/contactform.astro";
 
 const phoneNumbers = [
-  {name: 'Kőrösi Benedek', number: '+36 20 931 4070'},
-  {name: 'Kőrösiné Révész Erika', number: '+36 30 931 4070'},
-  {name: 'Cseh-Révész Péter', number: '+36 20 2050 956'},
-  {name: 'Cseh-Révész Tina', number: '+36 20 4929 969'},
+  {name: 'Iroda', number: '+36 30 931 4070'},
+  {name: 'Tervezés', number: '+36 20 931 4070'},
+  {name: 'Kivitelezés', number: '+36 20 205 0956'},
+  {name: 'Design', number: '+36 20 4929 969'},
 ]
 ---
 
@@ -33,7 +33,7 @@ const phoneNumbers = [
               >beridoor@gmail.com</a
             >
           </div>
-          <div class="grid md:grid-cols-2 gap-3 mx-auto max-w-4xl mt-3">
+          <div class="grid md:grid-cols-2 gap-3 max-w-xs mt-3">
             {phoneNumbers.map(({name, number})=> (
 
                   <div class="flex items-center space-x-2 text-gray-600">
