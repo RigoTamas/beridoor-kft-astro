@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 #navbar.scroll {
-  @apply shadow-md md:shadow-lg bg-white md:bg-white/95 md:backdrop-blur-sm dark:bg-slate-900 dark:md:bg-slate-900/90;
+  @apply shadow-md md:shadow-lg md:bg-opacity-95 md:backdrop-blur-sm;
 }
