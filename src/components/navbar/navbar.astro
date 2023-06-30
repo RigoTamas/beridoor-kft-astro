@@ -10,7 +10,7 @@ import Logo from "./Logo.astro"
 const menuitems = [
   {
     title: "Features",
-    path: "#",
+    path: "/pricing",
     children: [
       { title: "Action", path: "/pricing" },
       { title: "Another action", path: "#" },
@@ -36,7 +36,7 @@ const menuitems = [
 ];
 const isSticky = true
 ---
-<div id="navbar" class:list={[{ sticky: isSticky, relative: !isSticky }, 'top-0 z-40 py-4 flex-none mx-auto w-full transition-all ease-in duration-100 bg-[#1f3864]']}>
+<div id="navbar" class:list={[{ sticky: isSticky, relative: !isSticky }, 'top-0 z-40 py-4 flex-none mx-auto w-full transition-all ease-in duration-100 bg-[#1f3864]/95']}>
 <Container>
   <header class="flex flex-col lg:flex-row justify-between items-center">
     <Astronav>
@@ -52,18 +52,20 @@ const isSticky = true
             menuitems.map((item, index) => (
               <div class="navbar-items">
                 {item.children && (
-                  <Dropdown
-                    classList={["flex lg:px-3 py-2 text-gray-600 hover:text-gray-900"]}
-                    title={item.title}
-                    children={item.children}
-                  />
+                  <a href={item.path}>
+                    <Dropdown
+                      classList={["flex lg:px-3 py-2 text-gray-100 hover:text-white cursor-pointer"]}
+                      title={item.title}
+                      children={item.children}
+                    />
+                  </a>
                 )}
 
                 {!item.children && (
                   <li>
                     <a
                       href={item.path}
-                      class="flex lg:px-3 py-2 text-gray-600 hover:text-gray-900">
+                      class="flex lg:px-3 py-2 text-gray-100 hover:text-white">
                       {item.title}
                     </a>
                   </li>
