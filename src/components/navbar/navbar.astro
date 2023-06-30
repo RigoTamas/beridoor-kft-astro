@@ -36,12 +36,12 @@ const menuitems = [
 ];
 const isSticky = true
 ---
-<div id="navbar" class:list={[{ sticky: isSticky, relative: !isSticky }, 'top-0 z-40 py-4 flex-none mx-auto w-full transition-all ease-in duration-100 bg-[#1f3864]/95']}>
+<div id="navbar" class:list={[{ sticky: isSticky, relative: !isSticky }, 'top-0 z-40 py-4 flex-none mx-auto w-full transition-all ease-in duration-100 md:bg-[#1f3864]/95']}>
 <Container>
   <header class="flex flex-col lg:flex-row justify-between items-center">
     <Astronav>
       <div class="flex w-full lg:w-auto items-center justify-between">
-          <Logo width={200}/>
+          <Logo width={150}/>
         <div class="block lg:hidden">
           <MenuIcon class="w-4 h-4 text-gray-800" />
         </div>
@@ -54,7 +54,7 @@ const isSticky = true
                 {item.children && (
                   <a href={item.path}>
                     <Dropdown
-                      classList={["flex lg:px-3 py-2 text-gray-100 hover:text-white cursor-pointer"]}
+                      classList={["flex lg:px-3 py-2 md:text-gray-100 md:hover:text-white cursor-pointer text-gray-600 hover:text-gray-900"]}
                       title={item.title}
                       children={item.children}
                     />
@@ -65,7 +65,7 @@ const isSticky = true
                   <li>
                     <a
                       href={item.path}
-                      class="flex lg:px-3 py-2 text-gray-100 hover:text-white">
+                      class="flex lg:px-3 py-2 md:text-gray-100 md:hover:text-white text-gray-600 hover:text-gray-900">
                       {item.title}
                     </a>
                   </li>
