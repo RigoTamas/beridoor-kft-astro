@@ -1,5 +1,5 @@
 ---
-import { Image } from "@astrojs/image/components";
+import { Image, Picture } from "@astrojs/image/components";
 import '../styles/blaze-slider.css'
 import ArrowRight from '../assets/right-arrow.svg'
 const { images } = Astro.props;
@@ -10,22 +10,22 @@ const { images } = Astro.props;
     <div class="blaze-track-container">
       <div class="blaze-track">
         {images.map((item, iterCount) => (
-            <Image src={item.src} alt={item.alt} loading="eager" format="png" class={"w-full"}  width={400} height={400}/>
+            <Picture src={item.src} alt={item.alt} loading="eager" format="avif" widths={[200,400,600]} sizes="(max-width: 800px) 100vw, 620px" aspectRatio="3:2"/>
         ))}
       </div>
     </div>
 
-    <!-- navigation buttons -->
-    <div class="flex items-center justify-between px-52 py-8">
-        <button class="blaze-prev rotate-180" id="blaze-prev">
-            <Image class="hover:bg-slate-100 rounded-xl" src={ArrowRight} width={24} height={24} alt="left arrow"/>
-        </button>
-        <!-- pagination container -->
-        <div class="blaze-pagination"></div>
-        <button class="blaze-next" id="blaze-next">
-            <Image class="hover:bg-slate-100 rounded-xl" src={ArrowRight} width={23} height={23} alt="right arrow"/>
-        </button>
-    </div>
+  </div>
+  <!-- navigation buttons -->
+  <div class="flex align-center gap-20 justify-center py-8">
+      <button class="blaze-prev rotate-180" id="blaze-prev">
+          <Image class="hover:bg-slate-100 rounded-xl" src={ArrowRight} width={24} height={24} alt="left arrow"/>
+      </button>
+      <!-- pagination container -->
+      <div class="blaze-pagination"></div>
+      <button class="blaze-next" id="blaze-next">
+          <Image class="hover:bg-slate-100 rounded-xl" src={ArrowRight} width={23} height={23} alt="right arrow"/>
+      </button>
   </div>
 </div>
 

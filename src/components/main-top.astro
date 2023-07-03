@@ -12,7 +12,7 @@ const images = fs.readdirSync(folderPath).map((fileName) => ({src: path.join(fol
 ---
 
 <main
-  class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
+  class="grid place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
   <div>
     <h1
       class="text-1xl lg:text-3xl xl:text-4xl font-bold lg:tracking-tight xl:tracking-tighter">
@@ -44,5 +44,5 @@ const images = fs.readdirSync(folderPath).map((fileName) => ({src: path.join(fol
       </Link>
     </div>
   </div>
-  <BlazeSlider images={images}/>
 </main>
+<BlazeSlider images={images}/>
