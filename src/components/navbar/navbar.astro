@@ -52,13 +52,11 @@ const isSticky = true
             menuitems.map((item, index) => (
               <div class="navbar-items">
                 {item.children && (
-                  <a href={item.path}>
                     <Dropdown
-                      classList={["flex lg:px-3 py-2 md:text-gray-100 md:hover:text-white cursor-pointer text-gray-600 hover:text-gray-900"]}
+                      classList={["flex lg:px-3 py-2 md:text-gray-100 md:hover:text-white text-gray-600 hover:text-gray-900"]}
                       title={item.title}
                       children={item.children}
                     />
-                  </a>
                 )}
 
                 {!item.children && (
