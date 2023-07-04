@@ -1,0 +1,119 @@
+---
+import { Image } from "@astrojs/image/components";
+import Link from "@components/ui/link.astro";
+import heroImage from "assets/hero.png";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+const items = [
+  {
+    label: "Télikert",
+    id: "telikert",
+  },
+  {
+    label: "Teraszbeépítés",
+    id: "terasz",
+  },
+  {
+    label: "Medencefedés",
+    id: "medencefedes",
+  },
+  {
+    label: "Szélfogó",
+    id: "szelfogo",
+  },
+  {
+    label: "Elő-védőtető",
+    id: "vedoteto",
+  },
+  {
+    label: "Veranda",
+    id: "veranda",
+  },
+];
+---
+
+<Layout title="Contact">
+  <Container class="w-8/12">
+    <!-- <div class="grid-cols-2 md:flex md:flex-wrap md:flex-row pt-16 pb-8 md:pt-12 md:pb-24 gap-16 justify-start"> -->
+    <div class="bg-amber-200">
+      <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
+        {
+          items.map((item) => (
+            <button id={item.id} class={`bg-cyan-400 hover:bg-slate-100`}>
+              <p>{item.label}</p>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+    <div class="bg-amber-500">
+      <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-8 justify-center">
+        <div class="bg-slate-300 tagged-1">
+          <Image
+            src={heroImage}
+            alt={"asdasd"}
+            width={200}
+            aspectRatio="3:2"
+            format="avif"
+            fit="cover"
+            position="center"
+            class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl"
+          />
+        </div>
+        <div class="bg-slate-300 tagged-1">
+          <Image
+            src={heroImage}
+            alt={"asdasd"}
+            width={200}
+            aspectRatio="3:2"
+            format="avif"
+            fit="cover"
+            position="center"
+            class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl"
+          />
+        </div>
+        <div class="bg-slate-300">
+          <Image
+            src={heroImage}
+            alt={"asdasd"}
+            width={200}
+            aspectRatio="3:2"
+            format="avif"
+            fit="cover"
+            position="center"
+            class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl"
+          />
+        </div>
+        <div class="bg-slate-300">
+          <Image
+            src={heroImage}
+            alt={"asdasd"}
+            width={200}
+            aspectRatio="3:2"
+            format="avif"
+            fit="cover"
+            position="center"
+            class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl"
+          />
+        </div>
+      </div>
+    </div>
+  </Container>
+</Layout>
+
+<script define:vars={{items}}>
+  for (const item of items) {
+    console.log('item', item)
+    const el = document.getElementById(item.id);
+    console.log('adding event listener!')
+    el?.addEventListener("click", () => {
+      el.classList.toggle('bg-cyan-400')
+      console.log('almafa')
+      const elements = document.getElementsByClassName("tagged-1");
+      console.log('elements', elements)
+      for (const element of elements) {
+        element.classList.toggle("hidden");
+      }
+    });
+  }
+</script>
