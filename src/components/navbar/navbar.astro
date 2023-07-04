@@ -35,13 +35,14 @@ const menuitems = [
   },
 ];
 const isSticky = true
+const logoWidth = 150;
 ---
-<div id="navbar" class:list={[{ sticky: isSticky, relative: !isSticky }, 'top-0 z-40 py-4 flex-none mx-auto w-full transition-all ease-in duration-100 md:bg-[#1f3864]/95']}>
+<nav id="navbar" class:list={[{ sticky: isSticky, relative: !isSticky }, 'top-0 z-40 py-0 flex-none mx-auto w-full transition-all ease-in duration-100 md:bg-[#1f3864]/95']}>
 <Container>
   <header class="flex flex-col lg:flex-row justify-between items-center">
     <Astronav>
       <div class="flex w-full lg:w-auto items-center justify-between">
-          <Logo width={150}/>
+          <Logo width={logoWidth}/>
         <div class="block lg:hidden">
           <MenuIcon class="w-4 h-4 text-gray-800" />
         </div>
@@ -77,11 +78,11 @@ const isSticky = true
           <Link href="#" size="md" block>Sign up</Link>
         </div>
       </MenuItems>
-      <Logo width={200} isInvisible={true}/>
+      <Logo width={logoWidth} isInvisible={true}/>
     </Astronav>
   </header>
 </Container>
-</div>
+</nav>
 <script>
   import { animate } from "motion"
   const elements = document.getElementsByClassName('navbar-items')
