@@ -4,32 +4,36 @@ import Link from "@components/ui/link.astro";
 import heroImage from "assets/hero.png";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
+import fs from "fs";
+import path from "path";
+
 const items = [
   {
     label: "Télikert",
     id: "telikert",
   },
-  {
-    label: "Teraszbeépítés",
-    id: "terasz",
-  },
-  {
-    label: "Medencefedés",
-    id: "medencefedes",
-  },
-  {
-    label: "Szélfogó",
-    id: "szelfogo",
-  },
-  {
-    label: "Elő-védőtető",
-    id: "vedoteto",
-  },
+  // {
+  //   label: "Teraszbeépítés",
+  //   id: "terasz",
+  // },
+  // {
+  //   label: "Medencefedés",
+  //   id: "medencefedes",
+  // },
+  // {
+  //   label: "Szélfogó",
+  //   id: "szelfogo",
+  // },
+  // {
+  //   label: "Elő-védőtető",
+  //   id: "vedoteto",
+  // },
   {
     label: "Veranda",
     id: "veranda",
   },
 ];
+const folderPath = "src/assets/portfolio";
 ---
 
 <Layout title="Contact">
@@ -48,69 +52,39 @@ const items = [
     </div>
     <div class="bg-amber-500">
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-8 justify-center">
-        <div class="bg-slate-300 tagged-1">
-          <Image
-            src={heroImage}
-            alt={"asdasd"}
-            width={200}
-            aspectRatio="3:2"
-            format="avif"
-            fit="cover"
-            position="center"
-            class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl"
-          />
-        </div>
-        <div class="bg-slate-300 tagged-1">
-          <Image
-            src={heroImage}
-            alt={"asdasd"}
-            width={200}
-            aspectRatio="3:2"
-            format="avif"
-            fit="cover"
-            position="center"
-            class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl"
-          />
-        </div>
-        <div class="bg-slate-300">
-          <Image
-            src={heroImage}
-            alt={"asdasd"}
-            width={200}
-            aspectRatio="3:2"
-            format="avif"
-            fit="cover"
-            position="center"
-            class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl"
-          />
-        </div>
-        <div class="bg-slate-300">
-          <Image
-            src={heroImage}
-            alt={"asdasd"}
-            width={200}
-            aspectRatio="3:2"
-            format="avif"
-            fit="cover"
-            position="center"
-            class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl"
-          />
-        </div>
+        {
+          items.map((item) => {
+            const projects = fs.readdirSync(path.join(folderPath, item.id));
+            return projects.map((project) => {
+              const mainPictureName = fs.readdirSync(path.join(folderPath, item.id, project, "main"))[0];
+              return (
+                <div class={`${item.id}`}>
+                  <Image
+                    src={path.join(path.join(folderPath, item.id, project, "main", mainPictureName))}
+                    alt={"asdasd"}
+                    width={200}
+                    aspectRatio="3:2"
+                    format="avif"
+                    fit="cover"
+                    position="center"
+                    class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl"
+                  />
+                </div>
+              );
+            });
+          })
+        }
       </div>
     </div>
   </Container>
 </Layout>
 
-<script define:vars={{items}}>
+<script define:vars={{ items }}>
   for (const item of items) {
-    console.log('item', item)
     const el = document.getElementById(item.id);
-    console.log('adding event listener!')
     el?.addEventListener("click", () => {
-      el.classList.toggle('bg-cyan-400')
-      console.log('almafa')
-      const elements = document.getElementsByClassName("tagged-1");
-      console.log('elements', elements)
+      el.classList.toggle("bg-cyan-400");
+      const elements = document.getElementsByClassName(item.id);
       for (const element of elements) {
         element.classList.toggle("hidden");
       }
