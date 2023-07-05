@@ -6,6 +6,7 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import fs from "fs";
 import path from "path";
+import Button from "@components/ui/button.astro";
 
 const items = {
   // key and id field needs to be the same
@@ -44,9 +45,9 @@ const folderPath = "src/assets/portfolio";
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
         {
           Object.values(items).map((item) => (
-            <button id={item.id} class={`hover:bg-slate-100`}>
+            <Button id={item.id} style="outline" class="md:text-lg">
               <p>{item.label}</p>
-            </button>
+            </Button>
           ))
         }
       </div>
@@ -102,21 +103,37 @@ const folderPath = "src/assets/portfolio";
     state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
     if (isEveryFilterTurnedOff(state)) {
       for (const innerId of Object.keys(items)) {
-        buttonsMap[innerId].classList.remove("bg-cyan-400");
+        const button = buttonsMap[innerId];
+        removeStylingFromNonSelectedButton(button);
         state[innerId].isVisible = true;
       }
     } else {
       for (const innerId of Object.keys(items)) {
+        const currentState = state[innerId];
+        const button = buttonsMap[innerId];
         if (innerId === currentId) {
-          state[innerId].isVisible = true;
-          buttonsMap[innerId].classList.toggle("bg-cyan-400");
+          currentState.isVisible = true;
+          addStylingToSelectedButton(button);
         } else {
-          state[innerId].isFilterTurnedOn = false;
-          state[innerId].isVisible = false;
-          buttonsMap[innerId].classList.remove("bg-cyan-400");
+          currentState.isFilterTurnedOn = false;
+          currentState.isVisible = false;
+          removeStylingFromNonSelectedButton(button);
         }
       }
     }
+  }
+
+  function removeStylingFromNonSelectedButton(button) {
+    button.classList.remove("bg-beridoorBlue");
+    button.classList.remove("text-white");
+    button.classList.remove("border-cyan-600");
+  }
+
+  function addStylingToSelectedButton(button) {
+    button.classList.add("bg-beridoorBlue");
+    button.classList.add("box-border");
+    button.classList.add("border-cyan-600");
+    button.classList.add("text-white");
   }
 
   function hideAndShowPictures({ state }) {
