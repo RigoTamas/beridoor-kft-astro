@@ -7,7 +7,8 @@ import Container from "@components/container.astro";
 import fs from "fs";
 import path from "path";
 
-const items = { // key and id field needs to be the same
+const items = {
+  // key and id field needs to be the same
   telikert: {
     label: "Télikert",
     id: "telikert",
@@ -30,9 +31,9 @@ const items = { // key and id field needs to be the same
   // },
   veranda: {
     label: "Veranda",
-    id: "veranda"
+    id: "veranda",
   },
- };
+};
 const folderPath = "src/assets/portfolio";
 ---
 
@@ -43,7 +44,7 @@ const folderPath = "src/assets/portfolio";
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
         {
           Object.values(items).map((item) => (
-            <button id={item.id} class={`bg-cyan-400 hover:bg-slate-100`}>
+            <button id={item.id} class={`hover:bg-slate-100`}>
               <p>{item.label}</p>
             </button>
           ))
@@ -80,13 +81,26 @@ const folderPath = "src/assets/portfolio";
 </Layout>
 
 <script define:vars={{ items }}>
-  const state = Object.entries(items).reduce((acc, [id, item]) => ({...acc, [id]: {...item, isVisible: true}}), {})
-  for (const id of Object.values(items)) {
+  const state = Object.entries(items).reduce(
+    (acc, [id, item]) => ({ ...acc, [id]: { ...item, isVisible: true, isFilterTurnedOn: false } }),
+    {}
+  );
+  for (const id of Object.keys(items)) {
     const el = document.getElementById(id);
     el?.addEventListener("click", () => {
-      state[id].isVisible = !state[id].isVisible
+      el.classList.toggle("bg-cyan-400");
+      state[id].isFilterTurnedOn = !state[id].isFilterTurnedOn;
+      if (isEveryFilterTurnedOff(state)) {
+        for (const innerId of Object.keys(items)) {
+          state[innerId].isVisible = true;
+        }
+      } else {
+        for (const innerId of Object.keys(items)) {
+          state[innerId].isVisible = state[innerId].isFilterTurnedOn ? true : false;
+        }
+      }
+      console.log("almafa");
       for (const item of Object.values(state)) {
-        el.classList.toggle("bg-cyan-400");
         const elements = document.getElementsByClassName(item.id);
         for (const element of elements) {
           if (item.isVisible) {
@@ -97,5 +111,8 @@ const folderPath = "src/assets/portfolio";
         }
       }
     });
+  }
+  function isEveryFilterTurnedOff(state) {
+    return Object.values(state).every((item) => !item.isFilterTurnedOn);
   }
 </script>
