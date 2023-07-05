@@ -82,14 +82,37 @@ const folderPath = "src/assets/portfolio";
 </Layout>
 
 <script define:vars={{ items }}>
-  const state = Object.entries(items).reduce(
-    (acc, [id, item]) => ({ ...acc, [id]: { ...item, isVisible: true, isFilterTurnedOn: false } }),
-    {}
-  );
+  const fragment = window.location.hash.substring(1);
+  const isValidFragment = Boolean(items[fragment]);
+  const state = Object.entries(items).reduce((acc, [id, item]) => {
+    if (isValidFragment) {
+      return {
+        ...acc,
+        [id]: {
+          ...item,
+          isVisible: fragment === item.id,
+          isFilterTurnedOn: fragment === item.id,
+        },
+      };
+    } else {
+      return {
+        ...acc,
+        [id]: {
+          ...item,
+          isVisible: true,
+          isFilterTurnedOn: false,
+        },
+      };
+    }
+  }, {});
   const buttonsMap = Object.keys(items).reduce((acc, id) => ({ ...acc, [id]: document.getElementById(id) }), {});
+  if (isValidFragment) {
+    setInitialUi({ selectedButton: buttonsMap[fragment], state });
+  }
   for (const currentId of Object.keys(items)) {
     const el = document.getElementById(currentId);
     el?.addEventListener("click", () => {
+      window.location = `#${currentId}`;
       updateStateAndButtonBackground({ state, buttonsMap, currentId });
       hideAndShowPictures({ state });
     });
@@ -130,10 +153,15 @@ const folderPath = "src/assets/portfolio";
   }
 
   function addStylingToSelectedButton(button) {
-    button.classList.add("bg-beridoorBlue");
-    button.classList.add("box-border");
-    button.classList.add("border-cyan-600");
-    button.classList.add("text-white");
+    button.classList.toggle("bg-beridoorBlue");
+    button.classList.toggle("box-border");
+    button.classList.toggle("border-cyan-600");
+    button.classList.toggle("text-white");
+  }
+
+  function setInitialUi({ state, selectedButton }) {
+    addStylingToSelectedButton(selectedButton);
+    hideAndShowPictures({ state });
   }
 
   function hideAndShowPictures({ state }) {
