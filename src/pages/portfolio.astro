@@ -86,40 +86,49 @@ const folderPath = "src/assets/portfolio";
     {}
   );
   const buttonsMap = Object.keys(items).reduce((acc, id) => ({ ...acc, [id]: document.getElementById(id) }), {});
-  for (const id of Object.keys(items)) {
-    const el = document.getElementById(id);
+  for (const currentId of Object.keys(items)) {
+    const el = document.getElementById(currentId);
     el?.addEventListener("click", () => {
-      state[id].isFilterTurnedOn = !state[id].isFilterTurnedOn;
-      if (isEveryFilterTurnedOff(state)) {
-        for (const innerId of Object.keys(items)) {
-          buttonsMap[innerId].classList.remove("bg-cyan-400");
-          state[innerId].isVisible = true;
-        }
-      } else {
-        for (const innerId of Object.keys(items)) {
-          if (innerId === id) {
-            state[innerId].isVisible = true;
-            buttonsMap[innerId].classList.toggle("bg-cyan-400");
-          } else {
-            state[innerId].isFilterTurnedOn = false;
-            state[innerId].isVisible = false;
-            buttonsMap[innerId].classList.remove("bg-cyan-400");
-          }
-        }
-      }
-      for (const item of Object.values(state)) {
-        const elements = document.getElementsByClassName(item.id);
-        for (const element of elements) {
-          if (item.isVisible) {
-            element.classList.remove("hidden");
-          } else {
-            element.classList.add("hidden");
-          }
-        }
-      }
+      updateStateAndButtonBackground({ state, buttonsMap, currentId });
+      hideAndShowPictures({ state });
     });
   }
+
   function isEveryFilterTurnedOff(state) {
     return Object.values(state).every((item) => !item.isFilterTurnedOn);
+  }
+
+  function updateStateAndButtonBackground({ state, buttonsMap, currentId }) {
+    state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
+    if (isEveryFilterTurnedOff(state)) {
+      for (const innerId of Object.keys(items)) {
+        buttonsMap[innerId].classList.remove("bg-cyan-400");
+        state[innerId].isVisible = true;
+      }
+    } else {
+      for (const innerId of Object.keys(items)) {
+        if (innerId === currentId) {
+          state[innerId].isVisible = true;
+          buttonsMap[innerId].classList.toggle("bg-cyan-400");
+        } else {
+          state[innerId].isFilterTurnedOn = false;
+          state[innerId].isVisible = false;
+          buttonsMap[innerId].classList.remove("bg-cyan-400");
+        }
+      }
+    }
+  }
+
+  function hideAndShowPictures({ state }) {
+    for (const item of Object.values(state)) {
+      const elements = document.getElementsByClassName(item.id);
+      for (const element of elements) {
+        if (item.isVisible) {
+          element.classList.remove("hidden");
+        } else {
+          element.classList.add("hidden");
+        }
+      }
+    }
   }
 </script>
