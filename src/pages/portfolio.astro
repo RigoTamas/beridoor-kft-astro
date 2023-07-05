@@ -85,21 +85,28 @@ const folderPath = "src/assets/portfolio";
     (acc, [id, item]) => ({ ...acc, [id]: { ...item, isVisible: true, isFilterTurnedOn: false } }),
     {}
   );
+  const buttonsMap = Object.keys(items).reduce((acc, id) => ({ ...acc, [id]: document.getElementById(id) }), {});
   for (const id of Object.keys(items)) {
     const el = document.getElementById(id);
     el?.addEventListener("click", () => {
-      el.classList.toggle("bg-cyan-400");
       state[id].isFilterTurnedOn = !state[id].isFilterTurnedOn;
       if (isEveryFilterTurnedOff(state)) {
         for (const innerId of Object.keys(items)) {
+          buttonsMap[innerId].classList.remove("bg-cyan-400");
           state[innerId].isVisible = true;
         }
       } else {
         for (const innerId of Object.keys(items)) {
-          state[innerId].isVisible = state[innerId].isFilterTurnedOn ? true : false;
+          if (innerId === id) {
+            state[innerId].isVisible = true;
+            buttonsMap[innerId].classList.toggle("bg-cyan-400");
+          } else {
+            state[innerId].isFilterTurnedOn = false;
+            state[innerId].isVisible = false;
+            buttonsMap[innerId].classList.remove("bg-cyan-400");
+          }
         }
       }
-      console.log("almafa");
       for (const item of Object.values(state)) {
         const elements = document.getElementsByClassName(item.id);
         for (const element of elements) {
