@@ -7,8 +7,8 @@ import Container from "@components/container.astro";
 import fs from "fs";
 import path from "path";
 
-const items = [
-  {
+const items = { // key and id field needs to be the same
+  telikert: {
     label: "Télikert",
     id: "telikert",
   },
@@ -28,11 +28,11 @@ const items = [
   //   label: "Elő-védőtető",
   //   id: "vedoteto",
   // },
-  {
+  veranda: {
     label: "Veranda",
-    id: "veranda",
+    id: "veranda"
   },
-];
+ };
 const folderPath = "src/assets/portfolio";
 ---
 
@@ -42,7 +42,7 @@ const folderPath = "src/assets/portfolio";
     <div class="bg-amber-200">
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
         {
-          items.map((item) => (
+          Object.values(items).map((item) => (
             <button id={item.id} class={`bg-cyan-400 hover:bg-slate-100`}>
               <p>{item.label}</p>
             </button>
@@ -53,7 +53,7 @@ const folderPath = "src/assets/portfolio";
     <div class="bg-amber-500">
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-8 justify-center">
         {
-          items.map((item) => {
+          Object.values(items).map((item) => {
             const projects = fs.readdirSync(path.join(folderPath, item.id));
             return projects.map((project) => {
               const mainPictureName = fs.readdirSync(path.join(folderPath, item.id, project, "main"))[0];
@@ -80,13 +80,21 @@ const folderPath = "src/assets/portfolio";
 </Layout>
 
 <script define:vars={{ items }}>
-  for (const item of items) {
-    const el = document.getElementById(item.id);
+  const state = Object.entries(items).reduce((acc, [id, item]) => ({...acc, [id]: {...item, isVisible: true}}), {})
+  for (const id of Object.values(items)) {
+    const el = document.getElementById(id);
     el?.addEventListener("click", () => {
-      el.classList.toggle("bg-cyan-400");
-      const elements = document.getElementsByClassName(item.id);
-      for (const element of elements) {
-        element.classList.toggle("hidden");
+      state[id].isVisible = !state[id].isVisible
+      for (const item of Object.values(state)) {
+        el.classList.toggle("bg-cyan-400");
+        const elements = document.getElementsByClassName(item.id);
+        for (const element of elements) {
+          if (item.isVisible) {
+            element.classList.remove("hidden");
+          } else {
+            element.classList.add("hidden");
+          }
+        }
       }
     });
   }
