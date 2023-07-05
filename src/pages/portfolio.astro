@@ -110,14 +110,8 @@ const folderPath = "src/assets/portfolio";
     setInitialUi({ selectedButton: buttonsMap[fragment], state });
   }
   window.addEventListener("hashchange", (event) => {
-    const currentId = window.location.hash.substring(1);
-    if (!currentId) { // turned off filtering, need to hide the previously filtered selection
-      const url = new URL(event.oldURL)
-      const oldId = url.hash.slice(1)
-      state[oldId].isFilterTurnedOn = !state[oldId].isFilterTurnedOn;
-    } else {
-      state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
-    }
+    const currentId = window.location.hash.substring(1) || new URL(event.oldURL).hash.slice(1);
+    state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
     updateStateAndButtonBackground({ state, buttonsMap, currentId });
     hideAndShowPictures({ state });
   });
@@ -125,7 +119,7 @@ const folderPath = "src/assets/portfolio";
   for (const currentId of Object.keys(items)) {
     const el = document.getElementById(currentId);
     el?.addEventListener("click", () => {
-      window.location = state[currentId].isFilterTurnedOn ? ! "#": `#${currentId}`; // when clicking filter turned on, that means we turn it off now
+      window.location = state[currentId].isFilterTurnedOn ? "#" : `#${currentId}`;
     });
   }
 
