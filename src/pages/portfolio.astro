@@ -39,9 +39,10 @@ const folderPath = "src/assets/portfolio";
 ---
 
 <Layout title="Portfolio">
+  <div id="item-store" data-items={JSON.stringify(items)}></div>
   <Container>
     <!-- <div class="grid-cols-2 md:flex md:flex-wrap md:flex-row pt-16 pb-8 md:pt-12 md:pb-24 gap-16 justify-start"> -->
-    <div class="bg-amber-200">
+    <div>
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
         {
           Object.values(items).map((item) => (
@@ -52,7 +53,7 @@ const folderPath = "src/assets/portfolio";
         }
       </div>
     </div>
-    <div class="bg-amber-500">
+    <div>
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-8 justify-center">
         {
           Object.values(items).map((item) => {
@@ -60,16 +61,16 @@ const folderPath = "src/assets/portfolio";
             return projects.map((project) => {
               const mainPictureName = fs.readdirSync(path.join(folderPath, item.id, project, "main"))[0];
               return (
-                <div class={`${item.id}`}>
+                <div class={`${item.id} images-selector`}>
                   <Image
                     src={path.join(path.join(folderPath, item.id, project, "main", mainPictureName))}
                     alt={"asdasd"}
-                    width={200}
+                    width={300}
                     aspectRatio="3:2"
                     format="avif"
                     fit="cover"
                     position="center"
-                    class="w-full rounded-md rounded transition group-hover:-translate-y-1 group-hover:shadow-xl"
+                    class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
                   />
                 </div>
               );
@@ -81,7 +82,23 @@ const folderPath = "src/assets/portfolio";
   </Container>
 </Layout>
 
-<script define:vars={{ items }}>
+<script>
+  import { animate } from "motion";
+  const itemStoreElement = document.getElementById("item-store");
+  const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
+
+  const elements = document.getElementsByClassName("images-selector");
+  for (let i = 0; i < elements.length; i++) {
+    const elem = elements[i];
+    elem?.addEventListener("mouseover", (e) => {
+      animate(elem, { scale: 1.05 });
+    });
+    elem?.addEventListener("mouseout", (e) => {
+      animate(elem, { scale: 1.0 });
+    });
+  }
+
+
   const fragment = window.location.hash.substring(1);
   const isValidFragment = Boolean(items[fragment]);
   const state = Object.entries(items).reduce((acc, [id, item]) => {
