@@ -10,7 +10,7 @@ const { images } = Astro.props;
     <div class="blaze-track-container">
       <div class="blaze-track">
         {images.map((item, iterCount) => (
-            <Picture src={item.src} alt={item.alt} loading="eager" format="avif" widths={[200,400,600]} sizes="(max-width: 800px) 100vw, 800px" aspectRatio="3:2"/>
+            <Picture src={item.src} alt={item.alt} loading="eager" format="avif" widths={[400,800,1600]} sizes="(max-width: 1600px) 100vw, 1600px" aspectRatio="4:3"/>
         ))}
       </div>
     </div>
