@@ -1,7 +1,5 @@
 ---
 import { Image } from "@astrojs/image/components";
-import Link from "@components/ui/link.astro";
-import heroImage from "assets/hero.png";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import fs from "fs";
@@ -14,22 +12,22 @@ const items = {
     label: "Télikert",
     id: "telikert",
   },
-  // {
-  //   label: "Teraszbeépítés",
-  //   id: "terasz",
-  // },
-  // {
-  //   label: "Medencefedés",
-  //   id: "medencefedes",
-  // },
-  // {
-  //   label: "Szélfogó",
-  //   id: "szelfogo",
-  // },
-  // {
-  //   label: "Elő-védőtető",
-  //   id: "vedoteto",
-  // },
+  terasz: {
+    label: "Teraszbeépítés",
+    id: "terasz",
+  },
+  medencefedes: {
+    label: "Medencefedés",
+    id: "medencefedes",
+  },
+  szelfogo: {
+    label: "Szélfogó",
+    id: "szelfogo",
+  },
+  vedoteto: {
+    label: "Elő-védőtető",
+    id: "vedoteto",
+  },
   veranda: {
     label: "Veranda",
     id: "veranda",
@@ -62,16 +60,18 @@ const folderPath = "src/assets/portfolio";
               const mainPictureName = fs.readdirSync(path.join(folderPath, item.id, project, "main"))[0];
               return (
                 <div class={`${item.id} images-selector`}>
-                  <Image
-                    src={path.join(path.join(folderPath, item.id, project, "main", mainPictureName))}
-                    alt={"asdasd"}
-                    width={300}
-                    aspectRatio="3:2"
-                    format="avif"
-                    fit="cover"
-                    position="center"
-                    class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
-                  />
+                  <a href={`/portfolio/${item.id}/${project}`}>
+                    <Image
+                      src={path.join(path.join(folderPath, item.id, project, "main", mainPictureName))}
+                      alt={"asdasd"}
+                      width={300}
+                      aspectRatio="3:2"
+                      format="avif"
+                      fit="cover"
+                      position="center"
+                      class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
+                    />
+                  </a>
                 </div>
               );
             });
@@ -97,7 +97,6 @@ const folderPath = "src/assets/portfolio";
       animate(elem, { scale: 1.0 });
     });
   }
-
 
   const fragment = window.location.hash.substring(1);
   const isValidFragment = Boolean(items[fragment]);

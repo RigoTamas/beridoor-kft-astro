@@ -1,0 +1,19 @@
+---
+import fs from "fs";
+import path from "path";
+
+export function getStaticPaths() {
+  const folderPath = "src/assets/portfolio";
+  const staticPathDefinition: { params: { projectType: string; projectName: string } }[] = [];
+  for (const projectType of fs.readdirSync(folderPath)) {
+    for (const projectName of fs.readdirSync(path.join(folderPath, projectType))) {
+      staticPathDefinition.push({ params: { projectType, projectName } });
+    }
+  }
+  return staticPathDefinition;
+}
+
+const { projectType, projectName } = Astro.params;
+---
+
+<div>Good dog, {projectType} {projectName}!</div>
