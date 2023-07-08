@@ -1,54 +1,41 @@
 ---
-import { Picture } from "@astrojs/image/components";
-import * as url from 'url';
 import Link from "@components/ui/link.astro";
 import { Icon } from "astro-icon";
-import BlazeSlider from './blaze-slider.astro'
-import fs from 'fs'
-import path from 'path'
+import BlazeSlider from "./blaze-slider.astro";
+import fs from "fs";
+import path from "path";
 
-const folderPath = 'src/assets/main-page-carousel-pictures'
+const folderPath = "src/assets/main-page-carousel-pictures";
 
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
-const defaultImage = '../assets/main-page-carousel-pictures/home_01.jpg'
-const viteImages = import.meta.glob<ImageMetadata>('../assets/main-page-carousel-pictures/*', { import: 'default' })
-const imagePaths = fs.readdirSync(folderPath).map((fileName) => ({src: '../' + path.join(folderPath, fileName).slice(4), alt: fileName}))
-const imagesRenderable: {imageRenderable: any, alt: string}[] = []
+const viteImages = import.meta.glob<ImageMetadata>("../assets/main-page-carousel-pictures/*", { import: "default" });
+const imagePaths = fs
+  .readdirSync(folderPath)
+  .map((fileName) => ({ src: "../" + path.join(folderPath, fileName).slice(4), alt: fileName }));
+const imagesRenderable: { imageRenderable: any; alt: string }[] = [];
 for (const imgPath of imagePaths) {
-  const imageRenderable = await viteImages[imgPath.src || defaultImage]() as Record<string,any>
-  imagesRenderable.push({ imageRenderable, alt: imgPath.alt  })
+  const imageRenderable = (await viteImages[imgPath.src]()) as Record<string, any>;
+  imagesRenderable.push({ imageRenderable, alt: imgPath.alt });
 }
 ---
 
-<main
-  class="grid place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
+<main class="grid place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
   <div>
-    <h1
-      class="text-1xl lg:text-3xl xl:text-4xl font-bold text-center lg:tracking-tight xl:tracking-tighter">
-     Télikertek építése egyedi igények szerint
+    <h1 class="text-1xl lg:text-3xl xl:text-4xl font-bold text-center lg:tracking-tight xl:tracking-tighter">
+      Télikertek építése egyedi igények szerint
     </h1>
-    <p class="text-lg mt-4 text-slate-600 max-w-xl">
-      
-    </p>
+    <p class="text-lg mt-4 text-slate-600 max-w-xl"></p>
     <div class="mt-6 flex flex-col justify-center sm:flex-row gap-3">
-      <Link
-        size="lg"
-        href="/portfolio"
-        style="outline"
-        class="flex gap-1 items-center justify-center">
+      <Link size="lg" href="/portfolio" style="outline" class="flex gap-1 items-center justify-center">
         <Icon class="text-beridoorBlue w-5 h-5" name="icon-park-outline:building-one" />
 
         Munkáink
       </Link>
-      <Link
-        size="lg"
-        style="primary"
-        href="/contact"
-        class="flex gap-1 items-center justify-center">
+      <Link size="lg" style="primary" href="/contact" class="flex gap-1 items-center justify-center">
         <Icon class="text-white w-5 h-5" name="mdi:contact-mail" />
         Ajánlatkérés
       </Link>
     </div>
   </div>
 </main>
-<BlazeSlider images={imagesRenderable}/>
+<BlazeSlider images={imagesRenderable} />
