@@ -1,14 +1,23 @@
 ---
 import { Picture } from "@astrojs/image/components";
-import heroImage from "assets/hero.png";
+import * as url from 'url';
 import Link from "@components/ui/link.astro";
 import { Icon } from "astro-icon";
 import BlazeSlider from './blaze-slider.astro'
 import fs from 'fs'
 import path from 'path'
-const folderPath = 'src/assets/main-page-carousel-pictures'
-const images = fs.readdirSync(folderPath).map((fileName) => ({src: path.join(folderPath, fileName), alt: fileName}))
 
+const folderPath = 'src/assets/main-page-carousel-pictures'
+
+// workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
+const defaultImage = '../assets/main-page-carousel-pictures/home_01.jpg'
+const viteImages = import.meta.glob<ImageMetadata>('../assets/main-page-carousel-pictures/*', { import: 'default' })
+const imagePaths = fs.readdirSync(folderPath).map((fileName) => ({src: '../' + path.join(folderPath, fileName).slice(4), alt: fileName}))
+const imagesRenderable: {imageRenderable: any, alt: string}[] = []
+for (const imgPath of imagePaths) {
+  const imageRenderable = await viteImages[imgPath.src || defaultImage]() as Record<string,any>
+  imagesRenderable.push({ imageRenderable, alt: imgPath.alt  })
+}
 ---
 
 <main
@@ -42,4 +51,4 @@ const images = fs.readdirSync(folderPath).map((fileName) => ({src: path.join(fol
     </div>
   </div>
 </main>
-<BlazeSlider images={images}/>
+<BlazeSlider images={imagesRenderable}/>

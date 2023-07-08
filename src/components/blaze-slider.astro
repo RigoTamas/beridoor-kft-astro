@@ -10,10 +10,10 @@ const { images } = Astro.props;
     <div class="blaze-track-container">
       <div class="blaze-track">
         {
-          images.map((item, iterCount) => (
+          images.map((image, iterCount) => (
             <Picture
-              src={item.src}
-              alt={item.alt}
+              src={image.imageRenderable}
+              alt={image.alt}
               loading="eager"
               format="avif"
               widths={[400, 800, 1600]}

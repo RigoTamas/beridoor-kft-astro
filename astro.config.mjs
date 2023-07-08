@@ -7,6 +7,9 @@ import svelte from "@astrojs/svelte";
 
 // https://astro.build/config
 export default defineConfig({
+  vite: {
+    assetsInclude: ['**/*.jpg', '**/*.JPG'],
+  },
   site: "https://beridoor.hu",
   integrations: [tailwind({ config: { applyBaseStyles: false } }), image({
     serviceEntryPoint: "@astrojs/image/sharp"
