@@ -2,7 +2,6 @@
 import { Image } from "@astrojs/image/components";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
-import fs from "fs";
 import path from "path";
 import Button from "@components/ui/button.astro";
 
@@ -33,7 +32,18 @@ const items = {
     id: "veranda",
   },
 };
-const folderPath = "src/assets/portfolio";
+
+// workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
+const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/*/*/main/*", { import: "default" });
+const imagesRenderable: { imageRenderable: any; alt: string; projectType: string; projectName: string }[] = [];
+for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
+  const projetNamePath = path.dirname(path.dirname(imgPath));
+  const projectName = path.basename(path.dirname(path.dirname(imgPath)));
+  const projectTypePath = path.dirname(projetNamePath);
+  const projectType = path.basename(projectTypePath);
+  const imageRenderable = await imageFunction();
+  imagesRenderable.push({ imageRenderable, projectType, projectName, alt: path.basename(imgPath) });
+}
 ---
 
 <Layout title="Portfolio">
@@ -54,27 +64,23 @@ const folderPath = "src/assets/portfolio";
     <div>
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-8 justify-center">
         {
-          Object.values(items).map((item) => {
-            const projects = fs.readdirSync(path.join(folderPath, item.id));
-            return projects.map((project) => {
-              const mainPictureName = fs.readdirSync(path.join(folderPath, item.id, project, "main"))[0];
-              return (
-                <div class={`${item.id} images-selector`}>
-                  <a href={`/portfolio/${item.id}/${project}`}>
-                    <Image
-                      src={path.join(path.join(folderPath, item.id, project, "main", mainPictureName))}
-                      alt={"asdasd"}
-                      width={300}
-                      aspectRatio="3:2"
-                      format="avif"
-                      fit="cover"
-                      position="center"
-                      class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
-                    />
-                  </a>
-                </div>
-              );
-            });
+          imagesRenderable.map((item) => {
+            return (
+              <div class={`${item.projectType} images-selector`}>
+                <a href={`/portfolio/${item.projectType}/${item.projectName}`}>
+                  <Image
+                    src={item.imageRenderable}
+                    alt={item.alt}
+                    width={300}
+                    aspectRatio="3:2"
+                    format="avif"
+                    fit="cover"
+                    position="center"
+                    class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
+                  />
+                </a>
+              </div>
+            );
           })
         }
       </div>

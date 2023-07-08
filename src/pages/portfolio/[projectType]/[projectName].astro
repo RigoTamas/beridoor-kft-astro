@@ -1,6 +1,10 @@
 ---
+import { Image } from "@astrojs/image/components";
 import fs from "fs";
 import path from "path";
+import Layout from "../../../layouts/Layout.astro";
+import Container from "../../../components/container.astro";
+import Sectionhead from "../../../components/sectionhead.astro";
 
 export function getStaticPaths() {
   const folderPath = "src/assets/portfolio";
@@ -14,6 +18,64 @@ export function getStaticPaths() {
 }
 
 const { projectType, projectName } = Astro.params;
+
+// workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
+const viteImages = import.meta.glob<ImageMetadata>("../../../assets/portfolio/*/*/*/*", { import: "default" });
+const restImagesRenderable: { imageRenderable: any; alt: string }[] = [];
+const mainImagesRenderable: { imageRenderable: any; alt: string }[] = [];
+for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
+  const assetType = path.basename(path.dirname(imgPath))
+  const projetNamePath = path.dirname(path.dirname(imgPath));
+  const projectNameIter = path.basename(path.dirname(path.dirname(imgPath)));
+  const projectTypePath = path.dirname(projetNamePath);
+  const projectTypeIter = path.basename(projectTypePath);
+  if (projectType === projectTypeIter && projectName === projectNameIter) {
+    const imageRenderable = await imageFunction();
+    if (assetType === 'main') {
+      mainImagesRenderable.push({imageRenderable, alt: path.basename(imgPath)})
+    } else {
+      restImagesRenderable.push({imageRenderable, alt: path.basename(imgPath)})
+    }
+  }
+}
+// TODO: might need Picture with sizes if showing large image
 ---
 
-<div>Good dog, {projectType} {projectName}!</div>
+<Layout title="Project">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">{projectType}</Fragment>
+      <Fragment slot="desc">{projectName}</Fragment>
+    </Sectionhead>
+    <div>
+      <Image
+        src={mainImagesRenderable[0].imageRenderable}
+        alt={mainImagesRenderable[0].alt}
+        width={1600}
+        aspectRatio="3:2"
+        format="avif"
+        fit="cover"
+        position="center"
+        class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
+      />
+    </div>
+    <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-8 justify-center">
+    {
+      restImagesRenderable.map((restImage) => (
+        <div>
+          <Image
+            src={restImage.imageRenderable}
+            alt={restImage.alt}
+            width={300}
+            aspectRatio="3:2"
+            format="avif"
+            fit="cover"
+            position="center"
+            class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
+          />
+        </div>
+      ))
+    }
+    </div>
+  </Container>
+</Layout>
