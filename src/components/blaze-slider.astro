@@ -8,18 +8,31 @@ const { images } = Astro.props;
 <div class="blaze-slider">
   <div class="blaze-container">
     <div class="blaze-track-container">
-      <div class="blaze-track">
+      <div class="blaze-track object-cover">
         {
           images.map((image, iterCount) => (
-            <Picture
-              src={image.imageRenderable}
-              alt={image.alt}
-              loading="eager"
-              format="avif"
-              widths={[400, 800, 1600]}
-              sizes="(max-width: 1600px) 100vw, 1600px"
-              aspectRatio="3:2"
-            />
+          <div class="inline-block overflow-hidden bg-cover bg-center relative w-full h-[400px] sm:h-[500px] md:h-[700px] lg:h-[1200px]">
+          <Image
+            src={image.imageRenderable}
+            alt={image.alt}
+            width={1600}
+            aspectRatio="16:9"
+            format="avif"
+            fit="cover"
+            position="center"
+            class="-z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat"
+          />
+          <p class="text-white text-3xl lg:text-8xl text-center align-middle leading-[400px] sm:leading-[500px] md:leading-[400px] lg:leading-[1200px]"> Tökéletes dezijn</p>
+    </div>
+            // <Image
+            //   src={image.imageRenderable}
+            //   alt={image.alt}
+            //   loading="eager"
+            //   format="avif"
+            //   width={1600}
+            //   // sizes="(max-width: 1600px) 100vw, 1600px"
+            //   aspectRatio="16:9"
+            // />
           ))
         }
       </div>
@@ -45,6 +58,41 @@ const { images } = Astro.props;
 <script>
   import BlazeSlider from "blaze-slider";
   import "blaze-slider/dist/blaze.css";
+
+  // function setCorrectHeightSize (width: number, height: number) {
+  //   const imageDivs = document.getElementsByClassName('background-image-div')
+  //   // const newHeight = (16/9) * (width / height) * height
+  //   const newHeight = height;
+  //   const imageTextElements = document.getElementsByClassName('image-text')
+  //   for (const imgDiv of imageDivs) {
+  //     for (const cls of imgDiv.classList) {
+  //       if (cls.startsWith('h-[')) {
+  //         imgDiv.classList.remove(cls)
+  //       }
+  //       console.log('cls', cls)
+  //     }
+  //     imgDiv.classList.add(`h-[${newHeight}px]`)
+  //   }
+
+  //   for (const imageTextEl of imageTextElements) {
+  //     for (const cls of imageTextEl.classList) {
+  //       if (cls.startsWith('leading-[')) {
+  //         imageTextEl.classList.remove(cls)
+  //       }
+  //       console.log('cls', cls)
+  //     }
+  //     imageTextEl.classList.add(`leading-[${newHeight}px]`)
+  //   }
+  // }
+  // window.addEventListener("resize", () => {
+  //     const width = window.innerWidth;
+  //     const height = window.innerHeight;
+  //     setCorrectHeightSize(width, height)
+
+  //     console.log(`The viewport's width is ${width} and the height is ${height}.`);
+  // });
+
+
   const el = document.querySelector(".blaze-slider") as HTMLElement;
   const slider = new BlazeSlider(el, {
     all: {
