@@ -1,62 +1,52 @@
 ---
 // @ts-ignore
+
 import { Icon } from "astro-icon";
 
 const features = [
   {
-    title: "Bring Your Own Framework",
+    title: "20 év szakmai tapasztalat",
     description:
-      "Build your site using React, Svelte, Vue, Preact, web components, or just plain ol' HTML + JavaScript.",
+      "Az évek során csapatunk rengeteg különleges kéréssel, egyedi megrendeléssel nézett szembe, aminek köszönhetően szakmai tapasztalatunk páratlan.",
     icon: "bx:bxs-briefcase",
   },
   {
-    title: "100% Static HTML, No JS",
+    title: "Személyre szabott kialakítás",
     description:
-      "Astro renders your entire page to static HTML, removing all JavaScript from your final build by default.",
+      "Mindig a megrendelő igényei a legfontosabbak számunkra. Mindent megteszünk, hogy az adott hely és környezet adottságait figyelembe véve készítsük el a megrendelést.",
     icon: "bx:bxs-window-alt",
   },
   {
-    title: "On-Demand Components",
+    title: "Változatos anyag és színhasználat",
     description:
-      "Need some JS? Astro can automatically hydrate interactive components when they become visible on the page.  ",
-    icon: "bx:bxs-data",
+      "Fa, acél és alumínium különféle színekben az esztétikai összang és az időtállóság elérése érdekében.",
+    icon: "i-beam",
   },
   {
-    title: "Broad Integration",
+    title: "Teljeskörű kivitelezés",
     description:
-      "Astro supports TypeScript, Scoped CSS, CSS Modules, Sass, Tailwind, Markdown, MDX, and any other npm packages.",
-    icon: "bx:bxs-bot",
+      "A felméréstől kezdve csapatunk intézi a megrendelés minden részletét, amelybe hozzátartozik a tervezés, igény esetén látványterv készítése, majd maga az építkezés.",
+    icon: "completed-solid",
   },
   {
-    title: "SEO Enabled",
+    title: "Megbízható szakemberek, összeszokott csapat",
     description:
-      "Automatic sitemaps, RSS feeds, pagination and collections take the pain out of SEO and syndication. It just works!",
-    icon: "bx:bxs-file-find",
+      "Hosszú évek óta ugyanazzal a csapattal dolgozunk, akik értik a szakma minden aspektusát. Ennek köszönhetően nem ér váratlan meglepetés a kivitelezés közben.",
+    icon: "mdi:construction",
   },
   {
-    title: "Community",
+    title: "Modern technológiák",
     description:
-      "Astro is an open source project powered by hundreds of contributors making thousands of individual contributions.",
-    icon: "bx:bxs-user",
+      "Lépést tartanunk az új technológiákkal és trendekkel, ezeket mindig a megrendelő figyelmébe is ajánljuk.",
+    icon: "graph-new-up-outline",
   },
 ];
 ---
-
-<div class="mt-16 md:mt-0">
-  <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
-    Everything you need to start a website
-  </h2>
-  <p class="text-lg mt-4 text-slate-600">
-    Astro comes batteries included. It takes the best parts of state-of-the-art
-    tools and adds its own innovations.
-  </p>
-</div>
-
 <div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16">
   {
     features.map((item) => (
       <div class="flex gap-4 items-start">
-        <div class="mt-1 bg-black rounded-full  p-2 w-8 h-8 shrink-0">
+        <div class="mt-1 bg-beridoorBlue rounded-full p-2 w-8 h-8 shrink-0">
           <Icon class="text-white" name={item.icon} />
         </div>
         <div>
