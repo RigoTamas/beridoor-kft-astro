@@ -7,8 +7,8 @@ module.exports = {
   theme: {
     colors: {
       ...colors,
-      beridoorBlue: "#1f3864",
-      beridoorBlueDeeper: "#152645",
+      beridoorBlue: "#143143",
+      beridoorBlueLighter: "#1f3864",
     },
     extend: {
       fontFamily: {
