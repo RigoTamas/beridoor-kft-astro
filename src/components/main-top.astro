@@ -2,20 +2,14 @@
 import Link from "@components/ui/link.astro";
 import { Icon } from "astro-icon";
 import BlazeSlider from "./blaze-slider.astro";
-import fs from "fs";
 import path from "path";
-
-const folderPath = "src/assets/main-page-carousel-pictures";
 
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
 const viteImages = import.meta.glob<ImageMetadata>("../assets/main-page-carousel-pictures/*", { import: "default" });
-const imagePaths = fs
-  .readdirSync(folderPath)
-  .map((fileName) => ({ src: "../" + path.join(folderPath, fileName).slice(4), alt: fileName }));
 const imagesRenderable: { imageRenderable: any; alt: string }[] = [];
-for (const imgPath of imagePaths) {
-  const imageRenderable = (await viteImages[imgPath.src]()) as Record<string, any>;
-  imagesRenderable.push({ imageRenderable, alt: imgPath.alt });
+for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
+  const imageRenderable = (await imageFunction());
+  imagesRenderable.push({ imageRenderable, alt: path.basename(imgPath) });
 }
 ---
 
