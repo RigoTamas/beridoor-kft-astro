@@ -7,23 +7,24 @@ const { images } = Astro.props;
 
 <div class="blaze-slider">
   <div class="blaze-container">
-    <div class="blaze-track-container">
+    <div class="relative ease-in blaze-track-container">
       <div class="blaze-track object-cover">
         {
           images.map((image, iterCount) => (
-          <div class="inline-block overflow-hidden bg-cover bg-center relative w-full h-[400px] sm:h-[500px] md:h-[700px] lg:h-[1200px]">
-          <Image
-            src={image.imageRenderable}
-            alt={image.alt}
-            width={1600}
-            aspectRatio="16:9"
-            format="avif"
-            fit="cover"
-            position="center"
-            class="-z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat"
-          />
-          <p class="text-white text-3xl lg:text-8xl text-center align-middle leading-[400px] sm:leading-[500px] md:leading-[400px] lg:leading-[1200px]"> Tökéletes dezijn</p>
-    </div>
+            <div class="inline-block overflow-hidden bg-cover bg-center relative w-full h-[94vh]">
+              <Image
+                src={image.imageRenderable}
+                alt={image.alt}
+                width={1600}
+                aspectRatio="16:9"
+                format="avif"
+                fit="cover"
+                position="center"
+                class="-z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat"
+              />
+              <p class="text-white text-3xl lg:text-8xl my-[45vh] lg:my-[43vh] text-center align-middle"> Tökéletes dezijn</p>
+            </div>
+
             // <Image
             //   src={image.imageRenderable}
             //   alt={image.alt}
@@ -36,23 +37,28 @@ const { images } = Astro.props;
           ))
         }
       </div>
+      <div class="top-[47vh] left-0 mx-2 md:mx-7 absolute">
+        <button class="blaze-prev rotate-180" id="blaze-prev">
+          <div class="w-6">
+            <Icon class="hover:bg-slate-100 rounded-xl" name="right-arrow" />
+          </div>
+        </button>
+      </div>
+    <div class="right-[50vh] left-[50vh] top-[87vh] blaze-pagination absolute "></div>
+      
+      <div class="top-[47vh] right-0 mx-2 md:mx-7 absolute">
+        <button class="blaze-next" id="blaze-next">
+          <div class="w-6">
+            <Icon class="hover:bg-slate-100 rounded-xl" name="right-arrow" />
+          </div>
+        </button>
+      </div>
+
     </div>
+
   </div>
+
   <!-- navigation buttons -->
-  <div class="flex align-center gap-6 justify-center py-8">
-    <button class="blaze-prev rotate-180" id="blaze-prev">
-      <div class="w-6">
-        <Icon class="hover:bg-slate-100 rounded-xl" name="right-arrow" />
-      </div>
-    </button>
-    <!-- pagination container -->
-    <div class="blaze-pagination"></div>
-    <button class="blaze-next" id="blaze-next">
-      <div class="w-6">
-        <Icon class="hover:bg-slate-100 rounded-xl" name="right-arrow" />
-      </div>
-    </button>
-  </div>
 </div>
 
 <script>
@@ -91,7 +97,6 @@ const { images } = Astro.props;
 
   //     console.log(`The viewport's width is ${width} and the height is ${height}.`);
   // });
-
 
   const el = document.querySelector(".blaze-slider") as HTMLElement;
   const slider = new BlazeSlider(el, {
