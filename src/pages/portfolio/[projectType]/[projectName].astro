@@ -21,8 +21,8 @@ const { projectType, projectName } = Astro.params;
 
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
 const viteImages = import.meta.glob<ImageMetadata>("../../../assets/portfolio/*/*/*/*", { import: "default" });
-const restImagesRenderable: { imageRenderable: any; alt: string }[] = [];
-const mainImagesRenderable: { imageRenderable: any; alt: string }[] = [];
+const restImagesRenderable: { imageRenderable: any; imgPath: string; alt: string }[] = [];
+const mainImagesRenderable: { imageRenderable: any; imgPath: string; alt: string }[] = [];
 for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
   const assetType = path.basename(path.dirname(imgPath))
   const projetNamePath = path.dirname(path.dirname(imgPath));
@@ -32,9 +32,9 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
   if (projectType === projectTypeIter && projectName === projectNameIter) {
     const imageRenderable = await imageFunction();
     if (assetType === 'main') {
-      mainImagesRenderable.push({imageRenderable, alt: path.basename(imgPath)})
+      mainImagesRenderable.push({imageRenderable, imgPath, alt: path.basename(imgPath)})
     } else {
-      restImagesRenderable.push({imageRenderable, alt: path.basename(imgPath)})
+      restImagesRenderable.push({imageRenderable, imgPath, alt: path.basename(imgPath)})
     }
   }
 }
@@ -47,17 +47,24 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
       <Fragment slot="title">{projectType}</Fragment>
       <Fragment slot="desc">{projectName}</Fragment>
     </Sectionhead>
-    <div>
-      <Image
-        src={mainImagesRenderable[0].imageRenderable}
-        alt={mainImagesRenderable[0].alt}
-        width={1600}
-        aspectRatio="3:2"
-        format="avif"
-        fit="cover"
-        position="center"
-        class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
-      />
+      <div class="inline-block overflow-hidden relative w-full h-full">
+          <Image
+            src={mainImagesRenderable[0].imageRenderable}
+            alt={mainImagesRenderable[0].alt}
+            width={300}
+            aspectRatio="3:2"
+            format="avif"
+            fit="cover"
+            position="center"
+            class="pointer-events-none absolute w-full, h-full -z-10 object-cover"
+          />
+        <p>
+          Lorem Ipsum is simply dummy text of the printing and
+          typesetting industry. Lorem Ipsum has been the industry's
+          standard dummy text ever since the 1500s, when an unknown
+          printer took a galley of type and scrambled it to make a type
+          specimen book
+        </p>
     </div>
     <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-8 justify-center">
     {

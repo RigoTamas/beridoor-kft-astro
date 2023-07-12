@@ -25,13 +25,13 @@
   border-radius: 50%;
   outline: none;
   border: none;
-  background: hsl(0, 0%, 80%);
+  background: hsla(0, 0%, 100%, 0.781);
   cursor: pointer;
   transition: transform 200ms ease, background-color 300ms ease;
 }
 
 .blaze-pagination button.active {
-  background: #1f3864;
-  transform: scale(1.2);
+  background: hsl(0, 0%, 100%);
+  transform: scale(1.4);
 }
 

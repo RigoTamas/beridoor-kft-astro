@@ -11,7 +11,7 @@ const { images } = Astro.props;
       <div class="blaze-track object-cover">
         {
           images.map((image, iterCount) => (
-            <div class="inline-block overflow-hidden bg-cover bg-center relative w-full h-[94vh]">
+            <div class="inline-block rounded-none overflow-hidden bg-cover bg-center relative w-full h-[calc(100vh-86px)]">
               <Image
                 src={image.imageRenderable}
                 alt={image.alt}
@@ -22,34 +22,24 @@ const { images } = Astro.props;
                 position="center"
                 class="-z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat"
               />
-              <p class="text-white text-3xl lg:text-8xl my-[45vh] lg:my-[43vh] text-center align-middle"> Tökéletes dezijn</p>
+              <p class="text-white text-3xl lg:text-8xl mt-[calc(((100vh-86px)/2)-18px)] lg:mt-[calc(((100vh-86px)/2)-50px)] text-center align-middle">{image.mainText}</p>
             </div>
-
-            // <Image
-            //   src={image.imageRenderable}
-            //   alt={image.alt}
-            //   loading="eager"
-            //   format="avif"
-            //   width={1600}
-            //   // sizes="(max-width: 1600px) 100vw, 1600px"
-            //   aspectRatio="16:9"
-            // />
           ))
         }
       </div>
-      <div class="top-[47vh] left-0 mx-2 md:mx-7 absolute">
-        <button class="blaze-prev rotate-180" id="blaze-prev">
+      <div class="top-[calc(((100vh-86px)/2)-12px)] left-0 mx-2 md:mx-7 absolute">
+        <button class="blaze-prev rotate-[270deg]" id="blaze-prev">
           <div class="w-6">
-            <Icon class="hover:bg-slate-100 rounded-xl" name="right-arrow" />
+            <Icon class="bg-white rounded-xl" name="fe:arrow-up" />
           </div>
         </button>
       </div>
-    <div class="right-[50vh] left-[50vh] top-[87vh] blaze-pagination absolute "></div>
+    <div class="right-[50vh] left-[50vh] top-[calc(95vh-86px)] blaze-pagination absolute "></div>
       
-      <div class="top-[47vh] right-0 mx-2 md:mx-7 absolute">
-        <button class="blaze-next" id="blaze-next">
+      <div class="top-[calc(((100vh-86px)/2)-12px)] right-0 mx-2 md:mx-7 absolute">
+        <button class="blaze-next  rotate-90" id="blaze-next">
           <div class="w-6">
-            <Icon class="hover:bg-slate-100 rounded-xl" name="right-arrow" />
+            <Icon class="bg-white rounded-xl" name="fe:arrow-up" />
           </div>
         </button>
       </div>

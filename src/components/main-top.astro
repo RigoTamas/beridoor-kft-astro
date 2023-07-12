@@ -6,13 +6,15 @@ import path from "path";
 
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
 const viteImages = import.meta.glob<ImageMetadata>("../assets/main-page-carousel-pictures/*", { import: "default" });
-const imagesRenderable: { imageRenderable: any; alt: string }[] = [];
+const imagesRenderable: { imageRenderable: any; alt: string, mainText: string }[] = [];
 for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
   const imageRenderable = (await imageFunction());
-  imagesRenderable.push({ imageRenderable, alt: path.basename(imgPath) });
+  const ext = path.extname(imgPath)
+  imagesRenderable.push({ imageRenderable, alt: path.basename(imgPath), mainText: path.basename(imgPath, ext).slice(4,) });
 }
 ---
 
+<BlazeSlider images={imagesRenderable} />
 <main class="grid place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
   <div>
     <h1 class="text-1xl lg:text-3xl xl:text-4xl font-bold text-center lg:tracking-tight xl:tracking-tighter">
@@ -35,4 +37,3 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     </div>
   </div>
 </main>
-<BlazeSlider images={imagesRenderable} />
