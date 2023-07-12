@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import { Picture } from "@astrojs/image/components";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
@@ -10,7 +9,7 @@ const staff = [
   {
     name: "Kőrösi Benedek",
     jobTitle: "Okleveles Építészmérnök",
-    description: "Az Építészkamara tagja<br>A Mérnökkamar tagja<br>Felelős műszaki vezető",
+    description: "Az Építészkamara tagja<br>A Mérnökkamara tagja<br>Felelős műszaki vezető",
     pictureName: "korosi-benedek.jpg",
   },
   {
@@ -21,8 +20,8 @@ const staff = [
   },
   {
     name: "Cseh-Révész Tina",
-    jobTitle: "Enteriőr Dizájn",
-    description: "",
+    jobTitle: "Enteriőrstylist",
+    description: "Látványtervek, dizájnok készítője",
     pictureName: "cseh-revesz-tina.jpg",
   },
   {
@@ -38,7 +37,6 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
   const imageRenderable = await imageFunction();
   imageNameToRenderableImageMap[path.basename(imgPath)] = imageRenderable;
 }
-console.log("imageNameToRenderableImageMap", imageNameToRenderableImageMap);
 ---
 
 <Layout title="About">
@@ -80,7 +78,7 @@ console.log("imageNameToRenderableImageMap", imageNameToRenderableImageMap);
     </div>
     <div class="mt-16">
       <div class="mx-auto max-w-4xl">
-        <h2 class="font-bold text-3xl">Csapatunk</h2>
+        <h2 class="font-bold text-3xl text-center">Munkatársaink</h2>
       </div>
       <div class="grid md:grid-cols-4 gap-10 mx-auto mt-12">
         {
@@ -93,18 +91,148 @@ console.log("imageNameToRenderableImageMap", imageNameToRenderableImageMap);
                   sizes="(max-width: 800px) 100vw, 400px"
                   widths={[200, 400]}
                   aspectRatio="3:2"
+                  format="avif"
                   fit="cover"
                   position="center"
                   class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
                 />
               </div>
               <div class="mt-4 text-center">
-                <h2 class="text-lg text-gray-800">{staffItem.name}</h2>
-                <h3 class="text-sm text-slate-500">{staffItem.jobTitle}</h3>
+                <h2 class="text-lg ">{staffItem.name}</h2>
+                <h3 class="text-sm mb-3">{staffItem.jobTitle}</h3>
+                <h3 class="text-sm text-slate-500">
+                  {" "}
+                  <Fragment set:html={staffItem.description} />
+                </h3>
               </div>
             </div>
           ))
         }
+      </div>
+    </div>
+
+    <div class="mt-16">
+      <div class="mx-auto">
+        <h2 class="font-bold text-3xl text-center">Sajtószoba</h2>
+      </div>
+    </div>
+
+    <div class="mt-16">
+      <div class="mx-auto">
+        <h2 class="font-bold text-3xl text-center">Partnereink</h2>
+      </div>
+    </div>
+
+    <div class="mt-16">
+      <div class="mx-auto">
+        <h2 class="font-bold text-3xl text-center">Anyagaink</h2>
+      </div>
+      <h3 class="font-bold text-2xl mt-10 mb-4">Acél</h3>
+      <div class="flex flex-col gap-3 mx-auto text-justify">
+        <p>
+          Az acélszerkezet nagyon stabil építészeti megoldás, a legkisebb szerkezeti keresztmetszettel a lehető
+          legnagyobb teherbírás érhető el vele, így egyéb szerkezetek megerősítéséhez, oszlopokhoz, gerendákhoz
+          használjuk.
+        </p>
+        <p>
+          Kültérben előtetők, védőtetők anyagaként, beltérben merevítő- vagy alátámasztó szerepe van. Olyan nagy
+          fesztávú üvegház, vagy télikert építéséhez alkalmazzuk, ahol az alumínium profil, vagy a rétegelt-ragasztott
+          fa szerkezet önmagában nem megfelelő. Ahol a kedvezőbb ár a követelmény, ott az olcsóbb kivitelű acél
+          tartószerkezetet lehet jó megoldás, korrózióra való hajlamossága viszont igen nagy, ezért alapos
+          felületkezelést kíván.
+        </p>
+      </div>
+      <h3 class="font-bold text-2xl mt-10 mb-4">Alumínium</h3>
+      <div class="flex flex-col gap-3 mx-auto text-justify">
+        <p>
+          Az alumínium profil rendkívül időtálló, nem vetemedik, nem korrodálódik, nagy teherbírású és hosszú
+          élettartamú, gondozás-mentes szerkezet.
+        </p>
+        <p>
+          Valamennyi profil korlátlan szabadságot biztosít a formavilágot, a színvilágot, és a felhasználási lehetőségét
+          tekintve. A bármilyen RAL színre felületkezelhető beégetett festésű alumínium szerkezet elegáns, könnyű,
+          tartós, esztétikus megjelenés mellett a maximális élettartamot biztosítja.
+        </p>
+        <p>
+          A tervezők által igényelt egyre extrémebb statikai igénybevételnek és a mind szigorúbb EU szabványoknak
+          megfelelő szerkezetek jelentős biztonsági tartalékkal rendelkeznek. Nem igényel utólagos gondozást,
+          felújítást, az időjárási hatásokra érzéketlen, nincs korrózió, nincs alakváltozás, nincs öregedés.
+        </p>
+      </div>
+      <h3 class="font-bold text-2xl mt-10 mb-4">Fa</h3>
+      <div class="flex flex-col gap-3 mx-auto text-justify">
+        <p>
+          A fa szerkezetek előnye az esztétikus és természetes megjelenés, a jó hőszigetelés. A repedésmentesség, és a
+          csavarodás, vetemedés elkerülése érdekében a felhasznált anyag mesterséges szárítás után, több rétegből
+          ragasztva kerül alkalmazásra. A rétegelt ragasztott technikának köszönhetően tetszőleges keresztmetszetű és
+          hosszúságú elemeket készíthetünk, melyek statikailag könnyen méretezhetővé teszik ezeket a szerkezeteket,
+          így nagyobb fesztávot is áthidalhatunk.
+        </p>
+        <p>
+          A színtartó, UV-álló, felületkezelésnek köszönhetően rugalmas réteg védi a fát a külső hatásoktól, ugyanakkor
+          a bevonat alatt konzerválja is az alapanyagot, tehát a fát védi a gomba- és rovarkároktól.
+        </p>
+        <p>
+          A fa anyagánál és megmunkálásánál fogva is gondozást igénylő termék, a felületkezelésének, és tömítéseinek
+          mindig megfelelőnek kell lenniük, de a minőségi anyagokból, gondosan megépített fa szerkezetű télikert talán a
+          legesztétikusabb és a legtermészetesebb kivitelezési megoldás. Gondozását házilagosan is könnyen
+          elvégezhetjük, de ha nem boldogulnak vele, nyugodtan kérjék szakembereink segítségét.
+        </p>
+      </div>
+      <h3 class="font-bold text-2xl mt-10 mb-4">Polikarbonát</h3>
+      <div class="flex flex-col gap-3 mx-auto text-justify">
+        <p>
+          Az üveg mellett többféle tetőfedés céljára kifejlesztett modern, minőségi "UV" álló polikarbonát lemez is
+          választható, melyek előnye az üveggel szemben a kis súly, a könnyű beépíthetőség, a jó hőszigetelő képesség és
+          a viszonylagos törhetetlenség.
+        </p>
+        <p>
+          Nagyobb fesztávú tetőszerkezetekben keresztosztás nélkül alkalmazható. Széles hőmérséklet-tartományban is
+          felhasználható.
+        </p>
+        <p>
+          Érzékenyebb a karcolódásra, esőben hangosabb és az üregkamrás változat esetében a fényt ugyan tökéletesen
+          beengedi, de optikailag nem átlátható.
+        </p>
+        <p>
+          Az átlátszó fedéseken kívül tömör, nem átlátszó héjazatokat is tudunk készíteni, cserép- vagy zsindelyfedést,
+          réz- vagy horganylemez borítást.
+        </p>
+      </div>
+      <h3 class="font-bold text-2xl mt-10 mb-4">Műanyag</h3>
+      <div class="flex flex-col gap-3 mx-auto text-justify">
+        <p>
+          Az újrafelhasználható műanyagból készült nyílászárók alaktartósságát és szilárdságát a beépített acélidomok, a
+          jó hőszigetelést pedig a több légkamrás műanyag profilok garantálják. A profilrendszerek UV stabil műanyagból
+          készülnek, időállóak az évek folyamán is megtartják színüket. A nyílászárók nem igényelnek utólagos
+          karbantartást, festést, csupán a külső szennyeződéseket kell időnként eltávolítani. Olyan gazdaságos felületet
+          képeznek, amelyek radikálisan kicsi víz- és légáteresztésűek, fékezik a külső hanghatásokat.
+        </p>
+        <p>
+          Megnövelt biztonságot nyújtanak a betörés ellen, a megerősített vasalatok nem tartalmaznak hozzáférhető
+          szerkezetelemeket, több ponton záródnak, így semmi esélyt sem adnak a külső behatolásra.
+        </p>
+        <p>
+          A profilok alapszíne fehér (RAL 9016) de készülhetnek színes nyílászárók is, a dekorfóliákat speciális
+          eljárással viszik fel a profilokra.
+        </p>
+      </div>
+      <h3 class="font-bold text-2xl mt-10 mb-4">Üveg</h3>
+      <div class="flex flex-col gap-3 mx-auto text-justify">
+        <p>
+          Az építészeti üveg az utóbbi évtizedekben nagy fejlődésen ment keresztül, az egyszerű hőszigetelő üvegezés
+          mellett megjelentek a fokozott hőszigetelésre, nap és fény elleni védelemre kifejlesztett, speciális
+          bevonatokkal ellátott több rétegű üvegek is.
+        </p>
+        <p>
+          A két-, vagy több rétegből ragasztott biztonsági üvegeket elláthatjuk fólia ragasztással, nemesgáz töltéssel,
+          így fokozott hang- és hőszigetelésű, vagy különböző biztonságfokozatú üvegeket kapunk. A napvédő, reflexiós
+          üvegek a napenergia nagy részét elnyelik, vagy visszaverik, megakadályozva annak túlzott beáramlását.
+        </p>
+        <p>
+          Az anyagában színezett üvegek színválasztéka - szürke, bronz, zöld, kék, igazi színarculati megjelenést adnak
+          a télikerteknek, teraszbeépítéseknek, védőtetőknek.
+        </p>
       </div>
     </div>
   </Container>

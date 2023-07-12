@@ -1,10 +1,6 @@
 ---
-import Container from "@components/container.astro";
-import Link from "@components/ui/link.astro";
 import Dropdown from "./dropdown.astro";
-import logoImage from "assets/logo.png";
 import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
-import { Image, Picture } from "@astrojs/image/components";
 import Logo from "./Logo.astro"
 import { Icon } from "astro-icon";
 // személyes érdeklődés telszám h-p 9-17 ajánlatkérés
@@ -66,7 +62,7 @@ const isSticky = true
 const logoWidth = 140;
 ---
 <nav id="navbar" class:list={[{ sticky: isSticky, relative: !isSticky }, 'top-0 z-40 py-0 flex-none mx-auto w-full transition-all ease-in duration-100 lg:bg-beridoorBlue']}>
-<Container class="mx-6">
+<div class="mx-6">
   <header class="flex flex-col lg:flex-row justify-between items-center">
     <Astronav>
       <div class="flex py-2 w-full lg:w-auto items-center justify-between">
@@ -117,7 +113,7 @@ const logoWidth = 140;
       <!-- <Logo width={logoWidth} isInvisible={true}/> -->
     </Astronav>
   </header>
-</Container>
+</div>
 </nav>
 <script>
   // import { animate } from "motion"
