@@ -47,46 +47,11 @@ const { images } = Astro.props;
     </div>
 
   </div>
-
-  <!-- navigation buttons -->
 </div>
 
 <script>
   import BlazeSlider from "blaze-slider";
   import "blaze-slider/dist/blaze.css";
-
-  // function setCorrectHeightSize (width: number, height: number) {
-  //   const imageDivs = document.getElementsByClassName('background-image-div')
-  //   // const newHeight = (16/9) * (width / height) * height
-  //   const newHeight = height;
-  //   const imageTextElements = document.getElementsByClassName('image-text')
-  //   for (const imgDiv of imageDivs) {
-  //     for (const cls of imgDiv.classList) {
-  //       if (cls.startsWith('h-[')) {
-  //         imgDiv.classList.remove(cls)
-  //       }
-  //       console.log('cls', cls)
-  //     }
-  //     imgDiv.classList.add(`h-[${newHeight}px]`)
-  //   }
-
-  //   for (const imageTextEl of imageTextElements) {
-  //     for (const cls of imageTextEl.classList) {
-  //       if (cls.startsWith('leading-[')) {
-  //         imageTextEl.classList.remove(cls)
-  //       }
-  //       console.log('cls', cls)
-  //     }
-  //     imageTextEl.classList.add(`leading-[${newHeight}px]`)
-  //   }
-  // }
-  // window.addEventListener("resize", () => {
-  //     const width = window.innerWidth;
-  //     const height = window.innerHeight;
-  //     setCorrectHeightSize(width, height)
-
-  //     console.log(`The viewport's width is ${width} and the height is ${height}.`);
-  // });
 
   const el = document.querySelector(".blaze-slider") as HTMLElement;
   const slider = new BlazeSlider(el, {
