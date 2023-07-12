@@ -10,39 +10,57 @@ const items = {
   telikert: {
     label: "Télikert",
     id: "telikert",
+    text: "Különleges hangulatú helyiség, természetközeli élményt biztosít az év minden napján, függetlenül a szélsőséges időjárási viszonyoktól, az itt elfogyasztott reggeli kávé nyugalma megalapozza egész napi hangulatát.",
   },
   terasz: {
     label: "Teraszbeépítés",
     id: "terasz",
+    text: "Egy terasz oldalfalainak beépítése nagy mértékben elősegíti az otthon komfortérzetét, növeli piaci értékét, kibővíti használhatóságát a zord időjárási viszonyok között is, viszonylag kedvező anyagi ráfordítással.",
   },
   medencefedes: {
     label: "Medencefedés",
     id: "medencefedes",
+    text: "",
   },
   szelfogo: {
     label: "Szélfogó",
     id: "szelfogo",
+    text: "A szélfogó zsilipet képez a zord időjárási viszonyok között, átmeneti zónát képezi a kint és a bent elhatárolásával. Okosan megtervezett belső terével, jó helykihasználásával, segíthet a megfelelő tárolás kialakításában.",
   },
   vedoteto: {
     label: "Elő-védőtető",
     id: "vedoteto",
+    text: "A bejárati feletti védőtető komfortosabbá teszi a napi rutint – kulcskeresés, ajtó nyitás, csukás- esős, havas időben is.",
   },
   veranda: {
     label: "Veranda",
     id: "veranda",
+    text: "",
   },
 };
 
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
 const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/*/*/main/*", { import: "default" });
-const imagesRenderable: { imageRenderable: any; alt: string; projectType: string; projectName: string }[] = [];
+const imagesRenderable: {
+  imageRenderable: any;
+  alt: string;
+  projectType: string;
+  projectName: string;
+  text: string;
+}[] = [];
 for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
   const projetNamePath = path.dirname(path.dirname(imgPath));
   const projectName = path.basename(path.dirname(path.dirname(imgPath)));
   const projectTypePath = path.dirname(projetNamePath);
   const projectType = path.basename(projectTypePath);
   const imageRenderable = await imageFunction();
-  imagesRenderable.push({ imageRenderable, projectType, projectName, alt: path.basename(imgPath) });
+  imagesRenderable.push({
+    imageRenderable,
+    projectType,
+    projectName,
+    alt: path.basename(imgPath),
+    text: items[projectType].text,
+  });
 }
 ---
 
@@ -66,12 +84,12 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
         {
           imagesRenderable.map((item) => {
             return (
-              <div class={`${item.projectType} images-selector`}>
+              <div class={`${item.projectType} images-selector w-[300px]`}>
                 <a href={`/portfolio/${item.projectType}/${item.projectName}`}>
                   <Image
                     src={item.imageRenderable}
                     alt={item.alt}
-                    width={300}
+                    width={600}
                     aspectRatio="3:2"
                     format="avif"
                     fit="cover"
@@ -84,6 +102,9 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
           })
         }
       </div>
+    </div>
+    <div class="mx-auto max-w-4xl justify-between items-center flex">
+      <p class="md:text-lg" id="textToShow"></p>
     </div>
   </Container>
 </Layout>
@@ -130,12 +151,14 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
   const buttonsMap = Object.keys(items).reduce((acc, id) => ({ ...acc, [id]: document.getElementById(id) }), {});
   if (isValidFragment) {
     setInitialUi({ selectedButton: buttonsMap[fragment], state });
+    updateTextShown({ state });
   }
   window.addEventListener("hashchange", (event) => {
     const currentId = window.location.hash.substring(1) || new URL(event.oldURL).hash.slice(1);
     state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
     updateStateAndButtonBackground({ state, buttonsMap, currentId });
     hideAndShowPictures({ state });
+    updateTextShown({ state });
   });
 
   for (const currentId of Object.keys(items)) {
@@ -194,11 +217,32 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
       const elements = document.getElementsByClassName(item.id);
       for (const element of elements) {
         if (item.isVisible) {
+          if (item.isFilterTurnedOn) {
+            element.classList.remove("w-[300px]")
+            element.classList.add("w-[600px]")
+          } else {
+            element.classList.add("w-[300px]")
+            element.classList.remove("w-[600px]")
+          }
           element.classList.remove("hidden");
         } else {
           element.classList.add("hidden");
         }
       }
+    }
+  }
+
+  function updateTextShown({ state }) {
+    const selectedItem: any = Object.values(state).find((item: any) => {
+      return item.isFilterTurnedOn;
+    });
+    const paragraph = document.getElementById("textToShow");
+    while (paragraph?.firstChild) {
+      paragraph?.removeChild(paragraph?.firstChild);
+    }
+    if (selectedItem) {
+      const text = document.createTextNode(items[selectedItem.id]?.text);
+      paragraph?.appendChild(text);
     }
   }
 </script>
