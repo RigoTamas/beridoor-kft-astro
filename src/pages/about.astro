@@ -4,6 +4,27 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
 import path from "path";
+import Button from "../components/ui/button.astro";
+
+const items = {
+  // key and id field needs to be the same
+  rolunk: {
+    label: "Rólunk",
+    id: "rolunk",
+  },
+  partnereink: {
+    label: "Partnereink",
+    id: "partnereink",
+  },
+  anyagaink: {
+    label: "Anyagaink",
+    id: "anyagaink",
+  },
+  munkatarsaink: {
+    id: "munkatarsaink",
+    label: "Munkatársaink",
+  },
+};
 
 const staff = [
   {
@@ -20,14 +41,14 @@ const staff = [
   },
   {
     name: "Cseh-Révész Tina",
-    jobTitle: "Enteriőrstylist",
-    description: "Látványtervek, dizájnok készítője",
+    jobTitle: "Enteriőrstylist, Lakberendező",
+    description: "Látványtervek, dizájnok készítője<br>2022 KREA design iskola",
     pictureName: "cseh-revesz-tina.jpg",
   },
   {
     name: "Kőrösiné Révész Erika",
     jobTitle: "Iroda",
-    description: "Ajánlatok, szerződések, megrendelések tudója, rendzserezője",
+    description: "Ajánlatok, szerződések, megrendelések tudója, rendszerezője",
     pictureName: "revesz-erika.jpg",
   },
 ];
@@ -41,46 +62,63 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
 
 <Layout title="About">
   <Container>
-    <Sectionhead>
-      <Fragment slot="title">Rólunk</Fragment>
-    </Sectionhead>
-    <div class="flex flex-col gap-3 mx-auto mt-16 text-justify">
-      <p>
-        Csapatunk tagjai hosszú évek óta együtt dolgoznak, szakmájukat szerető asztalos, lakatos, ács, kőműves, burkoló,
-        villany- és vízszerelő munkatársainkat, a nagyfokú rugalmasság és a szakmai tapasztalat jellemzi. Egyedi
-        szerkezeteinket a legkiválóbb minőségben készítjük el.
-      </p>
-      <p>
-        Törekszünk a legmodernebb szerszámok, gépek, technológiák, anyagok használatára, szívesen ajánljuk megrendelőink
-        figyelmébe a legújabb technikai újdonságokat, szerkezeteket, agyagokat, különleges megoldásokat.
-      </p>
-      <p>
-        A megszerzett tapasztalatok alapján, cégünk profilja időközben kibővült családi házak tervezésével,
-        kivitelezésével, felújításával, nyílászárók cseréjével, belsőépítészeti munkákkal, személyre szabott design
-        kialakításával.
-      </p>
-
-      <p>
-        A megálmodott tervekből különleges, egyénre szabott enteriőr készül a költségvetés és a határidők betartásával.
-        Fontos számunkra a rugalmasság, a hatékonyság, a stabilitás, megrendelőink kifogástalan kiszolgálása magas
-        műszaki színvonalú, egyedileg gyártott fa, alumínium, műanyag profilokból készült termékekkel.
-      </p>
-      <p>
-        Minden kivitelezés legfontosabb része a tervezés. Építészmérnök kollégáink a helyszínen, megrendelőinkkel
-        folytatott beszélgetések alapján egyeztetik a megfelelő szerkezeti anyagokat, építészeti lehetőségeket,
-        nyílászáró elemeket, a megfelelő árnyékolás lehetőségét.
-      </p>
-      <p>
-        A weboldalunkon látható télikerteket, teraszbeépítéseket, kupolákat, védőtetőket cégünk készítette, azokat -
-        előzetes egyeztetés alapján - bármikor meg tudjuk mutatni, beszélve a tulajdonosok több éves tapasztalatairól
-        is.
-      </p>
+    <div id="item-store" data-items={JSON.stringify(items)}></div>
+    <div>
+      <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
+        {
+          Object.values(items).map((item) => (
+            <Button id={`${item.id}-button`} style="outline" class="md:text-lg">
+              <p>{item.label}</p>
+            </Button>
+          ))
+        }
+      </div>
     </div>
-    <div class="mt-16">
+
+    <div class="mt-10 rolunk">
+      <div class="mx-auto max-w-4xl">
+        <h2 class="font-bold text-3xl text-center">Rólunk</h2>
+      </div>
+      <div class="flex flex-col gap-3 mx-auto mt-16 text-justify rolunk">
+        <p>
+          Csapatunk tagjai hosszú évek óta együtt dolgoznak, szakmájukat szerető asztalos, lakatos, ács, kőműves,
+          burkoló, villany- és vízszerelő munkatársainkat, a nagyfokú rugalmasság és a szakmai tapasztalat jellemzi.
+          Egyedi szerkezeteinket a legkiválóbb minőségben készítjük el.
+        </p>
+        <p>
+          Törekszünk a legmodernebb szerszámok, gépek, technológiák, anyagok használatára, szívesen ajánljuk
+          megrendelőink figyelmébe a legújabb technikai újdonságokat, szerkezeteket, agyagokat, különleges megoldásokat.
+        </p>
+        <p>
+          A megszerzett tapasztalatok alapján, cégünk profilja időközben kibővült családi házak tervezésével,
+          kivitelezésével, felújításával, nyílászárók cseréjével, belsőépítészeti munkákkal, személyre szabott design
+          kialakításával.
+        </p>
+
+        <p>
+          A megálmodott tervekből különleges, egyénre szabott enteriőr készül a költségvetés és a határidők
+          betartásával. Fontos számunkra a rugalmasság, a hatékonyság, a stabilitás, megrendelőink kifogástalan
+          kiszolgálása magas műszaki színvonalú, egyedileg gyártott fa, alumínium, műanyag profilokból készült
+          termékekkel.
+        </p>
+        <p>
+          Minden kivitelezés legfontosabb része a tervezés. Építészmérnök kollégáink a helyszínen, megrendelőinkkel
+          folytatott beszélgetések alapján egyeztetik a megfelelő szerkezeti anyagokat, építészeti lehetőségeket,
+          nyílászáró elemeket, a megfelelő árnyékolás lehetőségét.
+        </p>
+        <p>
+          A weboldalunkon látható télikerteket, teraszbeépítéseket, kupolákat, védőtetőket cégünk készítette, azokat -
+          előzetes egyeztetés alapján - bármikor meg tudjuk mutatni, beszélve a tulajdonosok több éves tapasztalatairól
+          is.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-16 munkatarsaink">
       <div class="mx-auto max-w-4xl">
         <h2 class="font-bold text-3xl text-center">Munkatársaink</h2>
       </div>
-      <div class="grid md:grid-cols-4 gap-10 mx-auto mt-12">
+      <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-10 mx-auto mt-12">
         {
           staff.map((staffItem) => (
             <div class="group">
@@ -111,19 +149,13 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
       </div>
     </div>
 
-    <div class="mt-16">
-      <div class="mx-auto">
-        <h2 class="font-bold text-3xl text-center">Sajtószoba</h2>
-      </div>
-    </div>
-
-    <div class="mt-16">
+    <div class="mt-16 partnereink">
       <div class="mx-auto">
         <h2 class="font-bold text-3xl text-center">Partnereink</h2>
       </div>
     </div>
 
-    <div class="mt-16">
+    <div class="mt-16 anyagaink">
       <div class="mx-auto">
         <h2 class="font-bold text-3xl text-center">Anyagaink</h2>
       </div>
@@ -237,3 +269,55 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     </div>
   </Container>
 </Layout>
+
+<script>
+  import {
+    State,
+    hideAndShowItems,
+    setInitialUi,
+    updateStateAndButtonBackground,
+    createInitialState,
+  } from "../components/scripts/filter";
+  const itemStoreElement = document.getElementById("item-store");
+  const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
+  const classesToChange = ["bg-beridoorBlue", "border-cyan-600", "text-white"];
+  const buttonsMap = Object.keys(items).reduce(
+    (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
+    {}
+  );
+
+  const fragment = window.location.hash.substring(1);
+  const isValidFragment = Boolean(items[fragment]);
+  const state = createInitialState({ items, fragment: isValidFragment ? fragment : undefined });
+
+  if (isValidFragment) {
+    console.log("almafa");
+    setInitialUi({
+      selectedButton: buttonsMap[fragment],
+      state,
+      classesToToggle: classesToChange,
+    });
+  }
+
+  for (const currentId of Object.keys(items)) {
+    const el = buttonsMap[currentId];
+    el?.addEventListener("click", (event) => {
+      window.location.hash = state[currentId].isFilterTurnedOn ? "#" : `#${currentId}`;
+    });
+  }
+
+  window.addEventListener("hashchange", (event) => {
+    event.preventDefault();
+    const currentId = window.location.hash.substring(1) || new URL(event.oldURL).hash.slice(1);
+    state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
+    updateStateAndButtonBackground({
+      state,
+      items,
+      buttonsMap,
+      currentId,
+      classesToRemove: classesToChange,
+      classesToToggle: classesToChange,
+    });
+    hideAndShowItems({ state });
+  });
+</script>

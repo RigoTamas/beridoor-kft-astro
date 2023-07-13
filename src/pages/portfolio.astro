@@ -141,7 +141,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
 
   const fragment = window.location.hash.substring(1);
   const isValidFragment = Boolean(items[fragment]);
-  const state = createInitialState({ items });
+  const state = createInitialState({ items, fragment: isValidFragment ? fragment : undefined });
 
   if (isValidFragment) {
     setInitialUi({
