@@ -72,7 +72,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
         {
           Object.values(items).map((item) => (
-            <Button id={item.id} style="outline" class="md:text-lg">
+            <Button id={`${item.id}-button`} style="outline" class="md:text-lg">
               <p>{item.label}</p>
             </Button>
           ))
@@ -127,33 +127,47 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
 
   const fragment = window.location.hash.substring(1);
   const isValidFragment = Boolean(items[fragment]);
-  const state = Object.entries(items).reduce((acc, [id, item]) => {
-    if (isValidFragment) {
-      return {
-        ...acc,
-        [id]: {
-          ...item,
-          isVisible: fragment === item.id,
-          isFilterTurnedOn: fragment === item.id,
-        },
-      };
-    } else {
-      return {
-        ...acc,
-        [id]: {
-          ...item,
-          isVisible: true,
-          isFilterTurnedOn: false,
-        },
-      };
-    }
-  }, {});
-  const buttonsMap = Object.keys(items).reduce((acc, id) => ({ ...acc, [id]: document.getElementById(id) }), {});
+  const state: Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }> =
+    Object.entries(items).reduce((acc, [id, item]) => {
+      if (isValidFragment) {
+        return {
+          ...acc,
+          [id]: {
+            ...item,
+            isVisible: fragment === item.id,
+            isFilterTurnedOn: fragment === item.id,
+          },
+        };
+      } else {
+        return {
+          ...acc,
+          [id]: {
+            ...item,
+            isVisible: true,
+            isFilterTurnedOn: false,
+          },
+        };
+      }
+    }, {});
+
+  const buttonsMap = Object.keys(items).reduce(
+    (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
+    {}
+  );
   if (isValidFragment) {
     setInitialUi({ selectedButton: buttonsMap[fragment], state });
     updateTextShown({ state });
   }
+
+  for (const currentId of Object.keys(items)) {
+    const el = buttonsMap[currentId];
+    el?.addEventListener("click", (event) => {
+      window.location.hash = state[currentId].isFilterTurnedOn ? "#" : `#${currentId}`;
+    });
+  }
+
   window.addEventListener("hashchange", (event) => {
+    event.preventDefault();
     const currentId = window.location.hash.substring(1) || new URL(event.oldURL).hash.slice(1);
     state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
     updateStateAndButtonBackground({ state, buttonsMap, currentId });
@@ -161,14 +175,9 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     updateTextShown({ state });
   });
 
-  for (const currentId of Object.keys(items)) {
-    const el = document.getElementById(currentId);
-    el?.addEventListener("click", () => {
-      window.location = state[currentId].isFilterTurnedOn ? "#" : `#${currentId}`;
-    });
-  }
-
-  function isEveryFilterTurnedOff(state) {
+  function isEveryFilterTurnedOff(
+    state: Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }>
+  ) {
     return Object.values(state).every((item) => !item.isFilterTurnedOn);
   }
 
@@ -195,34 +204,44 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     }
   }
 
-  function removeStylingFromNonSelectedButton(button) {
+  function removeStylingFromNonSelectedButton(button: HTMLElement) {
     button.classList.remove("bg-beridoorBlue");
     button.classList.remove("text-white");
     button.classList.remove("border-cyan-600");
   }
 
-  function addStylingToSelectedButton(button) {
+  function addStylingToSelectedButton(button: HTMLElement) {
     button.classList.toggle("bg-beridoorBlue");
     button.classList.toggle("border-cyan-600");
     button.classList.toggle("text-white");
   }
 
-  function setInitialUi({ state, selectedButton }) {
+  function setInitialUi({
+    state,
+    selectedButton,
+  }: {
+    selectedButton: HTMLElement;
+    state: Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }>;
+  }) {
     addStylingToSelectedButton(selectedButton);
     hideAndShowPictures({ state });
   }
 
-  function hideAndShowPictures({ state }) {
+  function hideAndShowPictures({
+    state,
+  }: {
+    state: Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }>;
+  }) {
     for (const item of Object.values(state)) {
       const elements = document.getElementsByClassName(item.id);
       for (const element of elements) {
         if (item.isVisible) {
           if (item.isFilterTurnedOn) {
-            element.classList.remove("w-[300px]")
-            element.classList.add("w-[600px]")
+            element.classList.remove("w-[300px]");
+            element.classList.add("w-[600px]");
           } else {
-            element.classList.add("w-[300px]")
-            element.classList.remove("w-[600px]")
+            element.classList.add("w-[300px]");
+            element.classList.remove("w-[600px]");
           }
           element.classList.remove("hidden");
         } else {
@@ -232,7 +251,11 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     }
   }
 
-  function updateTextShown({ state }) {
+  function updateTextShown({
+    state,
+  }: {
+    state: Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }>;
+  }) {
     const selectedItem: any = Object.values(state).find((item: any) => {
       return item.isFilterTurnedOn;
     });
