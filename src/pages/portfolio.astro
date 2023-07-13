@@ -111,9 +111,9 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
 
 <script>
   import { animate } from "motion";
+  import { State, hideAndShowItems, setInitialUi, updateStateAndButtonBackground } from '../components/scripts/filter'
   const itemStoreElement = document.getElementById("item-store");
   const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
-  type State = Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }>;
 
   const elements = document.getElementsByClassName("images-selector");
   for (let i = 0; i < elements.length; i++) {
@@ -180,6 +180,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
     updateStateAndButtonBackground({
       state,
+      items,
       buttonsMap,
       currentId,
       classesToRemove: classesToChange,
@@ -188,112 +189,6 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     hideAndShowItems({ state, changeFilteredItemSize });
     updateTextShown({ state });
   });
-
-  function isEveryFilterTurnedOff(state: State) {
-    return Object.values(state).every((item) => !item.isFilterTurnedOn);
-  }
-
-  function updateStateAndButtonBackground({
-    state,
-    buttonsMap,
-    currentId,
-    classesToRemove,
-    classesToToggle,
-  }: {
-    state: State;
-    buttonsMap: Record<string, HTMLElement>;
-    currentId: string;
-    classesToRemove: string[];
-    classesToToggle: string[];
-  }) {
-    if (isEveryFilterTurnedOff(state)) {
-      for (const innerId of Object.keys(items)) {
-        const button = buttonsMap[innerId];
-        removeStylingFromNonSelectedButton({ button, classesToRemove });
-        state[innerId].isVisible = true;
-      }
-    } else {
-      for (const innerId of Object.keys(items)) {
-        const currentState = state[innerId];
-        const button = buttonsMap[innerId];
-        if (innerId === currentId) {
-          currentState.isVisible = true;
-          toggleStylingOnSelectedButton({ button, classesToToggle });
-        } else {
-          currentState.isFilterTurnedOn = false;
-          currentState.isVisible = false;
-          removeStylingFromNonSelectedButton({ button, classesToRemove });
-        }
-      }
-    }
-  }
-
-  function removeStylingFromNonSelectedButton({
-    button,
-    classesToRemove,
-  }: {
-    button: HTMLElement;
-    classesToRemove: string[];
-  }) {
-    for (const classToRemove of classesToRemove) {
-      button.classList.remove(classToRemove);
-    }
-  }
-
-  function toggleStylingOnSelectedButton({
-    button,
-    classesToToggle,
-  }: {
-    button: HTMLElement;
-    classesToToggle: string[];
-  }) {
-    for (const classToRemove of classesToToggle) {
-      button.classList.toggle(classToRemove);
-    }
-  }
-
-  function setInitialUi({
-    state,
-    selectedButton,
-    classesToToggle,
-    changeFilteredItemSize,
-  }: {
-    selectedButton: HTMLElement;
-    state: State;
-    classesToToggle: string[];
-    changeFilteredItemSize: { smallClass: string; largeClass: string };
-  }) {
-    toggleStylingOnSelectedButton({ button: selectedButton, classesToToggle });
-    hideAndShowItems({ state, changeFilteredItemSize });
-  }
-
-  function hideAndShowItems({
-    state,
-    changeFilteredItemSize,
-  }: {
-    state: State;
-    changeFilteredItemSize?: { smallClass: string; largeClass: string };
-  }) {
-    for (const item of Object.values(state)) {
-      const elements = document.getElementsByClassName(item.id);
-      for (const element of elements) {
-        if (item.isVisible) {
-          if (changeFilteredItemSize) {
-            if (item.isFilterTurnedOn) {
-              element.classList.remove(changeFilteredItemSize.smallClass);
-              element.classList.add(changeFilteredItemSize.largeClass);
-            } else {
-              element.classList.add(changeFilteredItemSize.smallClass);
-              element.classList.remove(changeFilteredItemSize.largeClass);
-            }
-          }
-          element.classList.remove("hidden");
-        } else {
-          element.classList.add("hidden");
-        }
-      }
-    }
-  }
 
   function updateTextShown({ state }: { state: State }) {
     const selectedItem: any = Object.values(state).find((item: any) => {
