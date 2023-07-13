@@ -4,9 +4,9 @@ export function isEveryFilterTurnedOff(state: State) {
   return Object.values(state).every((item) => !item.isFilterTurnedOn);
 }
 
-export function createInitialState({ items }: { items: Record<string, { label: string, id: string, text?: string }> }): State {
+export function createInitialState({ items, fragment }: { items: Record<string, { label: string, id: string, text?: string }>, fragment?: string | undefined }): State {
   const state: State = Object.entries(items).reduce((acc, [id, item]) => {
-    if (isValidFragment) {
+    if (fragment) {
       return {
         ...acc,
         [id]: {
@@ -100,7 +100,7 @@ export function setInitialUi({
   selectedButton: HTMLElement;
   state: State;
   classesToToggle: string[];
-  changeFilteredItemSize: { smallClass: string; largeClass: string };
+  changeFilteredItemSize?: { smallClass: string; largeClass: string };
 }) {
   toggleStylingOnSelectedButton({ button: selectedButton, classesToToggle });
   hideAndShowItems({ state, changeFilteredItemSize });
