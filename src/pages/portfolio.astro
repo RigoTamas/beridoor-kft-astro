@@ -113,6 +113,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
   import { animate } from "motion";
   const itemStoreElement = document.getElementById("item-store");
   const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
+  type State = Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }>;
 
   const elements = document.getElementsByClassName("images-selector");
   for (let i = 0; i < elements.length; i++) {
@@ -125,37 +126,44 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     });
   }
 
-  const fragment = window.location.hash.substring(1);
-  const isValidFragment = Boolean(items[fragment]);
-  const state: Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }> =
-    Object.entries(items).reduce((acc, [id, item]) => {
-      if (isValidFragment) {
-        return {
-          ...acc,
-          [id]: {
-            ...item,
-            isVisible: fragment === item.id,
-            isFilterTurnedOn: fragment === item.id,
-          },
-        };
-      } else {
-        return {
-          ...acc,
-          [id]: {
-            ...item,
-            isVisible: true,
-            isFilterTurnedOn: false,
-          },
-        };
-      }
-    }, {});
-
+  const classesToChange = ["bg-beridoorBlue", "border-cyan-600", "text-white"];
   const buttonsMap = Object.keys(items).reduce(
     (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
     {}
   );
+  const changeFilteredItemSize = { smallClass: "w-[300px]", largeClass: "w-[600px]" };
+
+  const fragment = window.location.hash.substring(1);
+  const isValidFragment = Boolean(items[fragment]);
+  const state: State = Object.entries(items).reduce((acc, [id, item]) => {
+    if (isValidFragment) {
+      return {
+        ...acc,
+        [id]: {
+          ...item,
+          isVisible: fragment === item.id,
+          isFilterTurnedOn: fragment === item.id,
+        },
+      };
+    } else {
+      return {
+        ...acc,
+        [id]: {
+          ...item,
+          isVisible: true,
+          isFilterTurnedOn: false,
+        },
+      };
+    }
+  }, {});
+
   if (isValidFragment) {
-    setInitialUi({ selectedButton: buttonsMap[fragment], state });
+    setInitialUi({
+      selectedButton: buttonsMap[fragment],
+      state,
+      classesToToggle: classesToChange,
+      changeFilteredItemSize,
+    });
     updateTextShown({ state });
   }
 
@@ -170,22 +178,38 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     event.preventDefault();
     const currentId = window.location.hash.substring(1) || new URL(event.oldURL).hash.slice(1);
     state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
-    updateStateAndButtonBackground({ state, buttonsMap, currentId });
-    hideAndShowPictures({ state });
+    updateStateAndButtonBackground({
+      state,
+      buttonsMap,
+      currentId,
+      classesToRemove: classesToChange,
+      classesToToggle: classesToChange,
+    });
+    hideAndShowItems({ state, changeFilteredItemSize });
     updateTextShown({ state });
   });
 
-  function isEveryFilterTurnedOff(
-    state: Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }>
-  ) {
+  function isEveryFilterTurnedOff(state: State) {
     return Object.values(state).every((item) => !item.isFilterTurnedOn);
   }
 
-  function updateStateAndButtonBackground({ state, buttonsMap, currentId }) {
+  function updateStateAndButtonBackground({
+    state,
+    buttonsMap,
+    currentId,
+    classesToRemove,
+    classesToToggle,
+  }: {
+    state: State;
+    buttonsMap: Record<string, HTMLElement>;
+    currentId: string;
+    classesToRemove: string[];
+    classesToToggle: string[];
+  }) {
     if (isEveryFilterTurnedOff(state)) {
       for (const innerId of Object.keys(items)) {
         const button = buttonsMap[innerId];
-        removeStylingFromNonSelectedButton(button);
+        removeStylingFromNonSelectedButton({ button, classesToRemove });
         state[innerId].isVisible = true;
       }
     } else {
@@ -194,54 +218,74 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
         const button = buttonsMap[innerId];
         if (innerId === currentId) {
           currentState.isVisible = true;
-          addStylingToSelectedButton(button);
+          toggleStylingOnSelectedButton({ button, classesToToggle });
         } else {
           currentState.isFilterTurnedOn = false;
           currentState.isVisible = false;
-          removeStylingFromNonSelectedButton(button);
+          removeStylingFromNonSelectedButton({ button, classesToRemove });
         }
       }
     }
   }
 
-  function removeStylingFromNonSelectedButton(button: HTMLElement) {
-    button.classList.remove("bg-beridoorBlue");
-    button.classList.remove("text-white");
-    button.classList.remove("border-cyan-600");
+  function removeStylingFromNonSelectedButton({
+    button,
+    classesToRemove,
+  }: {
+    button: HTMLElement;
+    classesToRemove: string[];
+  }) {
+    for (const classToRemove of classesToRemove) {
+      button.classList.remove(classToRemove);
+    }
   }
 
-  function addStylingToSelectedButton(button: HTMLElement) {
-    button.classList.toggle("bg-beridoorBlue");
-    button.classList.toggle("border-cyan-600");
-    button.classList.toggle("text-white");
+  function toggleStylingOnSelectedButton({
+    button,
+    classesToToggle,
+  }: {
+    button: HTMLElement;
+    classesToToggle: string[];
+  }) {
+    for (const classToRemove of classesToToggle) {
+      button.classList.toggle(classToRemove);
+    }
   }
 
   function setInitialUi({
     state,
     selectedButton,
+    classesToToggle,
+    changeFilteredItemSize,
   }: {
     selectedButton: HTMLElement;
-    state: Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }>;
+    state: State;
+    classesToToggle: string[];
+    changeFilteredItemSize: { smallClass: string; largeClass: string };
   }) {
-    addStylingToSelectedButton(selectedButton);
-    hideAndShowPictures({ state });
+    toggleStylingOnSelectedButton({ button: selectedButton, classesToToggle });
+    hideAndShowItems({ state, changeFilteredItemSize });
   }
 
-  function hideAndShowPictures({
+  function hideAndShowItems({
     state,
+    changeFilteredItemSize,
   }: {
-    state: Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }>;
+    state: State;
+    changeFilteredItemSize?: { smallClass: string; largeClass: string };
   }) {
     for (const item of Object.values(state)) {
       const elements = document.getElementsByClassName(item.id);
       for (const element of elements) {
         if (item.isVisible) {
-          if (item.isFilterTurnedOn) {
-            element.classList.remove("w-[300px]");
-            element.classList.add("w-[600px]");
-          } else {
-            element.classList.add("w-[300px]");
-            element.classList.remove("w-[600px]");
+          if (changeFilteredItemSize) {
+            if (item.isFilterTurnedOn) {
+              element.classList.remove(changeFilteredItemSize.smallClass);
+              element.classList.add(changeFilteredItemSize.largeClass);
+            } else {
+              element.classList.add(changeFilteredItemSize.smallClass);
+              element.classList.remove(changeFilteredItemSize.largeClass);
+            }
           }
           element.classList.remove("hidden");
         } else {
@@ -251,11 +295,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     }
   }
 
-  function updateTextShown({
-    state,
-  }: {
-    state: Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }>;
-  }) {
+  function updateTextShown({ state }: { state: State }) {
     const selectedItem: any = Object.values(state).find((item: any) => {
       return item.isFilterTurnedOn;
     });
