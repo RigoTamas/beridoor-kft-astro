@@ -4,6 +4,32 @@ export function isEveryFilterTurnedOff(state: State) {
   return Object.values(state).every((item) => !item.isFilterTurnedOn);
 }
 
+export function createInitialState({ items }: { items: Record<string, { label: string, id: string, text?: string }> }): State {
+  const state: State = Object.entries(items).reduce((acc, [id, item]) => {
+    if (isValidFragment) {
+      return {
+        ...acc,
+        [id]: {
+          ...item,
+          isVisible: fragment === item.id,
+          isFilterTurnedOn: fragment === item.id,
+        },
+      };
+    } else {
+      return {
+        ...acc,
+        [id]: {
+          ...item,
+          isVisible: true,
+          isFilterTurnedOn: false,
+        },
+      };
+    }
+  }, {});
+  return state
+}
+
+
 export function updateStateAndButtonBackground({
   state,
   items,

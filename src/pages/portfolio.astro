@@ -111,7 +111,13 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
 
 <script>
   import { animate } from "motion";
-  import { State, hideAndShowItems, setInitialUi, updateStateAndButtonBackground } from '../components/scripts/filter'
+  import {
+    State,
+    hideAndShowItems,
+    setInitialUi,
+    updateStateAndButtonBackground,
+    createInitialState,
+  } from "../components/scripts/filter";
   const itemStoreElement = document.getElementById("item-store");
   const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
 
@@ -135,27 +141,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
 
   const fragment = window.location.hash.substring(1);
   const isValidFragment = Boolean(items[fragment]);
-  const state: State = Object.entries(items).reduce((acc, [id, item]) => {
-    if (isValidFragment) {
-      return {
-        ...acc,
-        [id]: {
-          ...item,
-          isVisible: fragment === item.id,
-          isFilterTurnedOn: fragment === item.id,
-        },
-      };
-    } else {
-      return {
-        ...acc,
-        [id]: {
-          ...item,
-          isVisible: true,
-          isFilterTurnedOn: false,
-        },
-      };
-    }
-  }, {});
+  const state = createInitialState({ items });
 
   if (isValidFragment) {
     setInitialUi({
