@@ -10,7 +10,7 @@ const items = {
   lakasfelujitas: {
     label: "Lakásfelújítás",
     id: "lakasfelujitas",
-    text: `
+    html: `
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
           laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
@@ -21,7 +21,7 @@ const items = {
   belsoepiteszet: {
     label: "Belsőépítészet",
     id: "belsoepiteszet",
-    text: `
+    html: `
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
           laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
@@ -32,7 +32,7 @@ const items = {
   tervezes: {
     label: "Tervezés",
     id: "tervezes",
-    text: `
+    html: `
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
           laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
@@ -43,7 +43,7 @@ const items = {
   latvanyterv: {
     label: "Látványterv",
     id: "latvanyterv",
-    text: `
+    html: `
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
           laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
@@ -54,7 +54,7 @@ const items = {
   arnyekolas: {
     label: "Árnyékolás",
     id: "arnyekolas",
-    text: `
+    html: `
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
           laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
@@ -63,11 +63,6 @@ const items = {
         </p>`,
   },
 };
-const itemsWithoutHtml = Object.entries(items).reduce((acc, [key, value]) => {
-  // this will be used to pass data from astro server to the client JS. we remove the html as its large and won't be used by the JS
-  const { html, ...itemWithoutHtml } = value;
-  return { ...acc, [key]: itemWithoutHtml };
-}, {});
 ---
 
-<FilterableEntry items={items} itemsWithoutHtml={itemsWithoutHtml} />
+<FilterableEntry items={items} />

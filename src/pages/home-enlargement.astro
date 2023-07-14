@@ -30,12 +30,6 @@ const items = {
         </p>`,
   },
 };
-
-const itemsWithoutHtml = Object.entries(items).reduce((acc, [key, value]) => {
-  // this will be used to pass data from astro server to the client JS. we remove the html as its large and won't be used by the JS
-  const { html, ...itemWithoutHtml } = value;
-  return { ...acc, [key]: itemWithoutHtml };
-}, {});
 ---
 
-<FilterableEntry items={items} itemsWithoutHtml={itemsWithoutHtml} />
+<FilterableEntry items={items} />
