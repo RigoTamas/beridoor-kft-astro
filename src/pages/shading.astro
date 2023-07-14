@@ -3,6 +3,7 @@ import Container from "../components/container.astro";
 import Button from "../components/ui/button.astro";
 import FilterScript from "@components/scripts/basic-filter.astro";
 import Layout from "../layouts/Layout.astro";
+import FilterableEntry from "../components/filterable-entry.astro";
 
 const items = {
   // key and id field needs to be the same
@@ -70,32 +71,4 @@ const itemsWithoutHtml = Object.entries(items).reduce((acc, [key, value]) => {
 }, {});
 ---
 
-<Layout>
-  <Container>
-    <div id="item-store" data-items={JSON.stringify(itemsWithoutHtml)}></div>
-    <div>
-      <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
-        {
-          Object.values(items).map((item) => (
-            <Button id={`${item.id}-button`} style="outline" class="md:text-lg">
-              <p>{item.label}</p>
-            </Button>
-          ))
-        }
-      </div>
-    </div>
-    {
-      Object.values(items).map((item) => (
-        <div class={`mt-10 ${item.id}`}>
-          <div class="mx-auto max-w-4xl">
-            <h2 class="font-bold text-3xl text-center">{item.label}</h2>
-          </div>
-          <div class="flex flex-col gap-3 mx-auto mt-16 text-justify">
-            <Fragment set:html={item.html} />
-          </div>
-        </div>
-      ))
-    }
-    <FilterScript />
-  </Container>
-</Layout>
+<FilterableEntry items={items} itemsWithoutHtml={itemsWithoutHtml} />
