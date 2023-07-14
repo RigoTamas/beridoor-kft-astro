@@ -1,0 +1,49 @@
+<script>
+  import {
+    hideAndShowItems,
+    setInitialUi,
+    updateStateAndButtonBackground,
+    createInitialState,
+  } from "./filter";
+  const itemStoreElement = document.getElementById("item-store");
+  const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
+  const classesToChange = ["bg-beridoorBlue", "border-cyan-600", "text-white"];
+  const buttonsMap = Object.keys(items).reduce(
+    (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
+    {}
+  );
+
+  const fragment = window.location.hash.substring(1);
+  const isValidFragment = Boolean(items[fragment]);
+  const state = createInitialState({ items, fragment: isValidFragment ? fragment : undefined });
+
+  if (isValidFragment) {
+    setInitialUi({
+      selectedButton: buttonsMap[fragment],
+      state,
+      classesToToggle: classesToChange,
+    });
+  }
+
+  for (const currentId of Object.keys(items)) {
+    const el = buttonsMap[currentId];
+    el?.addEventListener("click", (event) => {
+      window.location.hash = state[currentId].isFilterTurnedOn ? "#" : `#${currentId}`;
+    });
+  }
+
+  window.addEventListener("hashchange", (event) => {
+    event.preventDefault();
+    const currentId = window.location.hash.substring(1) || new URL(event.oldURL).hash.slice(1);
+    state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
+    updateStateAndButtonBackground({
+      state,
+      items,
+      buttonsMap,
+      currentId,
+      classesToRemove: classesToChange,
+      classesToToggle: classesToChange,
+    });
+    hideAndShowItems({ state });
+  });
+</script>

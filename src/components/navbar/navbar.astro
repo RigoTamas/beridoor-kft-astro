@@ -20,28 +20,28 @@ const menuitems = [
   {
     title: "szolgáltatások",
     children: [
-      { title: "Lakásfelújítás", path: "/portfolio#terasz" },
-      { title: "Belsőépítészet", path: "/portfolio#szelfogo" },
-      { title: "Tervezés", path: "/portfolio#medencefedes" },
-      { title: "Látványterv", path: "/portfolio#vedoteto" },
-      { title: "Árnyékolás", path: "/portfolio#telikert" },
+      { title: "Lakásfelújítás", path: "/services#lakasfelujitas" },
+      { title: "Belsőépítészet", path: "/services#belsoepiteszet" },
+      { title: "Tervezés", path: "/services#tervezes" },
+      { title: "Látványterv", path: "/services#latvanyterv" },
+      { title: "Árnyékolás", path: "/services#arnyekolas" },
     ],
   },
   {
     title: "lakótér bővítés",
     children: [
-      { title: "Design", path: "/portfolio#terasz" },
-      { title: "Lakás bővítés", path: "/portfolio#szelfogo" },
+      { title: "Design", path: "/home-enlargement#design" },
+      { title: "Lakás bővítés", path: "/home-enlargement#lakasbovites" },
     ],
   },
   {
     title: "napvédelem",
     children: [
-      { title: "Ánryékolás", path: "/portfolio#szelfogo" },
-      { title: "Napvitorla", path: "/portfolio#szelfogo" },
-      { title: "Filagória", path: "/portfolio#terasz" },
-      { title: "Pergola", path: "/portfolio#telikert" },
-      { title: "Kocsibeálló", path: "/portfolio#medencefedes" },
+      { title: "Ánryékolás", path: "/shading#arnyekolas" },
+      { title: "Napvitorla", path: "/shading#napvitorla" },
+      { title: "Filagória", path: "/shading#filagoria" },
+      { title: "Pergola", path: "/shading#pergola" },
+      { title: "Kocsibeálló", path: "/shading#kocsibeallo" },
     ],
   },
   {
@@ -124,15 +124,15 @@ const logoWidth = 140;
   </div>
 </nav>
 <script>
-  // import { animate } from "motion"
-  // const elements = document.getElementsByClassName('navbar-items')
-  // for(let i = 0; i < elements.length; i++) {
-  //   const elem = elements[i]
-  //   elem?.addEventListener('mouseover', (e) => {
-  //     animate(elem, { scale: 1.1 })
-  //   });
-  //   elem?.addEventListener('mouseout', (e) => {
-  //     animate(elem, { scale: 1.0 })
-  //   });
-  // }
+  import { animate } from "motion"
+  const elements = document.getElementsByClassName('navbar-items')
+  for(let i = 0; i < elements.length; i++) {
+    const elem = elements[i]
+    elem?.addEventListener('mouseover', (e) => {
+      animate(elem, { scale: 1.1 })
+    });
+    elem?.addEventListener('mouseout', (e) => {
+      animate(elem, { scale: 1.0 })
+    });
+  }
 </script>

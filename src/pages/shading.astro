@@ -1,0 +1,101 @@
+---
+import Container from "../components/container.astro";
+import Button from "../components/ui/button.astro";
+import FilterScript from "@components/scripts/basic-filter.astro";
+import Layout from "../layouts/Layout.astro";
+
+const items = {
+  // key and id field needs to be the same
+  arnyekolas: {
+    label: "Árnyékolás",
+    id: "arnyekolas",
+    html: `
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
+          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
+          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
+          dolores similique iste voluptates pariatur! Possimus, nam.
+        </p>`,
+  },
+  napvitorla: {
+    label: "Napvitorla",
+    id: "napvitorla",
+    html: `
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
+          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
+          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
+          dolores similique iste voluptates pariatur! Possimus, nam.
+        </p>`,
+  },
+  filagoria: {
+    label: "Filagória",
+    id: "filagoria",
+    html: `
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
+          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
+          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
+          dolores similique iste voluptates pariatur! Possimus, nam.
+        </p>`,
+  },
+  pergola: {
+    label: "Pergola",
+    id: "pergola",
+    html: `
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
+          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
+          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
+          dolores similique iste voluptates pariatur! Possimus, nam.
+        </p>`,
+  },
+  kocsibeallo: {
+    label: "Kocsibeálló",
+    id: "kocsibeallo",
+    html: `
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
+          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
+          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
+          dolores similique iste voluptates pariatur! Possimus, nam.
+        </p>`,
+  },
+};
+
+const itemsWithoutHtml = Object.entries(items).reduce((acc, [key, value]) => {
+  // this will be used to pass data from astro server to the client JS. we remove the html as its large and won't be used by the JS
+  const { html, ...itemWithoutHtml } = value;
+  return { ...acc, [key]: itemWithoutHtml };
+}, {});
+---
+
+<Layout>
+  <Container>
+    <div id="item-store" data-items={JSON.stringify(itemsWithoutHtml)}></div>
+    <div>
+      <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
+        {
+          Object.values(items).map((item) => (
+            <Button id={`${item.id}-button`} style="outline" class="md:text-lg">
+              <p>{item.label}</p>
+            </Button>
+          ))
+        }
+      </div>
+    </div>
+    {
+      Object.values(items).map((item) => (
+        <div class={`mt-10 ${item.id}`}>
+          <div class="mx-auto max-w-4xl">
+            <h2 class="font-bold text-3xl text-center">{item.label}</h2>
+          </div>
+          <div class="flex flex-col gap-3 mx-auto mt-16 text-justify">
+            <Fragment set:html={item.html} />
+          </div>
+        </div>
+      ))
+    }
+    <FilterScript />
+  </Container>
+</Layout>

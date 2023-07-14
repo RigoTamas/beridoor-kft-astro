@@ -2,7 +2,7 @@
 import { Picture } from "@astrojs/image/components";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
-import Sectionhead from "@components/sectionhead.astro";
+import FilterScript from "@components/scripts/basic-filter.astro";
 import path from "path";
 import Button from "../components/ui/button.astro";
 
@@ -11,75 +11,7 @@ const items = {
   rolunk: {
     label: "Rólunk",
     id: "rolunk",
-  },
-  partnereink: {
-    label: "Partnereink",
-    id: "partnereink",
-  },
-  anyagaink: {
-    label: "Anyagaink",
-    id: "anyagaink",
-  },
-  munkatarsaink: {
-    id: "munkatarsaink",
-    label: "Munkatársaink",
-  },
-};
-
-const staff = [
-  {
-    name: "Kőrösi Benedek",
-    jobTitle: "Okleveles Építészmérnök",
-    description: "Az Építészkamara tagja<br>A Mérnökkamara tagja<br>Felelős műszaki vezető",
-    pictureName: "korosi-benedek.jpg",
-  },
-  {
-    name: "Cseh-Révész Péter",
-    jobTitle: "Építésztechnikus",
-    description: "Munkáink koordinátora<br>2009-ben Magasépítő Technikusi oklevelet szerzett",
-    pictureName: "cseh-revesz-peter.jpg",
-  },
-  {
-    name: "Cseh-Révész Tina",
-    jobTitle: "Enteriőrstylist, Lakberendező",
-    description: "Látványtervek, dizájnok készítője<br>2022 KREA design iskola",
-    pictureName: "cseh-revesz-tina.jpg",
-  },
-  {
-    name: "Kőrösiné Révész Erika",
-    jobTitle: "Iroda",
-    description: "Ajánlatok, szerződések, megrendelések tudója, rendszerezője",
-    pictureName: "revesz-erika.jpg",
-  },
-];
-const viteImages = import.meta.glob<ImageMetadata>("../assets/staff/*", { import: "default" });
-const imageNameToRenderableImageMap = {};
-for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
-  const imageRenderable = await imageFunction();
-  imageNameToRenderableImageMap[path.basename(imgPath)] = imageRenderable;
-}
----
-
-<Layout title="About">
-  <Container>
-    <div id="item-store" data-items={JSON.stringify(items)}></div>
-    <div>
-      <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
-        {
-          Object.values(items).map((item) => (
-            <Button id={`${item.id}-button`} style="outline" class="md:text-lg">
-              <p>{item.label}</p>
-            </Button>
-          ))
-        }
-      </div>
-    </div>
-
-    <div class="mt-10 rolunk">
-      <div class="mx-auto max-w-4xl">
-        <h2 class="font-bold text-3xl text-center">Rólunk</h2>
-      </div>
-      <div class="flex flex-col gap-3 mx-auto mt-16 text-justify rolunk">
+    html: `
         <p>
           Csapatunk tagjai hosszú évek óta együtt dolgoznak, szakmájukat szerető asztalos, lakatos, ács, kőműves,
           burkoló, villany- és vízszerelő munkatársainkat, a nagyfokú rugalmasság és a szakmai tapasztalat jellemzi.
@@ -111,54 +43,21 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
           előzetes egyeztetés alapján - bármikor meg tudjuk mutatni, beszélve a tulajdonosok több éves tapasztalatairól
           is.
         </p>
-      </div>
-    </div>
-
-    <div class="mt-16 munkatarsaink">
-      <div class="mx-auto max-w-4xl">
-        <h2 class="font-bold text-3xl text-center">Munkatársaink</h2>
-      </div>
-      <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-10 mx-auto mt-12">
-        {
-          staff.map((staffItem) => (
-            <div class="group">
-              <div class="w-full">
-                <Picture
-                  src={imageNameToRenderableImageMap[staffItem.pictureName]}
-                  alt={staffItem.pictureName}
-                  sizes="(max-width: 800px) 100vw, 400px"
-                  widths={[200, 400]}
-                  aspectRatio="3:2"
-                  format="avif"
-                  fit="cover"
-                  position="center"
-                  class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
-                />
-              </div>
-              <div class="mt-4 text-center">
-                <h2 class="text-lg ">{staffItem.name}</h2>
-                <h3 class="text-sm mb-3">{staffItem.jobTitle}</h3>
-                <h3 class="text-sm text-slate-500">
-                  {" "}
-                  <Fragment set:html={staffItem.description} />
-                </h3>
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-
-    <div class="mt-16 partnereink">
-      <div class="mx-auto">
-        <h2 class="font-bold text-3xl text-center">Partnereink</h2>
-      </div>
-    </div>
-
-    <div class="mt-16 anyagaink">
-      <div class="mx-auto">
-        <h2 class="font-bold text-3xl text-center">Anyagaink</h2>
-      </div>
+    `,
+  },
+  munkatarsaink: {
+    id: "munkatarsaink",
+    label: "Munkatársaink",
+  },
+  partnereink: {
+    label: "Partnereink",
+    id: "partnereink",
+    html: "",
+  },
+  anyagaink: {
+    label: "Anyagaink",
+    id: "anyagaink",
+    html: `
       <h3 class="font-bold text-2xl mt-10 mb-4">Acél</h3>
       <div class="flex flex-col gap-3 mx-auto text-justify">
         <p>
@@ -266,58 +165,106 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
           a télikerteknek, teraszbeépítéseknek, védőtetőknek.
         </p>
       </div>
+    `,
+  },
+};
+
+const itemsWithoutHtml = Object.entries(items).reduce((acc, [key, value]) => {
+  // this will be used to pass data from astro server to the client JS. we remove the html as its large and won't be used by the JS
+  const { html, ...itemWithoutHtml } = value;
+  return { ...acc, [key]: itemWithoutHtml };
+}, {});
+
+const staff = [
+  {
+    name: "Kőrösi Benedek",
+    jobTitle: "Okleveles Építészmérnök",
+    description: "Az Építészkamara tagja<br>A Mérnökkamara tagja<br>Felelős műszaki vezető",
+    pictureName: "korosi-benedek.jpg",
+  },
+  {
+    name: "Cseh-Révész Péter",
+    jobTitle: "Építésztechnikus",
+    description: "Munkáink koordinátora<br>2009-ben Magasépítő Technikusi oklevelet szerzett",
+    pictureName: "cseh-revesz-peter.jpg",
+  },
+  {
+    name: "Cseh-Révész Tina",
+    jobTitle: "Enteriőrstylist, Lakberendező",
+    description: "Látványtervek, dizájnok készítője<br>2022 KREA design iskola",
+    pictureName: "cseh-revesz-tina.jpg",
+  },
+  {
+    name: "Kőrösiné Révész Erika",
+    jobTitle: "Iroda",
+    description: "Ajánlatok, szerződések, megrendelések tudója, rendszerezője",
+    pictureName: "revesz-erika.jpg",
+  },
+];
+const viteImages = import.meta.glob<ImageMetadata>("../assets/staff/*", { import: "default" });
+const imageNameToRenderableImageMap = {};
+for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
+  const imageRenderable = await imageFunction();
+  imageNameToRenderableImageMap[path.basename(imgPath)] = imageRenderable;
+}
+---
+
+<Layout>
+  <Container>
+    <div id="item-store" data-items={JSON.stringify(itemsWithoutHtml)}></div>
+    <div>
+      <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
+        {
+          Object.values(items).map((item) => (
+            <Button id={`${item.id}-button`} style="outline" class="md:text-lg">
+              <p>{item.label}</p>
+            </Button>
+          ))
+        }
+      </div>
     </div>
+    {
+      Object.values(items).map((item) => (
+        <div class={`mt-10 ${item.id}`}>
+          <div class="mx-auto max-w-4xl">
+            <h2 class="font-bold text-3xl text-center">{item.label}</h2>
+          </div>
+          <div class="flex flex-col gap-3 mx-auto mt-16 text-justify">
+            {item.id === "munkatarsaink" ? (
+              <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-10 mx-auto mt-12">
+                {staff.map((staffItem) => (
+                  <div class="group">
+                    <div class="w-full">
+                      <Picture
+                        src={imageNameToRenderableImageMap[staffItem.pictureName]}
+                        alt={staffItem.pictureName}
+                        sizes="(max-width: 800px) 100vw, 400px"
+                        widths={[200, 400]}
+                        aspectRatio="3:2"
+                        format="avif"
+                        fit="cover"
+                        position="center"
+                        class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
+                      />
+                    </div>
+                    <div class="mt-4 text-center">
+                      <h2 class="text-lg ">{staffItem.name}</h2>
+                      <h3 class="text-sm mb-3">{staffItem.jobTitle}</h3>
+                      <h3 class="text-sm text-slate-500">
+                        {" "}
+                        <Fragment set:html={staffItem.description} />
+                      </h3>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <Fragment set:html={item.html} />
+            )}
+          </div>
+        </div>
+      ))
+    }
+    <FilterScript />
   </Container>
 </Layout>
-
-<script>
-  import {
-    State,
-    hideAndShowItems,
-    setInitialUi,
-    updateStateAndButtonBackground,
-    createInitialState,
-  } from "../components/scripts/filter";
-  const itemStoreElement = document.getElementById("item-store");
-  const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
-  const classesToChange = ["bg-beridoorBlue", "border-cyan-600", "text-white"];
-  const buttonsMap = Object.keys(items).reduce(
-    (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
-    {}
-  );
-
-  const fragment = window.location.hash.substring(1);
-  const isValidFragment = Boolean(items[fragment]);
-  const state = createInitialState({ items, fragment: isValidFragment ? fragment : undefined });
-
-  if (isValidFragment) {
-    console.log("almafa");
-    setInitialUi({
-      selectedButton: buttonsMap[fragment],
-      state,
-      classesToToggle: classesToChange,
-    });
-  }
-
-  for (const currentId of Object.keys(items)) {
-    const el = buttonsMap[currentId];
-    el?.addEventListener("click", (event) => {
-      window.location.hash = state[currentId].isFilterTurnedOn ? "#" : `#${currentId}`;
-    });
-  }
-
-  window.addEventListener("hashchange", (event) => {
-    event.preventDefault();
-    const currentId = window.location.hash.substring(1) || new URL(event.oldURL).hash.slice(1);
-    state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
-    updateStateAndButtonBackground({
-      state,
-      items,
-      buttonsMap,
-      currentId,
-      classesToRemove: classesToChange,
-      classesToToggle: classesToChange,
-    });
-    hideAndShowItems({ state });
-  });
-</script>
