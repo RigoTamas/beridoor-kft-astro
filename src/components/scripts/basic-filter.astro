@@ -7,7 +7,7 @@
   } from "./filter";
   const itemStoreElement = document.getElementById("item-store");
   const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
-  const classesToChange = ["bg-beridoorBlue", "border-cyan-600", "text-white"];
+  const classesToChange = ["bg-beridoorBlue", "ring-2", 'ring-cyan-600', "text-white"];
   const buttonsMap = Object.keys(items).reduce(
     (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
     {}

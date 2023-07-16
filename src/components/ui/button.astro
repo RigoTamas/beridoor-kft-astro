@@ -21,16 +21,16 @@ const sizes = {
 };
 
 const styles = {
-  outline: "border-2 border-beridoorBlue hover:bg-beridoorBlue hover:text-white",
+  outline: "border-2 dark:border-white border-beridoorBlue hover:bg-beridoorBlue hover:text-white",
   primary:
-    "disabled:bg-gray-300 bg-beridoorBlue text-white hover:bg-beridoorBlueLighter border-2 border-transparent",
+    "disabled:bg-gray-300 dark:disabled:bg-gray-500 dark:disabled:text-gray-300 bg-beridoorBlue dark:border-gray-300 text-white hover:bg-beridoorBlueLighter dark:border-2",
 };
 ---
 
 <button
   {...rest}
   class:list={[
-    "rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200",
+    "rounded text-center transition",
     block && "w-full",
     sizes[size],
     styles[style],

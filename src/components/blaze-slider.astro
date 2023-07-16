@@ -19,7 +19,7 @@ const { images } = Astro.props;
                 src={image.imageRenderable}
                 alt={image.alt}
                 width={1600}
-                aspectRatio="16:9"
+                aspectRatio="4:3"
                 format="avif"
                 fit="cover"
                 position="center"
@@ -35,16 +35,16 @@ const { images } = Astro.props;
       <div class="top-[calc(((100vh-86px)/2)-12px)] left-0 mx-2 md:mx-7 absolute">
         <button class="blaze-prev rotate-[270deg]" id="blaze-prev">
           <div class="w-6">
-            <Icon class="bg-white rounded-xl" name="fe:arrow-up" />
+            <Icon class="bg-white text-beridoorBlue rounded-xl" name="fe:arrow-up" />
           </div>
         </button>
       </div>
       <div class="right-[50vh] left-[50vh] top-[calc(95vh-86px)] blaze-pagination absolute"></div>
 
-      <div class="top-[calc(((100vh-86px)/2)-12px)] right-0 mx-2 md:mx-7 absolute">
+      <div class="top-[calc(((100vh-86px)/2)-12px)]  right-0 mx-2 md:mx-7 absolute">
         <button class="blaze-next rotate-90" id="blaze-next">
           <div class="w-6">
-            <Icon class="bg-white rounded-xl" name="fe:arrow-up" />
+            <Icon class="bg-white text-beridoorBlue rounded-xl" name="fe:arrow-up" />
           </div>
         </button>
       </div>

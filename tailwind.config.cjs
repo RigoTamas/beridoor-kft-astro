@@ -11,8 +11,8 @@ module.exports = {
       // => @media (min-width: 640px) { ... }
       'md': '768px',
       // => @media (min-width: 768px) { ... }
-      'lg': '1000px', // default in tailwind is 1024
-      // => @media (min-width: 1000px) { ... }
+      'lg': '1024px', // default in tailwind is 1024
+      // => @media (min-width: 1024px) { ... }
       'xl': '1280px',
       // => @media (min-width: 1280px) { ... }
       '2xl': '1536px',
@@ -20,6 +20,9 @@ module.exports = {
     },
     colors: {
       ...colors,
+      beridoorDarkModeBg: '#1d232a',
+      beridoorLightModeSecondaryText: '#475569', // tailwind slate-600
+      beridoorDarkModeSecondaryText: '#a1a1aa', // tailwind zinc-400
       beridoorBlue: "#143143",
       beridoorBlueLighter: "#1f3864",
       beridoorBlueLightest: "#155e75",

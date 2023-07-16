@@ -132,7 +132,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     });
   }
 
-  const classesToChange = ["bg-beridoorBlue", "border-cyan-600", "text-white"];
+  const classesToChange = ["bg-beridoorBlue", "ring-2", 'ring-cyan-600', "text-white"];
   const buttonsMap = Object.keys(items).reduce(
     (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
     {}

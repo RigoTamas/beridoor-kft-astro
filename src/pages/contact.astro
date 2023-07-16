@@ -23,21 +23,20 @@ const phoneNumbers = [
     <div class="grid md:grid-cols-2 gap-10 mx-auto max-w-4xl mt-16">
       <div>
         <div class="pt-[2px]">
-          <div class="flex items-center mt-3 space-x-2 text-gray-600">
-            <Icon class="text-gray-400 w-4 h-4" name="uil:map-marker" />
+          <div class="flex items-center mt-3 space-x-2 ">
+            <Icon class="w-4 h-4" name="uil:map-marker" />
             <a href=>Beridoor Kft. 2085 Pilisvörösvár, Budai út 7167/6</a>
           </div>
-          <div class="flex items-center mt-3 space-x-2 text-gray-600">
-            <Icon class="text-gray-400 w-4 h-4" name="uil:envelope" /><a
+          <div class="flex items-center mt-3 space-x-2 ">
+            <Icon class="w-4 h-4" name="uil:envelope" /><a
               href="mailto:beridoor@gmail.com"
               >beridoor@gmail.com</a
             >
           </div>
           <div class="grid grid-cols-2 gap-3 max-w-xs mt-3">
             {phoneNumbers.map(({name, number})=> (
-
-                  <div class="flex items-center space-x-2 text-gray-600">
-                    <Icon class="text-gray-400 w-4 h-4" name="uil:phone" />
+                  <div class="flex items-center space-x-2 ">
+                    <Icon class="w-4 h-4" name="uil:phone" />
                     <span>{name}</span>
                   </div>
                   <div class="space-x-2">

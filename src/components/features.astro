@@ -46,12 +46,12 @@ const features = [
   {
     features.map((item) => (
       <div class="flex gap-4 items-start">
-        <div class="mt-1 bg-beridoorBlue rounded-full p-2 w-8 h-8 shrink-0">
-          <Icon class="text-white" name={item.icon} />
+        <div class="dark:bg-white bg-beridoorBlue rounded-full p-1 w-8 h-8 shrink-0">
+          <Icon class="dark:text-beridoorBlue text-white" name={item.icon} />
         </div>
         <div>
           <h3 class="font-semibold text-lg">{item.title}</h3>{" "}
-          <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+          <p class="dark:text-beridoorDarkModeSecondaryText text-beridoorLightModeSecondaryText mt-2 leading-relaxed">{item.description}</p>
         </div>
       </div>
     ))
