@@ -180,7 +180,7 @@ import Button from "./ui/button.astro";
         form.reset();
         form.classList.remove("was-validated");
         setTimeout(() => {
-          result.style.display = "none";
+          result.innerHTML = "";
         }, 5000);
       } else {
         result.classList.remove("text-green-500");
