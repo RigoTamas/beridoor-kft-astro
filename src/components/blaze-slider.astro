@@ -2,6 +2,9 @@
 import { Image, Picture } from "@astrojs/image/components";
 import "../styles/blaze-slider.css";
 import { Icon } from "astro-icon";
+interface Props {
+  images: { imageRenderable: any; alt: string; mainText: string }[];
+}
 const { images } = Astro.props;
 ---
 
@@ -22,7 +25,9 @@ const { images } = Astro.props;
                 position="center"
                 class="-z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat"
               />
-              <p class="text-white text-3xl lg:text-8xl mt-[calc(((100vh-86px)/2)-18px)] lg:mt-[calc(((100vh-86px)/2)-50px)] text-center align-middle">{image.mainText}</p>
+              <p class="text-white text-3xl lg:text-8xl mt-[calc(((100vh-86px)/2)-18px)] lg:mt-[calc(((100vh-86px)/2)-50px)] text-center align-middle">
+                {image.mainText}
+              </p>
             </div>
           ))
         }
@@ -34,18 +39,16 @@ const { images } = Astro.props;
           </div>
         </button>
       </div>
-    <div class="right-[50vh] left-[50vh] top-[calc(95vh-86px)] blaze-pagination absolute "></div>
-      
+      <div class="right-[50vh] left-[50vh] top-[calc(95vh-86px)] blaze-pagination absolute"></div>
+
       <div class="top-[calc(((100vh-86px)/2)-12px)] right-0 mx-2 md:mx-7 absolute">
-        <button class="blaze-next  rotate-90" id="blaze-next">
+        <button class="blaze-next rotate-90" id="blaze-next">
           <div class="w-6">
             <Icon class="bg-white rounded-xl" name="fe:arrow-up" />
           </div>
         </button>
       </div>
-
     </div>
-
   </div>
 </div>
 

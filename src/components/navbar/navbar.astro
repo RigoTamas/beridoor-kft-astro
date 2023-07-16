@@ -3,7 +3,6 @@ import Dropdown from "./dropdown.astro";
 import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
 import Logo from "./Logo.astro";
 import { Icon } from "astro-icon";
-// személyes érdeklődés telszám h-p 9-17 ajánlatkérés
 
 const menuitems = [
   {
@@ -37,7 +36,7 @@ const menuitems = [
   {
     title: "napvédelem",
     children: [
-      { title: "Ánryékolás", path: "/shading#arnyekolas" },
+      { title: "Árnyékolás", path: "/shading#arnyekolas" },
       { title: "Napvitorla", path: "/shading#napvitorla" },
       { title: "Filagória", path: "/shading#filagoria" },
       { title: "Pergola", path: "/shading#pergola" },
@@ -96,9 +95,6 @@ const logoWidth = 140;
                 <div class="navbar-items">
                   {item.children && (
                     <Dropdown
-                      classList={[
-                        "flex lg:px-3 py-2 lg:text-gray-100 lg:hover:text-white text-beridoorBlue hover:text-black",
-                      ]}
                       title={item.title}
                       children={item.children}
                     />
