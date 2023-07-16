@@ -78,10 +78,10 @@ import Button from "./ui/button.astro";
     </div>
   </div>
   <div class="mb-3">
-    <p>Fotó feltöltése: (max. 4 MB)</p>
-    <input type="file" name="image" id="image" accept="image/png, image/jpeg"/>
+    <p>Fotók feltöltése: (max. 25 MB)</p>
+    <input id="images-to-send" type="file" name="image" multiple="multiple" accept="image/*"/>
     <div id="too-big-file-error-message" class="text-red-400 text-sm mt-1 hidden">
-      A feltöltött fotó nagyobb mint 4 MB. Kérlek tölts fel egy kisebb fájlt.
+      A feltöltött fotóid mérete több, mint 25 MB. Kérlek tölts fel kevesebb vagy kisebb fájlokat.
     </div>
   </div>
   <Button id="submit-button" type="submit" size="lg" block>Üzenet elküldése</Button>
@@ -137,8 +137,15 @@ import Button from "./ui/button.astro";
       let tooBigFile = false;
       const formData = new FormData(form);
       const object = Object.fromEntries(formData);
+      const files = document.getElementById('images-to-send')
+      console.log('files', files.files)
       const errorMessageDiv = document.getElementById('too-big-file-error-message')
-      if (object.image.size > 4_000_000) {
+      let size = 0
+      for (const file of files.files) {
+        size += file.size
+      }
+      console.log('size', size)
+      if (size > 25_000_000) {
         errorMessageDiv.classList.remove('hidden');
         tooBigFile = true
       } else {
@@ -156,11 +163,14 @@ import Button from "./ui/button.astro";
       result.classList.remove("text-red-500");
       result.innerHTML = "Üzenet küldése...";
 
-      const base64Image = await getBase64(object.image)
+      const images = []
+      for (const file of files.files) {
+        const base64Image = await getBase64(file)
+        images.push({imageName: file.name, base64Image})
+      }
       const json = JSON.stringify({
         ...object,
-        image: base64Image,
-        imageName: object.image.name,
+        images,
       });
 
       const response = await fetch("https://peppy-manatee-2e0d65.netlify.app/.netlify/functions/email", {
