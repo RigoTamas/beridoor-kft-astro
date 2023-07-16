@@ -127,7 +127,7 @@ import Button from "./ui/button.astro";
   const form = document.getElementById("form");
   const result = document.getElementById("result");
   const submitButton = document.getElementById("submit-button")
-  const emailFailedMessage = "Hoppá, nem sikerült az üzenetet elküldeni. Kérlek próbáld meg újra, vagy küldj egy email-t közvetlenül a beridoor@gmail.com-ra."
+  const emailFailedMessage = "Hoppá, úgy tűnik az üzenetet nem sikerült elküldeni. Kérlek próbáld meg újra, vagy küldj egy email-t közvetlenül a beridoor@gmail.com-ra. Amennyiben a megadott e-mail címre érkezett visszaigazoló e-mail, úgy az üzenet mégis beérkezett a rendszerünkbe."
 
   form.addEventListener("submit", async function (e) {
     try {
@@ -174,7 +174,7 @@ import Button from "./ui/button.astro";
       const timeout = setTimeout(() => {
         result.innerHTML = "Üzenet küldése...<br>küldés folyamatban: nagy méretű fájlok esetén eltarthat egy ideig";
       }, 5000)
-      const response = await fetch("https://beridoor-kft-email-service.onrender.com/send-email", {
+      const response = await fetch('https://beridoor-kft-email.fly.dev/send-email', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
