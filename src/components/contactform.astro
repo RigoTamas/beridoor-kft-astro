@@ -78,10 +78,10 @@ import Button from "./ui/button.astro";
     </div>
   </div>
   <div class="mb-3">
-    <p>Fotók feltöltése: (max. 20 MB)</p>
+    <p>Fotók feltöltése: (max. 15 MB)</p>
     <input id="images-to-send" type="file" name="image" multiple="multiple" accept="image/*"/>
     <div id="too-big-file-error-message" class="text-red-400 text-sm mt-1 hidden">
-      A feltöltött fotóid mérete több, mint 20 MB. Kérlek tölts fel kevesebb vagy kisebb fájlokat.
+      A feltöltött fotóid mérete több, mint 15 MB. Kérlek tölts fel kevesebb vagy kisebb fájlokat.
     </div>
   </div>
   <Button id="submit-button" type="submit" size="lg" block>Üzenet elküldése</Button>
@@ -124,15 +124,33 @@ import Button from "./ui/button.astro";
     });
   }
 
+  const retryUntilSuccess = async (promiseFunc, retryCount = 0, maxRetries = 5)  => {
+    if (retryCount >= maxRetries) {
+      return
+    }
+    try {
+      const returnVal = await promiseFunc();
+      if (returnVal.status !== 200) {
+        console.log(`call failed, retryCount: ${retryCount}, error: ${returnVal}`)
+        return await retryUntilSuccess(promiseFunc, retryCount + 1)
+      }
+      return returnVal;
+    } catch (e) {
+      console.log(`call failed, retryCount: ${retryCount}, error: ${e}`)
+      return await retryUntilSuccess(promiseFunc, retryCount + 1)
+    }
+  }
+    
+
   const form = document.getElementById("form");
   const result = document.getElementById("result");
   const submitButton = document.getElementById("submit-button")
   const emailFailedMessage = "Hoppá, úgy tűnik az üzenetet nem sikerült elküldeni. Kérlek próbáld meg újra, vagy küldj egy email-t közvetlenül a beridoor@gmail.com-ra. Amennyiben a megadott e-mail címre érkezett visszaigazoló e-mail, úgy az üzenet mégis beérkezett a rendszerünkbe."
 
   form.addEventListener("submit", async function (e) {
+    e.preventDefault();
     let timeout;
     try {
-      e.preventDefault();
       submitButton.disabled = true;
       form.classList.add("was-validated");
       let tooBigFile = false;
@@ -144,7 +162,7 @@ import Button from "./ui/button.astro";
       for (const file of files.files) {
         size += file.size
       }
-      if (size > 21_000_000) {
+      if (size > 15_500_000) {
         errorMessageDiv.classList.remove('hidden');
         tooBigFile = true
       } else {
@@ -175,6 +193,7 @@ import Button from "./ui/button.astro";
       timeout = setTimeout(() => {
         result.innerHTML = "Üzenet küldése...<br>küldés folyamatban: nagy méretű fájlok esetén eltarthat egy ideig";
       }, 5000)
+      await retryUntilSuccess(() => fetch('https://beridoor-kft-email.fly.dev/', { method: "GET" })) // ping server to wake it up
       const response = await fetch('https://beridoor-kft-email.fly.dev/send-email', {
         method: "POST",
         headers: {
