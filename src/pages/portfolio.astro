@@ -42,24 +42,20 @@ const items = {
 };
 
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
-const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/termekek/*/*/main/*", { import: "default" });
+const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/termekek/*/*", { import: "default" });
 const imagesRenderable: {
   imageRenderable: any;
   alt: string;
   projectType: string;
-  projectName: string;
   text: string;
 }[] = [];
 for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
-  const projetNamePath = path.dirname(path.dirname(imgPath));
-  const projectName = path.basename(path.dirname(path.dirname(imgPath)));
-  const projectTypePath = path.dirname(projetNamePath);
+  const projectTypePath = path.dirname(imgPath);
   const projectType = path.basename(projectTypePath);
   const imageRenderable = await imageFunction();
   imagesRenderable.push({
     imageRenderable,
     projectType,
-    projectName,
     alt: path.basename(imgPath),
     text: items[projectType].text,
   });

@@ -1,68 +1,67 @@
 ---
-import Container from "../components/container.astro";
-import Button from "../components/ui/button.astro";
-import FilterScript from "@components/scripts/basic-filter.astro";
-import Layout from "../layouts/Layout.astro";
-import FilterableEntry from "../components/filterable-entry.astro";
+import path from "path";
+import FilterableEntryWithPictures from "../components/filterable-entry-with-pictures.astro";
 
 const items = {
   // key and id field needs to be the same
   arnyekolas: {
     label: "Árnyékolás",
     id: "arnyekolas",
-    html: `
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
-          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
-          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
-          dolores similique iste voluptates pariatur! Possimus, nam.
-        </p>`,
+    text: `
+        A nap kellemetlen hatásai ellen külső- és belső oldali árnyékolással -
+        redőny, zsalúzia, roló, reluxa, szalagfüggöny, roletta – védekezhetünk.
+        Szél- hő - és esőérzékelővel, távvezérlővel felszerelt árnyékolók
+        maximális védelmet nyújtanak.
+        `,
   },
   napvitorla: {
     label: "Napvitorla",
     id: "napvitorla",
-    html: `
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
-          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
-          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
-          dolores similique iste voluptates pariatur! Possimus, nam.
-        </p>`,
+    text: `
+        A megfelelően telepített napvitorla célzottan a lehető legnagyobb védelmet
+        nyújtja a nap káros sugarai ellen.
+        `,
   },
   filagoria: {
-    label: "Filagória",
+    label: "Pergola - Pavilon - Filagória",
     id: "filagoria",
-    html: `
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
-          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
-          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
-          dolores similique iste voluptates pariatur! Possimus, nam.
-        </p>`,
-  },
-  pergola: {
-    label: "Pergola",
-    id: "pergola",
-    html: `
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
-          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
-          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
-          dolores similique iste voluptates pariatur! Possimus, nam.
-        </p>`,
+    text: `
+        A kertben elhelyezett, tetővel fedett, hangulatvilágítással felszerelt,
+        asztallal, padokkal, székekkel berendezett filagória szinte már elengedhetetlen
+        része a nyári grillezős- főzős estéknek. A jakuzzi, dézsafürdő fölé épített
+        pergola, pavilon komfortosabbá teheti az esti éjszakai fürdőzés élményét.
+        `,
   },
   kocsibeallo: {
     label: "Kocsibeálló",
     id: "kocsibeallo",
-    html: `
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
-          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
-          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
-          dolores similique iste voluptates pariatur! Possimus, nam.
-        </p>`,
+    text: `
+        Egy fedett kocsibeálló gépjárműveinket megvédheti a nap káros sugaraitól, a
+        jeges eső kártékony hatásaitól. Télen az autó hótakarításának gondját is leveszi
+        a vállunkról.
+        `,
   },
 };
+
+// workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
+const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/napvedelem/*/*", { import: "default" });
+const imagesRenderable: {
+  imageRenderable: any;
+  alt: string;
+  projectType: string;
+  text: string;
+}[] = [];
+for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
+  const projectTypePath = path.dirname(imgPath);
+  const projectType = path.basename(projectTypePath);
+  const imageRenderable = await imageFunction();
+  imagesRenderable.push({
+    imageRenderable,
+    projectType,
+    alt: path.basename(imgPath),
+    text: items[projectType].text,
+  });
+}
 ---
 
-<FilterableEntry items={items} />
+<FilterableEntryWithPictures imagesRenderable={imagesRenderable} items={items} title="Árnyékolás" />
