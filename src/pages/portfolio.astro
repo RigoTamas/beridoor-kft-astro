@@ -1,9 +1,6 @@
 ---
-import { Image } from "@astrojs/image/components";
-import Layout from "@layouts/Layout.astro";
-import Container from "@components/container.astro";
 import path from "path";
-import Button from "@components/ui/button.astro";
+import FilterableEntryWithPictures from "../components/filterable-entry-with-pictures.astro";
 
 const items = {
   // key and id field needs to be the same
@@ -32,10 +29,20 @@ const items = {
     id: "vedoteto",
     text: "A bejárati feletti védőtető komfortosabbá teszi a napi rutint – kulcskeresés, ajtó nyitás, csukás- esős, havas időben is.",
   },
+  fuggonyfal: {
+    label: "Függönyfal",
+    id: "fuggonyfal",
+    text: "Az elegáns függönyfal rendszerek kiválthatják a falakat - nagyméretű homlokzati portálokat létrehozva - összekötnek épületrészeket.",
+  },
+  kupola: {
+    label: "Bevilágító Kupola",
+    id: "kupola",
+    text: "Életterünk kellemesebb, ha környezetünkben megnöveljük a természetesen beáramló fényt, ehhez a legjobb megoldás egy bevilágító kupola beépítése.",
+  },
 };
 
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
-const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/*/*/main/*", { import: "default" });
+const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/termekek/*/*/main/*", { import: "default" });
 const imagesRenderable: {
   imageRenderable: any;
   alt: string;
@@ -59,129 +66,4 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
 }
 ---
 
-<Layout title="Portfolio">
-  <Container>
-    <div id="item-store" data-items={JSON.stringify(items)}></div>
-    <!-- <div class="grid-cols-2 md:flex md:flex-wrap md:flex-row pt-16 pb-8 md:pt-12 md:pb-24 gap-16 justify-start"> -->
-    <div>
-      <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
-        {
-          Object.values(items).map((item) => (
-            <Button id={`${item.id}-button`} style="outline" class="md:text-lg">
-              <p>{item.label}</p>
-            </Button>
-          ))
-        }
-      </div>
-    </div>
-    <div class="mx-auto justify-between text-justify items-center flex">
-      <p class="md:text-lg" id="textToShow"></p>
-    </div>
-    <div>
-      <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-8 justify-center">
-        {
-          imagesRenderable.map((item) => {
-            return (
-              <div class={`${item.projectType} images-selector w-[300px]`}>
-                <a href={`/portfolio/${item.projectType}/${item.projectName}`}>
-                  <Image
-                    src={item.imageRenderable}
-                    alt={item.alt}
-                    width={600}
-                    aspectRatio="3:2"
-                    format="avif"
-                    fit="cover"
-                    position="center"
-                    class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
-                  />
-                </a>
-              </div>
-            );
-          })
-        }
-      </div>
-    </div>
-  </Container>
-</Layout>
-
-<script>
-  import { animate } from "motion";
-  import {
-    State,
-    hideAndShowItems,
-    setInitialUi,
-    updateStateAndButtonBackground,
-    createInitialState,
-  } from "../components/scripts/filter";
-  const itemStoreElement = document.getElementById("item-store");
-  const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
-
-  const elements = document.getElementsByClassName("images-selector");
-  for (let i = 0; i < elements.length; i++) {
-    const elem = elements[i];
-    elem?.addEventListener("mouseover", (e) => {
-      animate(elem, { scale: 1.05 });
-    });
-    elem?.addEventListener("mouseout", (e) => {
-      animate(elem, { scale: 1.0 });
-    });
-  }
-
-  const classesToChange = ["bg-beridoorBlue", "ring-2", 'ring-cyan-600', "text-white"];
-  const buttonsMap = Object.keys(items).reduce(
-    (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
-    {}
-  );
-  const changeFilteredItemSize = { smallClass: "w-[300px]", largeClass: "w-[600px]" };
-
-  const fragment = window.location.hash.substring(1);
-  const isValidFragment = Boolean(items[fragment]);
-  const state = createInitialState({ items, fragment: isValidFragment ? fragment : undefined });
-
-  if (isValidFragment) {
-    setInitialUi({
-      selectedButton: buttonsMap[fragment],
-      state,
-      classesToToggle: classesToChange,
-      changeFilteredItemSize,
-    });
-    updateTextShown({ state });
-  }
-
-  for (const currentId of Object.keys(items)) {
-    const el = buttonsMap[currentId];
-    el?.addEventListener("click", (event) => {
-      window.location.hash = state[currentId].isFilterTurnedOn ? "#" : `#${currentId}`;
-    });
-  }
-
-  window.addEventListener("hashchange", (event) => {
-    event.preventDefault();
-    const currentId = window.location.hash.substring(1) || new URL(event.oldURL).hash.slice(1);
-    state[currentId].isFilterTurnedOn = !state[currentId].isFilterTurnedOn;
-    updateStateAndButtonBackground({
-      state,
-      items,
-      buttonsMap,
-      currentId,
-      classesToRemove: classesToChange,
-      classesToToggle: classesToChange,
-    });
-    hideAndShowItems({ state, changeFilteredItemSize });
-    updateTextShown({ state });
-  });
-
-  function updateTextShown({ state }: { state: State }) {
-    const selectedItem: any = Object.values(state).find((item: any) => {
-      return item.isFilterTurnedOn;
-    });
-    const paragraph = document.getElementById("textToShow");
-    while (paragraph?.firstChild) {
-      paragraph?.removeChild(paragraph?.firstChild);
-    }
-    if (selectedItem) {
-      const text = document.createTextNode(items[selectedItem.id]?.text);
-      paragraph?.appendChild(text);
-    }
-  }
-</script>
+<FilterableEntryWithPictures imagesRenderable={imagesRenderable} items={items} title='Portfolio'>
