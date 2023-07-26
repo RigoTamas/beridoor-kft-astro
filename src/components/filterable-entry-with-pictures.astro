@@ -12,12 +12,13 @@ interface Props {
     text: string;
   }[];
   title: string;
+  description: string;
 }
 
-const { items, imagesRenderable, title } = Astro.props;
+const { items, imagesRenderable, title, description } = Astro.props;
 ---
 
-<Layout title={title}>
+<Layout title={title} description={description}>
   <Container>
     <div id="item-store" data-items={JSON.stringify(items)}></div>
     <!-- <div class="grid-cols-2 md:flex md:flex-wrap md:flex-row pt-16 pb-8 md:pt-12 md:pb-24 gap-16 justify-start"> -->

@@ -11,19 +11,12 @@ export interface Props {
   description: string;
 }
 
-// const { src } = await getImage({
-//   src: "../../assets/hero.png",
-//   width: 800,
-//   height: 742,
-//   format: "avif",
-// });
-// console.log(src);
-
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
 const resolvedImageWithDomain = new URL("/opengraph.jpg", Astro.site).toString();
 
 const { title, description } = Astro.props;
+const makeTitle = `${title} | Beridoor Télikert`
 ---
 
 <!DOCTYPE html>
@@ -41,20 +34,19 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- <link rel="preload" as="image" href={src} alt="Hero" /> -->
     <SEO
-      title={title}
+      title={makeTitle}
       description={description}
       canonical={canonicalURL}
       openGraph={{
         basic: {
           url: canonicalURL,
           type: "website",
-          title: `Astroship - Starter Template for Astro`,
+          title: "Beridoor Kft. Télikertek építése egyedi igények szerint",
           image: resolvedImageWithDomain,
         },
         image: {
-          alt: "Astroship Homepage Screenshot",
+          alt: "Beridoor télikert",
         },
       }}
     />
