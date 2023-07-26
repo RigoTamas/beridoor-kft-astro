@@ -25,7 +25,7 @@ const { images } = Astro.props;
                 position="center"
                 class="-z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat"
               />
-              <p class="text-white text-3xl lg:text-8xl mt-[calc(((100vh-86px)/2)-18px)] lg:mt-[calc(((100vh-86px)/2)-50px)] text-center align-middle">
+              <p class="mx-8 outlineText text-white text-4xl md:text-5xl lg:text-6xl 2xl:text-8xl 3xl:text-9xl mt-[calc(((100vh-86px)/2)-22px)] md:mt-[calc(((100vh-86px)/2)-26px)] lg:mt-[calc(((100vh-86px)/2)-34px)] 2xl:mt-[calc(((100vh-86px)/2)-50px)] 3xl:mt-[calc(((100vh-86px)/2)-68px)] text-center align-middle">
                 {image.mainText}
               </p>
             </div>
@@ -51,6 +51,21 @@ const { images } = Astro.props;
     </div>
   </div>
 </div>
+
+<style>
+.outlineText {
+  -webkit-text-stroke-color: #143143;
+  @media (min-width: 10px) {
+    -webkit-text-stroke-width: 1px;
+  }
+  @media (min-width: 1024px) {
+    -webkit-text-stroke-width: 2px;
+  }
+  @media (min-width: 1536px) {
+    -webkit-text-stroke-width: 3px;
+  };
+}
+</style>
 
 <script>
   import BlazeSlider from "blaze-slider";
