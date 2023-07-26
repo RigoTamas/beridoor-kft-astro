@@ -77,7 +77,13 @@ const logoWidth = 140;
           </div>
         </div>
         <MenuItems class="hidden w-full lg:w-auto mt-2 lg:flex flex-col items-end lg:mt-0">
-          <div class="hidden lg:flex text-sm text-gray-100 lg:px-3 lg:py-1 lg:gap-8 justify-between">
+          <div class="hidden lg:flex text-sm text-gray-100 lg:px-3 mt-2 lg:gap-8 justify-between">
+            <button id="moon-button" class="hidden">
+              <Icon class="pb-[1px] hover:text-white text-gray-400 w-6 h-6" name="akar-icons:moon-fill"/>
+            </button>
+            <button id="sun-button" class="hidden">
+              <Icon class="pb-[1px] hover:text-yellow-300 text-gray-400 w-6 h-6" name="ph:sun-fill"/>
+            </button>
             <div class="flex lg:gap-1 justify-center">
               <Icon class="mt-1 text-gray-400 w-3 h-3" name="bi:telephone-fill" />
               <p>Személyes konzultáció:</p>
@@ -121,7 +127,36 @@ const logoWidth = 140;
 </nav>
 <script>
   import { animate } from "motion"
+  function setDarkMode (darkIconElement, lightIconElement, rootHtmlElement) {
+    darkIconElement?.classList.add('hidden')
+    lightIconElement?.classList.remove('hidden')
+    rootHtmlElement?.classList.add('dark')
+  }
+
+  function setLightMode (darkIconElement, lightIconElement, rootHtmlElement) {
+    darkIconElement?.classList.remove('hidden')
+    lightIconElement?.classList.add('hidden')
+    rootHtmlElement?.classList.remove('dark')
+  }
+
   const elements = document.getElementsByClassName('navbar-items')
+  const lightModeEnabled = localStorage.getItem('lightMode')
+  const moonButton = document.getElementById('moon-button')
+  const sunButton = document.getElementById('sun-button')
+  const htmlRootElement = document.getElementById('html-root')
+  if (lightModeEnabled === 'true') {
+    setLightMode(moonButton, sunButton, htmlRootElement)
+  } else {
+    setDarkMode(moonButton, sunButton, htmlRootElement)
+  }
+  sunButton?.addEventListener('click', () => {
+    setLightMode(moonButton, sunButton, htmlRootElement)
+    localStorage.setItem('lightMode', 'true')
+  })
+  moonButton?.addEventListener('click', () => {
+    setDarkMode(moonButton, sunButton, htmlRootElement)
+    localStorage.setItem('lightMode', 'false')
+  })
   for(let i = 0; i < elements.length; i++) {
     const elem = elements[i]
     elem?.addEventListener('mouseover', (e) => {
