@@ -16,12 +16,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 const resolvedImageWithDomain = new URL("/opengraph.jpg", Astro.site).toString();
 
 const { title, description } = Astro.props;
-const makeTitle = `${title} | Beridoor Télikert`
+const makeTitle = `${title} | Beridoor Télikert`;
 ---
 
 <!DOCTYPE html>
-<html id="html-root" class="dark" lang="hu">
+<html lang="hu">
   <head>
+    <script is:inline>
+      const htmlRootElement = document.getElementById("html-root");
+      const lightModeEnabled = localStorage.getItem("lightMode");
+      if (lightModeEnabled === "true") {
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -64,18 +73,19 @@ const makeTitle = `${title} | Beridoor Télikert`
         }
       </style>
     </div>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      /* https://dev.to/niorad/keeping-the-footer-at-the-bottom-with-css-grid-15mf */
+      .wrapper {
+        min-height: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        grid-template-columns: 100%;
+      }
+    </style>
   </body>
-  <style>
-    html, body {
-      width: 100%;
-      height: 100%;
-    }
-    /* https://dev.to/niorad/keeping-the-footer-at-the-bottom-with-css-grid-15mf */
-    .wrapper {
-      min-height: 100%;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      grid-template-columns: 100%;
-    }
-  </style>
 </html>
