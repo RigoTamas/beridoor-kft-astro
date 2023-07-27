@@ -15,12 +15,13 @@ const { images } = Astro.props;
         {
           images.map((image, iterCount) => (
             <div class="inline-block rounded-none overflow-hidden bg-cover bg-center relative w-full h-[calc(100vh-86px)]">
-              <Image
+              <Picture
                 src={image.imageRenderable}
                 alt={image.alt}
-                width={1600}
+                widths={[300, 600, 1000, 1600]}
                 loading={'lazy'}
                 aspectRatio="4:3"
+                sizes="(min-width: 300px) 600px, (min-width: 600px) 1000px, (min-width: 1000px) 1600px, 300px"
                 format="avif"
                 fit="cover"
                 position="center"
