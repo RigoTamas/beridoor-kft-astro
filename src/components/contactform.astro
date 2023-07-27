@@ -41,7 +41,7 @@ import Button from "./ui/button.astro";
     <label for="phone" class="sr-only">Phone number</label><input
       id="phone"
       type="tel"
-      placeholder="Telefonszám (formátum: +36201234567)"
+      placeholder="Telefonszám (pl: +36201234567)"
       pattern="\\+[0-9]{11}"
       name="phone"
       required
@@ -79,7 +79,7 @@ import Button from "./ui/button.astro";
   </div>
   <div class="mb-3">
     <p>Fotók feltöltése: (max. 15 MB)</p>
-    <input id="images-to-send" type="file" name="image" multiple="multiple" accept="image/*"/>
+    <input id="images-to-send" class="w-full" type="file" name="image" multiple="multiple" accept="image/*"/>
     <div id="too-big-file-error-message" class="text-red-400 text-sm mt-1 hidden">
       A feltöltött fotóid mérete több, mint 15 MB. Kérlek tölts fel kevesebb vagy kisebb fájlokat.
     </div>

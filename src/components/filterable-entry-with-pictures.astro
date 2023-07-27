@@ -21,7 +21,6 @@ const { items, imagesRenderable, title, description } = Astro.props;
 <Layout title={title} description={description}>
   <Container>
     <div id="item-store" data-items={JSON.stringify(items)}></div>
-    <!-- <div class="grid-cols-2 md:flex md:flex-wrap md:flex-row pt-16 pb-8 md:pt-12 md:pb-24 gap-16 justify-start"> -->
     <div>
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
         {
