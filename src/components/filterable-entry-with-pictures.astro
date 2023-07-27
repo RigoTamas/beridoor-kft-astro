@@ -41,13 +41,14 @@ const { items, imagesRenderable, title, description } = Astro.props;
         {
           imagesRenderable.map((item) => {
             return (
-              <div class={`${item.projectType} images-selector w-[300px]`}>
+              <div class={`${item.projectType} hidden images-selector w-[300px]`}>
                 <Image
                   src={item.imageRenderable}
                   alt={item.alt}
                   width={600}
                   aspectRatio="3:2"
                   format="avif"
+                  loading="lazy"
                   fit="cover"
                   position="center"
                   class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"
