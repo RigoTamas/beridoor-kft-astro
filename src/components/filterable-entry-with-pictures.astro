@@ -83,15 +83,13 @@ const { items, imagesRenderable, title, description } = Astro.props;
   const isValidFragment = Boolean(items[fragment]);
   const state = createInitialState({ items, fragment: isValidFragment ? fragment : undefined });
 
-  if (isValidFragment) {
-    setInitialUi({
-      selectedButton: buttonsMap[fragment],
-      state,
-      classesToToggle: classesToChange,
-      changeFilteredItemSize,
-    });
-    updateTextShown({ state });
-  }
+  setInitialUi({
+    selectedButton: buttonsMap[fragment],
+    state,
+    classesToToggle: classesToChange,
+    changeFilteredItemSize,
+  });
+  updateTextShown({ state });
 
   for (const currentId of Object.keys(items)) {
     const el = buttonsMap[currentId];

@@ -1,13 +1,8 @@
 <script>
-  import {
-    hideAndShowItems,
-    setInitialUi,
-    updateStateAndButtonBackground,
-    createInitialState,
-  } from "./filter";
+  import { hideAndShowItems, setInitialUi, updateStateAndButtonBackground, createInitialState } from "./filter";
   const itemStoreElement = document.getElementById("item-store");
   const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
-  const classesToChange = ["bg-beridoorBlue", "ring-2", 'ring-cyan-600', "text-white"];
+  const classesToChange = ["bg-beridoorBlue", "ring-2", "ring-cyan-600", "text-white"];
   const buttonsMap = Object.keys(items).reduce(
     (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
     {}
@@ -17,13 +12,11 @@
   const isValidFragment = Boolean(items[fragment]);
   const state = createInitialState({ items, fragment: isValidFragment ? fragment : undefined });
 
-  if (isValidFragment) {
-    setInitialUi({
-      selectedButton: buttonsMap[fragment],
-      state,
-      classesToToggle: classesToChange,
-    });
-  }
+  setInitialUi({
+    selectedButton: buttonsMap[fragment],
+    state,
+    classesToToggle: classesToChange,
+  });
 
   for (const currentId of Object.keys(items)) {
     const el = buttonsMap[currentId];

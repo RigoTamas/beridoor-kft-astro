@@ -97,12 +97,14 @@ export function setInitialUi({
   classesToToggle,
   changeFilteredItemSize,
 }: {
-  selectedButton: HTMLElement;
+  selectedButton?: HTMLElement;
   state: State;
   classesToToggle: string[];
   changeFilteredItemSize?: { smallClass: string; largeClass: string };
 }) {
-  toggleStylingOnSelectedButton({ button: selectedButton, classesToToggle });
+  if (selectedButton) {
+    toggleStylingOnSelectedButton({ button: selectedButton, classesToToggle });
+  }
   hideAndShowItems({ state, changeFilteredItemSize });
 }
 

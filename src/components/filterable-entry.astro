@@ -34,7 +34,7 @@ const itemsWithoutHtml = Object.entries(items).reduce((acc, [key, value]) => {
     </div>
     {
       Object.values(items).map((item) => (
-        <div class={`mt-10 ${item.id}`}>
+        <div class={`mt-10 ${item.id} hidden`}>
           <div class="mx-auto max-w-4xl">
             <h2 class="font-bold text-3xl text-center">{item.label}</h2>
           </div>
