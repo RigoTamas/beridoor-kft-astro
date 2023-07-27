@@ -71,13 +71,13 @@ const { images } = Astro.props;
   slider.stopAutoplay() // stopping auto play until first image loads
   document.addEventListener('DOMContentLoaded', () => {
     slider.onSlide(() => {
-      preloadNext(1)
+      preloadNext(2)
     })
   });
 
   window.addEventListener('load', async () => {
     await Promise.all([Array.from(document.images)[0]].filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))); // wait for first image to load
-    preloadNext(1);
+    preloadNext(2);
     slider.refresh(); // start auto play
   });
 
