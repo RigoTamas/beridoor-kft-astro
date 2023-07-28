@@ -1,5 +1,5 @@
 ---
-import { Picture } from "@astrojs/image/components";
+import { Image } from "@astrojs/image/components";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import FilterScript from "@components/scripts/basic-filter.astro";
@@ -209,7 +209,9 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
 }
 ---
 
-<Layout title="Beridoor Kft Csapata" description="Csapatunk, akik a Beridoor Kft. által épített télikerteket megvalósítják">
+<Layout
+  title="Beridoor Kft Csapata"
+  description="Csapatunk, akik a Beridoor Kft. által épített télikerteket megvalósítják">
   <Container>
     <div id="item-store" data-items={JSON.stringify(itemsWithoutHtml)}></div>
     <div>
@@ -225,7 +227,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     </div>
     {
       Object.values(items).map((item) => (
-        <div class={`mt-10 ${item.id}`}>
+        <div class={`mt-10 hidden ${item.id}`}>
           <div class="mx-auto max-w-4xl">
             <h2 class="font-bold text-3xl text-center">{item.label}</h2>
           </div>
@@ -235,11 +237,11 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
                 {staff.map((staffItem) => (
                   <div class="group">
                     <div class="w-full">
-                      <Picture
+                      <Image
                         src={imageNameToRenderableImageMap[staffItem.pictureName]}
                         alt={staffItem.pictureName}
-                        sizes="(max-width: 800px) 100vw, 400px"
-                        widths={[200, 400]}
+                        width={400}
+                        loading={"eager"}
                         aspectRatio="3:2"
                         format="avif"
                         fit="cover"
@@ -250,7 +252,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
                     <div class="mt-4 text-center">
                       <h2 class="text-lg ">{staffItem.name}</h2>
                       <h3 class="text-sm mb-3">{staffItem.jobTitle}</h3>
-                      <h3 class="text-sm text-slate-500">
+                      <h3 class="text-sm dark:text-beridoorDarkModeSecondaryText text-beridoorLightModeSecondaryText">
                         {" "}
                         <Fragment set:html={staffItem.description} />
                       </h3>
