@@ -35,8 +35,8 @@ const { images } = Astro.props;
       </div>
       <div class="top-[calc(((100vh-86px)/2)-12px)] left-0 mx-2 md:mx-7 absolute">
         <button class="blaze-prev rotate-[270deg]" id="blaze-prev">
-          <div class="w-6">
-            <Icon class="bg-white text-beridoorBlue rounded-xl" name="fe:arrow-up" />
+          <div class="w-7 lg:w-9">
+            <Icon class="bg-white text-beridoorBlue rounded-3xl opacity-90" name="fe:arrow-up" />
           </div>
         </button>
       </div>
@@ -44,8 +44,8 @@ const { images } = Astro.props;
 
       <div class="top-[calc(((100vh-86px)/2)-12px)]  right-0 mx-2 md:mx-7 absolute">
         <button class="blaze-next rotate-90" id="blaze-next">
-          <div class="w-6">
-            <Icon class="bg-white text-beridoorBlue rounded-xl" name="fe:arrow-up" />
+          <div class="w-7 lg:w-9">
+            <Icon class="bg-white text-beridoorBlue rounded-3xl opacity-90" name="fe:arrow-up" />
           </div>
         </button>
       </div>
@@ -64,7 +64,7 @@ const { images } = Astro.props;
       stopAutoplayOnInteraction: true,
       enableAutoplay: true,
       autoplayInterval: 4500,
-      transitionDuration: 700,
+      transitionDuration: 600,
       slidesToShow: 1,
     },
   });
@@ -74,6 +74,17 @@ const { images } = Astro.props;
       preloadNext(2)
     })
   });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight') {
+      slider.next()
+      slider.stopAutoplay()
+    }
+    if (event.key === 'ArrowLeft') {
+      slider.prev()
+      slider.stopAutoplay()
+    }
+  })
 
   window.addEventListener('load', async () => {
     await Promise.all([Array.from(document.images)[0]].filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))); // wait for first image to load
