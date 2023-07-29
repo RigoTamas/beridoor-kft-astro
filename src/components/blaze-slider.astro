@@ -2,10 +2,19 @@
 import { Image } from "@astrojs/image/components";
 import "../styles/blaze-slider.css";
 import { Icon } from "astro-icon";
+import { getPlaiceholder } from "plaiceholder";
+import fs from "node:fs";
 interface Props {
-  images: { imageRenderable: any; alt: string; mainText: string }[];
+  images: { imageRenderable: any; alt: string; mainText: string; pathFromProjectRoot: string }[];
 }
 const { images } = Astro.props;
+
+const placeHolderImages = {};
+for (const img of images) {
+  const file = await fs.promises.readFile(img.pathFromProjectRoot);
+  const { base64 } = await getPlaiceholder(file);
+  placeHolderImages[img.pathFromProjectRoot] = base64;
+}
 ---
 
 <div class="blaze-slider">
@@ -15,16 +24,32 @@ const { images } = Astro.props;
         {
           images.map((image, iterCount) => (
             <div class="inline-block rounded-none overflow-hidden bg-cover bg-center relative w-full h-[calc(100vh-86px)]">
+              <img
+                aria-hidden
+                alt=""
+                src={placeHolderImages[image.pathFromProjectRoot]}
+                class:list={[
+                  "absolute",
+                  "inset-0",
+                  "w-full",
+                  "h-full",
+                  "transform",
+                  "scale-150",
+                  "filter",
+                  "blur-2xl",
+                  "z-0",
+                ]}
+              />
               <Image
                 src={image.imageRenderable}
                 alt={image.alt}
                 width={1600}
-                loading={'lazy'}
+                loading={"lazy"}
                 aspectRatio="4:3"
                 format="avif"
                 fit="cover"
                 position="center"
-                class="-z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat"
+                class="z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat"
               />
               <p class="mx-8 outlineText text-white text-4xl md:text-5xl lg:text-6xl 2xl:text-8xl 3xl:text-9xl text-center align-middle">
                 {image.mainText}
@@ -42,7 +67,7 @@ const { images } = Astro.props;
       </div>
       <div class="right-[50vh] left-[50vh] top-[calc(95vh-86px)] blaze-pagination absolute"></div>
 
-      <div class="top-[calc(((100vh-86px)/2)-12px)]  right-0 mx-2 md:mx-7 absolute">
+      <div class="top-[calc(((100vh-86px)/2)-12px)] right-0 mx-2 md:mx-7 absolute">
         <button class="blaze-next rotate-90" id="blaze-next">
           <div class="w-7 lg:w-9">
             <Icon class="bg-white text-beridoorBlue rounded-3xl opacity-90" name="fe:arrow-up" />
@@ -52,7 +77,6 @@ const { images } = Astro.props;
     </div>
   </div>
 </div>
-
 
 <script>
   import BlazeSlider from "blaze-slider";
@@ -68,49 +92,58 @@ const { images } = Astro.props;
       slidesToShow: 1,
     },
   });
-  slider.stopAutoplay() // stopping auto play until first image loads
-  document.addEventListener('DOMContentLoaded', () => {
+  slider.stopAutoplay(); // stopping auto play until first image loads
+  document.addEventListener("DOMContentLoaded", () => {
     slider.onSlide(() => {
-      preloadNext(2)
-    })
+      preloadNext(2);
+    });
   });
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowRight') {
-      slider.next()
-      slider.stopAutoplay()
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight") {
+      slider.next();
+      slider.stopAutoplay();
     }
-    if (event.key === 'ArrowLeft') {
-      slider.prev()
-      slider.stopAutoplay()
+    if (event.key === "ArrowLeft") {
+      slider.prev();
+      slider.stopAutoplay();
     }
-  })
+  });
 
-  window.addEventListener('load', async () => {
-    await Promise.all([Array.from(document.images)[0]].filter(img => !img.complete).map(img => new Promise(resolve => { img.onload = img.onerror = resolve; }))); // wait for first image to load
+  window.addEventListener("load", async () => {
+    await Promise.all(
+      [Array.from(document.images)[0]]
+        .filter((img) => !img.complete)
+        .map(
+          (img) =>
+            new Promise((resolve) => {
+              img.onload = img.onerror = resolve;
+            })
+        )
+    ); // wait for first image to load
     preloadNext(2);
     slider.refresh(); // start auto play
   });
 
   const preloadNext = (n) => {
-      Array.from(slider.slides)
-          .slice(0, n + 1)
-          .map(slide => slide.querySelector('img'))
-          .forEach(s => s?.setAttribute('loading', 'eager'));
+    Array.from(slider.slides)
+      .slice(0, n + 1)
+      .map((slide) => slide.querySelector("img"))
+      .forEach((s) => s?.setAttribute("loading", "eager"));
   };
 </script>
 
 <style>
-.outlineText {
-  -webkit-text-stroke-color: #143143;
-  @media (min-width: 10px) {
-    -webkit-text-stroke-width: 1px;
+  .outlineText {
+    -webkit-text-stroke-color: #143143;
+    @media (min-width: 10px) {
+      -webkit-text-stroke-width: 1px;
+    }
+    @media (min-width: 1024px) {
+      -webkit-text-stroke-width: 2px;
+    }
+    @media (min-width: 1536px) {
+      -webkit-text-stroke-width: 3px;
+    }
   }
-  @media (min-width: 1024px) {
-    -webkit-text-stroke-width: 2px;
-  }
-  @media (min-width: 1536px) {
-    -webkit-text-stroke-width: 3px;
-  };
-}
 </style>

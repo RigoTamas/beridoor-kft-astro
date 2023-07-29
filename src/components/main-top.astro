@@ -6,11 +6,17 @@ import path from "path";
 
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
 const viteImages = import.meta.glob<ImageMetadata>("../assets/main-page-carousel-pictures/*", { import: "default" });
-const imagesRenderable: { imageRenderable: any; alt: string, mainText: string }[] = [];
+const imagesRenderable: { imageRenderable: any; alt: string; mainText: string; pathFromProjectRoot: string }[] = [];
+
 for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
-  const imageRenderable = (await imageFunction());
-  const ext = path.extname(imgPath)
-  imagesRenderable.push({ imageRenderable, alt: path.basename(imgPath), mainText: path.basename(imgPath, ext).slice(4,) });
+  const imageRenderable = await imageFunction();
+  const ext = path.extname(imgPath);
+  imagesRenderable.push({
+    imageRenderable,
+    alt: path.basename(imgPath),
+    pathFromProjectRoot: imgPath.replace("../", "src/"),
+    mainText: path.basename(imgPath, ext).slice(4),
+  });
 }
 ---
 
@@ -20,8 +26,10 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     <h1 class="text-1xl lg:text-3xl xl:text-4xl font-bold text-center lg:tracking-tight xl:tracking-tighter my-6">
       Télikertek építése egyedi igények szerint
     </h1>
-    <p class="text-xl mt-4 text-center py-6 dark:text-beridoorDarkModeSecondaryText text-beridoorLightModeSecondaryText">
-      Egyedi kialakítású alumínium, fa, műanyag, polikarbonát, üvegszerkezetek családi házak tervezése, kivitelezése, lakások bővítése, felújítása, látványterv készítése
+    <p
+      class="text-xl mt-4 text-center py-6 dark:text-beridoorDarkModeSecondaryText text-beridoorLightModeSecondaryText">
+      Egyedi kialakítású alumínium, fa, műanyag, polikarbonát, üvegszerkezetek családi házak tervezése, kivitelezése,
+      lakások bővítése, felújítása, látványterv készítése
     </p>
     <p class="text-lg mt-4 text-slate-600 max-w-xl"></p>
     <div class="mt-6 mx-4 flex flex-col justify-center sm:flex-row gap-3">
