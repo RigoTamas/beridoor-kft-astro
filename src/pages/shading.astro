@@ -49,6 +49,7 @@ const imagesRenderable: {
   imageRenderable: any;
   alt: string;
   projectType: string;
+  pathFromProjectRoot: string;
   text: string;
 }[] = [];
 for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
@@ -58,6 +59,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
   imagesRenderable.push({
     imageRenderable,
     projectType,
+    pathFromProjectRoot: imgPath.replace("../", "src/"),
     alt: path.basename(imgPath),
     text: items[projectType].text,
   });

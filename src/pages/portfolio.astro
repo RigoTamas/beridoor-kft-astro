@@ -46,6 +46,7 @@ const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/termekek
 const imagesRenderable: {
   imageRenderable: any;
   alt: string;
+  pathFromProjectRoot: string;
   projectType: string;
   text: string;
 }[] = [];
@@ -55,6 +56,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
   const imageRenderable = await imageFunction();
   imagesRenderable.push({
     imageRenderable,
+    pathFromProjectRoot: imgPath.replace("../", "src/"),
     projectType,
     alt: path.basename(imgPath),
     text: items[projectType].text,
@@ -62,4 +64,9 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
 }
 ---
 
-<FilterableEntryWithPictures imagesRenderable={imagesRenderable} items={items} title='Beridoor télikert munkái' description="Beridoor Kft. télikert és teraszbeépítésekkel foglalkozó cég munkáinak a fotói">
+<FilterableEntryWithPictures
+  imagesRenderable={imagesRenderable}
+  items={items}
+  title="Beridoor télikert munkái"
+  description="Beridoor Kft. télikert és teraszbeépítésekkel foglalkozó cég munkáinak a fotói"
+/>
