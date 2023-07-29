@@ -12,8 +12,8 @@ const { images } = Astro.props;
 const placeHolderImages = {};
 for (const img of images) {
   const file = await fs.promises.readFile(img.pathFromProjectRoot);
-  const { base64 } = await getPlaiceholder(file);
-  placeHolderImages[img.pathFromProjectRoot] = base64;
+  const { svg } = await getPlaiceholder(file);
+  placeHolderImages[img.pathFromProjectRoot] = svg;
 }
 ---
 
@@ -22,40 +22,41 @@ for (const img of images) {
     <div class="relative ease-in blaze-track-container">
       <div class="blaze-track object-cover">
         {
-          images.map((image, iterCount) => (
-            <div class="inline-block rounded-none overflow-hidden bg-cover bg-center relative w-full h-[calc(100vh-86px)]">
-              <img
-                aria-hidden
-                alt=""
-                src={placeHolderImages[image.pathFromProjectRoot]}
-                class:list={[
-                  "absolute",
-                  "inset-0",
-                  "w-full",
-                  "h-full",
-                  "transform",
-                  "scale-150",
-                  "filter",
-                  "blur-2xl",
-                  "z-0",
-                ]}
-              />
-              <Image
-                src={image.imageRenderable}
-                alt={image.alt}
-                width={1600}
-                loading={"lazy"}
-                aspectRatio="4:3"
-                format="avif"
-                fit="cover"
-                position="center"
-                class="z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat"
-              />
-              <p class="mx-8 outlineText text-white text-4xl md:text-5xl lg:text-6xl 2xl:text-8xl 3xl:text-9xl text-center align-middle">
-                {image.mainText}
-              </p>
-            </div>
-          ))
+          images.map((image, iterCount) => {
+            const [Svg, svgProps, svgChildren] = placeHolderImages[image.pathFromProjectRoot];
+            return (
+              <div class="inline-block rounded-none overflow-hidden bg-cover bg-center relative w-full h-[calc(100vh-86px)]">
+                <Svg
+                  {...svgProps}
+                  style={{
+                    ...svgProps.style,
+                    transform: ["scale(1.5)", svgProps.style.transform].join(" "),
+                    filter: "blur(60px)",
+                  }}
+                  class="z-0">
+                  {svgChildren.map((child) => {
+                    const [Path, pathProps] = child;
+
+                    return <Path {...pathProps} />;
+                  })}
+                </Svg>
+                <Image
+                  src={image.imageRenderable}
+                  alt={image.alt}
+                  width={1600}
+                  loading={"lazy"}
+                  aspectRatio="4:3"
+                  format="avif"
+                  fit="cover"
+                  position="center"
+                  class="z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat"
+                />
+                <p class="z-20 absolute mx-auto left-0 right-0 text-center outlineText text-white text-4xl md:text-5xl lg:text-6xl 2xl:text-8xl 3xl:text-9xl">
+                  {image.mainText}
+                </p>
+              </div>
+            );
+          })
         }
       </div>
       <div class="top-[calc(((100vh-86px)/2)-12px)] left-0 mx-2 md:mx-7 absolute">
