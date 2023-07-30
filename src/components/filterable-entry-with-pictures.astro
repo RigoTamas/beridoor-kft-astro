@@ -58,7 +58,7 @@ const projectIterCounter = {};
               projectIterCounter[item.projectType] === undefined ? 0 : projectIterCounter[item.projectType] + 1;
             return (
               <div
-                class:list={`${item.projectType} hidden relative images-selector w-[300px] inline-block overflow-hidden rounded-lg`}>
+                class:list={`${item.projectType} hidden relative images-selector xs:w-[290px] inline-block overflow-hidden rounded-lg`}>
                 <img
                   aria-hidden
                   alt=""
@@ -194,7 +194,7 @@ const projectIterCounter = {};
     (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
     {}
   );
-  const changeFilteredItemSize = { smallClass: "w-[300px]", largeClass: "w-[550px]" };
+  const changeFilteredItemSize = { smallClass: "sm:w-[290px]", largeClass: "sm:w-[525px]" };
 
   const fragment = window.location.hash.substring(1);
   const isValidFragment = Boolean(items[fragment]);
