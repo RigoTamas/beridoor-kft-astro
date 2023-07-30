@@ -26,20 +26,22 @@ for (const img of images) {
             const [Svg, svgProps, svgChildren] = placeHolderImages[image.pathFromProjectRoot];
             return (
               <div class="inline-block rounded-none overflow-hidden bg-cover bg-center relative w-full h-[calc(100vh-86px)]">
-                <Svg
-                  {...svgProps}
-                  style={{
-                    ...svgProps.style,
-                    transform: ["scale(1.5)", svgProps.style.transform].join(" "),
-                    filter: "blur(60px)",
-                  }}
-                  class="z-0">
-                  {svgChildren.map((child) => {
-                    const [Path, pathProps] = child;
+                {iterCount === 0 ? (
+                  <Svg
+                    {...svgProps}
+                    style={{
+                      ...svgProps.style,
+                      transform: ["scale(1.5)", svgProps.style.transform].join(" "),
+                      filter: "blur(60px)",
+                    }}
+                    class="z-0 svg-placeholders">
+                    {svgChildren.map((child) => {
+                      const [Path, pathProps] = child;
 
-                    return <Path {...pathProps} />;
-                  })}
-                </Svg>
+                      return <Path {...pathProps} />;
+                    })}
+                  </Svg>
+                ) : null}
                 <Image
                   src={image.imageRenderable}
                   alt={image.alt}
@@ -49,7 +51,7 @@ for (const img of images) {
                   format="avif"
                   fit="cover"
                   position="center"
-                  class="z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat"
+                  class={`main-page-image-${iterCount} z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat`}
                 />
                 <p class="z-20 absolute mx-auto left-0 right-0 text-center outlineText text-white text-4xl md:text-5xl lg:text-6xl 2xl:text-8xl 3xl:text-9xl">
                   {image.mainText}
@@ -82,13 +84,14 @@ for (const img of images) {
 <script>
   import BlazeSlider from "blaze-slider";
   import "blaze-slider/dist/blaze.css";
+  import imagesLoaded from "imagesloaded";
 
   const el = document.querySelector(".blaze-slider") as HTMLElement;
   const slider = new BlazeSlider(el, {
     all: {
       stopAutoplayOnInteraction: true,
       enableAutoplay: true,
-      draggable: false,
+      draggable: true,
       autoplayInterval: 4500,
       transitionDuration: 600,
       slidesToShow: 1,
@@ -97,7 +100,7 @@ for (const img of images) {
   slider.stopAutoplay(); // stopping auto play until first image loads
   document.addEventListener("DOMContentLoaded", () => {
     slider.onSlide(() => {
-      preloadNext(2);
+      preloadNext(2, 1);
     });
   });
 
@@ -113,23 +116,26 @@ for (const img of images) {
   });
 
   window.addEventListener("load", async () => {
-    await Promise.all(
-      [Array.from(document.images)[0]]
-        .filter((img) => !img.complete)
-        .map(
-          (img) =>
-            new Promise((resolve) => {
-              img.onload = img.onerror = resolve;
-            })
-        )
-    ); // wait for first image to load
-    preloadNext(2);
+    await new Promise((resolve) => {
+      imagesLoaded(".main-page-image-0", () => {
+        resolve(undefined);
+      });
+    });
+    const svgPlaceholders = document.getElementsByClassName("svg-placeholders"); // hide after first image has been rendered, as placeholder in carousel causes issues on mobile
+    for (const placeholder of svgPlaceholders) {
+      placeholder.classList.add("hidden");
+    }
+    preloadNext(2, 1);
     slider.refresh(); // start auto play
   });
 
-  const preloadNext = (n) => {
+  const preloadNext = (nextCount, prevCount) => {
     Array.from(slider.slides)
-      .slice(0, n + 1)
+      .slice(0, nextCount + 1)
+      .map((slide) => slide.querySelector("img"))
+      .forEach((s) => s?.setAttribute("loading", "eager"));
+    Array.from(slider.slides)
+      .slice(-prevCount)
       .map((slide) => slide.querySelector("img"))
       .forEach((s) => s?.setAttribute("loading", "eager"));
   };
