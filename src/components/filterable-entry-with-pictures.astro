@@ -99,22 +99,21 @@ const projectIterCounter = {};
           <div class="blaze-container">
             <div class="relative blaze-track-container">
               <div class="blaze-track"></div>
-              <div class="absolute left-0 mx-2 top-1/2">
+              <form class="absolute left-0 top-0 m-2" method="dialog">
+                <button>
+                  <Icon class="text-white w-5 sm:w-7" name="close-filled" />
+                </button>
+              </form>
+              <div class="absolute left-0 mx-2 top-[47%]">
                 <button class="blaze-prev rotate-[270deg]" id="blaze-prev">
-                  <div class="w-7 lg:w-9">
+                  <div class="w-5 sm:w-7 lg:w-9">
                     <Icon class="bg-white text-beridoorBlue rounded-3xl opacity-90" name="fe:arrow-up" />
                   </div>
                 </button>
               </div>
-
-              <form class="absolute left-0 top-0" method="dialog">
-                <button>
-                  <Icon class="text-beridoorBlue dark:text-white w-6 h-6" name="close" />
-                </button>
-              </form>
-              <div class="absolute right-0 mx-2 top-1/2">
+              <div class="absolute right-0 mx-2 top-[47%]">
                 <button class="blaze-next rotate-90" id="blaze-next">
-                  <div class="w-7 lg:w-9">
+                  <div class="w-5 sm:w-7 lg:w-9">
                     <Icon class="bg-white text-beridoorBlue rounded-3xl opacity-90" name="fe:arrow-up" />
                   </div>
                 </button>
