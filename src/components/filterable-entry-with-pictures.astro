@@ -6,6 +6,8 @@ import "../assets/style/base.css";
 import { getPlaiceholder } from "plaiceholder";
 import Container from "@components/container.astro";
 import Button from "@components/ui/button.astro";
+import Modal from "./modal.astro";
+import { Icon } from "astro-icon";
 interface Props {
   items: Record<string, any>;
   imagesRenderable: {
@@ -27,6 +29,7 @@ for (const img of imagesRenderable) {
   const { base64 } = await getPlaiceholder(file);
   placeHolderImages[img.pathFromProjectRoot] = base64;
 }
+const projectIterCounter = {};
 ---
 
 <Layout title={title} description={description}>
@@ -49,10 +52,13 @@ for (const img of imagesRenderable) {
     <div>
       <div class="flex flex-wrap flex-row pt-16 pb-8 gap-8 justify-center">
         {
-          imagesRenderable.map((item) => {
+          imagesRenderable.map((item, iterCount) => {
             const base64 = placeHolderImages[item.pathFromProjectRoot];
+            projectIterCounter[item.projectType] =
+              projectIterCounter[item.projectType] === undefined ? 0 : projectIterCounter[item.projectType] + 1;
             return (
-              <div class:list={`${item.projectType} hidden images-selector w-[300px] relative inline-block overflow-hidden rounded-lg`}>
+              <div
+                class:list={`${item.projectType} hidden relative images-selector w-[300px] inline-block overflow-hidden rounded-lg`}>
                 <img
                   aria-hidden
                   alt=""
@@ -70,6 +76,7 @@ for (const img of imagesRenderable) {
                   ]}
                 />
                 <Image
+                  id={`${item.projectType}~${projectIterCounter[item.projectType]}~${iterCount}`}
                   src={item.imageRenderable}
                   alt={item.alt}
                   width={600}
@@ -78,7 +85,7 @@ for (const img of imagesRenderable) {
                   loading="lazy"
                   fit="cover"
                   position="center"
-                  class="w-full z-10"
+                  class="w-full"
                 />
               </div>
             );
@@ -86,6 +93,36 @@ for (const img of imagesRenderable) {
         }
       </div>
     </div>
+
+    <Modal id="dialog" classList="border-beridoorBlue dark:border-white dark:bg-beridoorDarkModeBg bg-white" open="Open modal">
+      <button slot="close">
+        <Icon class="text-beridoorBlue dark:text-white w-4 h-4" name="close"/>
+      </button>
+      <main class="max-w-5xl w-full h-full relative" slot="main">
+        <div class="blaze-slider">
+          <div class="blaze-container">
+            <div class="relative blaze-track-container">
+              <div class="blaze-track"></div>
+              <div class="absolute left-0 mx-2 top-1/2">
+                <button class="blaze-prev rotate-[270deg]" id="blaze-prev">
+                  <div class="w-7 lg:w-9">
+                    <Icon class="bg-white text-beridoorBlue rounded-3xl opacity-90" name="fe:arrow-up" />
+                  </div>
+                </button>
+              </div>
+
+              <div class="absolute right-0 mx-2 top-1/2">
+                <button class="blaze-next rotate-90" id="blaze-next">
+                  <div class="w-7 lg:w-9">
+                    <Icon class="bg-white text-beridoorBlue rounded-3xl opacity-90" name="fe:arrow-up" />
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </Modal>
   </Container>
 </Layout>
 
@@ -97,6 +134,58 @@ for (const img of imagesRenderable) {
     updateStateAndButtonBackground,
     createInitialState,
   } from "./scripts/filter";
+
+  import BlazeSlider from "blaze-slider";
+  import "blaze-slider/dist/blaze.css";
+
+  const el = document.querySelector(".blaze-slider") as HTMLElement;
+  let slider = new BlazeSlider(el, {
+    all: {
+      stopAutoplayOnInteraction: true,
+      enableAutoplay: false,
+      draggable: true,
+      autoplayInterval: 4500,
+      transitionDuration: 600,
+      slidesToShow: 1,
+    },
+  });
+
+  export function changeSliderElements({ state }: { state: State }) {
+    const blazeSliderItemsParent = document.querySelector(".blaze-track");
+    const activeState = Object.values(state).find((item) => item.isFilterTurnedOn);
+    blazeSliderItemsParent?.replaceChildren();
+    const images =
+      activeState !== undefined
+        ? Array.from(document.getElementsByClassName(activeState!.id))
+        : Array.from(document.getElementsByClassName("images-selector"));
+    for (const element of images) {
+      const clonedElement = document.importNode(element, true);
+      clonedElement.removeChild(clonedElement.querySelector(".blur-2xl")!);
+      clonedElement.className = "";
+      blazeSliderItemsParent?.appendChild(clonedElement);
+    }
+    slider.destroy();
+    slider = new BlazeSlider(el, {
+      all: {
+        stopAutoplayOnInteraction: true,
+        enableAutoplay: false,
+        draggable: true,
+        autoplayInterval: 4500,
+        transitionDuration: 600,
+        slidesToShow: 1,
+      },
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight") {
+      slider.next();
+    }
+    if (event.key === "ArrowLeft") {
+      slider.prev();
+    }
+  });
+
   const itemStoreElement = document.getElementById("item-store");
   const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
 
@@ -117,10 +206,26 @@ for (const img of imagesRenderable) {
     classesToToggle: classesToChange,
     changeFilteredItemSize,
   });
+  changeSliderElements({ state });
   updateTextShown({ state });
 
   for (const currentId of Object.keys(items)) {
     const el = buttonsMap[currentId];
+    const images = document.getElementsByClassName(currentId);
+    for (const image of images) {
+      image.addEventListener("click", (event) => {
+        document.getElementById("dialog")!.showModal();
+        const isFilterTurnedOn = Object.values(state).some((item) => item.isFilterTurnedOn);
+        const splitted = event.target!.id.split("~");
+        const clickedElementNumber = parseInt(isFilterTurnedOn ? splitted[1] : splitted[2]);
+        const incementSliderBy = clickedElementNumber - slider.stateIndex;
+        if (incementSliderBy > 0) {
+          slider.next(incementSliderBy);
+        } else {
+          slider.prev(-incementSliderBy);
+        }
+      });
+    }
     el?.addEventListener("click", (event) => {
       window.location.hash = state[currentId].isFilterTurnedOn ? "#" : `#${currentId}`;
     });
@@ -139,6 +244,7 @@ for (const img of imagesRenderable) {
       classesToToggle: classesToChange,
     });
     hideAndShowItems({ state, changeFilteredItemSize });
+    changeSliderElements({ state });
     updateTextShown({ state });
   });
 

@@ -1,0 +1,10 @@
+---
+const {id, classList} = Astro.props;
+---
+
+<dialog class:list={classList} id={id}>
+  <form method="dialog">
+    <slot name="close" />
+  </form>
+  <slot name="main" />
+</dialog>
