@@ -1,0 +1,93 @@
+---
+import "../assets/style/base.css";
+import Modal from '../components/modal.astro';
+import fs from "node:fs/promises";
+import { getPlaiceholder } from "plaiceholder";
+import { Image } from "@astrojs/image/components";
+import path from 'path';
+import Navbar from "@components/navbar/navbar.astro";
+import Layout from "@layouts/Layout.astro";
+import Footer from "@components/footer.astro";
+ 
+const file = await fs.readFile("src/assets/main-page-carousel-pictures/001_Egyedi igények.jpg");
+const { base64 } = await getPlaiceholder(file);
+const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/termekek/*/*", { import: "default" });
+const imagesRenderable: {
+  imageRenderable: any;
+  pathFromProjectRoot: string;
+  alt: string;
+  projectType: string;
+}[] = [];
+let i=0
+for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
+  i++
+  if (i===5) {
+    continue
+  }
+  const projectTypePath = path.dirname(imgPath);
+  const projectType = path.basename(projectTypePath);
+  const imageRenderable = await imageFunction();
+  imagesRenderable.push({
+    imageRenderable,
+    pathFromProjectRoot: imgPath.replace("../", "src/"),
+    projectType,
+    alt: path.basename(imgPath),
+  });
+}
+
+const placeHolderImages = {};
+
+for (const img of imagesRenderable) {
+  const file = await fs.readFile(img.pathFromProjectRoot);
+  const { base64 } = await getPlaiceholder(file);
+  placeHolderImages[img.pathFromProjectRoot] = base64;
+}
+---
+
+  <body class="dark:text-gray-100 dark:bg-beridoorDarkModeBg bg-white text-beridoorBlue">
+    <Navbar/>
+
+        <div class:list={["md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-8 justify-center"]}>
+          {
+            imagesRenderable.map((img) => (
+              <div class:list={["relative", "inline-block", ]}>
+                <img
+                  aria-hidden
+                  alt=""
+                  src={placeHolderImages[img.pathFromProjectRoot]}
+                  class:list={ [
+                    "absolute",
+                    "inset-0",
+                    "w-full",
+                    "h-full",
+                    "transform",
+                    "scale-150",
+                    "filter",
+                    "blur-2xl",
+                    "z-[-1]"]
+                  }
+                />
+                  <Image
+                    src={img.imageRenderable}
+                    width={151}
+                    aspectRatio={1.9}
+                    alt="Paint Splashes"
+                    title="Photo from Unsplash"
+                    loading="lazy"
+                  />
+              </div>
+            ))
+          }
+        </div>
+
+
+<Modal id="dialog" open="Open modal">
+    <main slot="main">
+        <p>Some extra content you would like here</p>
+        <hr />
+        <img width="60" height="80" src="/assets/logo.svg" alt="Astro logo">
+    </main>
+    <button slot="close">Close modal</button>
+</Modal>
+    <Footer />
+    </body>

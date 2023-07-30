@@ -1,3 +1,5 @@
+import BlazeSlider from "blaze-slider";
+
 export type State = Record<string, { label: string; id: string; isVisible: boolean; isFilterTurnedOn: boolean }>;
 
 export function isEveryFilterTurnedOff(state: State) {
@@ -107,6 +109,8 @@ export function setInitialUi({
   }
   hideAndShowItems({ state, changeFilteredItemSize });
 }
+//TODO: add blurred image until image is loading
+//TODO: add carousel on click for filterable-entry-with-pictures
 
 export function hideAndShowItems({
   state,
