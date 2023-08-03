@@ -121,10 +121,10 @@ for (const img of images) {
         resolve(undefined);
       });
     });
-    // const svgPlaceholders = document.getElementsByClassName("svg-placeholders"); // hide after first image has been rendered, as placeholder in carousel causes issues on mobile
-    // for (const placeholder of svgPlaceholders) {
-    //   placeholder.classList.add("hidden");
-    // }
+    const svgPlaceholders = document.getElementsByClassName("svg-placeholders"); // hide after first image has been rendered, as placeholder in carousel causes issues on mobile
+    for (const placeholder of svgPlaceholders) {
+      placeholder.classList.add("hidden");
+    }
     preloadNext(2, 1);
     slider.refresh(); // start auto play
   });
