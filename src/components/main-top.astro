@@ -5,7 +5,7 @@ import BlazeSlider from "./blaze-slider.astro";
 import path from "path";
 
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
-const viteImages = import.meta.glob<ImageMetadata>("../assets/main-page-carousel-pictures/*", { import: "default" });
+const viteImages = import.meta.glob<ImageMetadata>("../assets/fooldal/*", { import: "default" });
 const imagesRenderable: { imageRenderable: any; alt: string; mainText: string; pathFromProjectRoot: string }[] = [];
 
 for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
