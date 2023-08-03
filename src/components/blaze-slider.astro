@@ -34,7 +34,7 @@ for (const img of images) {
                       transform: ["scale(1.5)", svgProps.style.transform].join(" "),
                       filter: "blur(60px)",
                     }}
-                    class="z-0 svg-placeholders">
+                    class="z-0 absolute svg-placeholders">
                     {svgChildren.map((child) => {
                       const [Path, pathProps] = child;
 
@@ -121,10 +121,10 @@ for (const img of images) {
         resolve(undefined);
       });
     });
-    const svgPlaceholders = document.getElementsByClassName("svg-placeholders"); // hide after first image has been rendered, as placeholder in carousel causes issues on mobile
-    for (const placeholder of svgPlaceholders) {
-      placeholder.classList.add("hidden");
-    }
+    // const svgPlaceholders = document.getElementsByClassName("svg-placeholders"); // hide after first image has been rendered, as placeholder in carousel causes issues on mobile
+    // for (const placeholder of svgPlaceholders) {
+    //   placeholder.classList.add("hidden");
+    // }
     preloadNext(2, 1);
     slider.refresh(); // start auto play
   });
@@ -142,16 +142,17 @@ for (const img of images) {
 </script>
 
 <style>
+  /* used for generation: https://codepen.io/darkylmnx/pen/YVmKbj, https://stackoverflow.com/questions/2570972/css-font-border */
   .outlineText {
-    -webkit-text-stroke-color: #143143;
     @media (min-width: 10px) {
-      -webkit-text-stroke-width: 1px;
+      text-shadow: -1px -1px 0 #143143,-1px 0px 0 #143143,-1px 1px 0 #143143,0px -1px 0 #143143,0px 0px 0 #143143,0px 1px 0 #143143,1px -1px 0 #143143,1px 0px 0 #143143,1px 1px 0 #143143
     }
     @media (min-width: 1024px) {
-      -webkit-text-stroke-width: 2px;
+      text-shadow: -2px -2px 0 #143143,-2px -1px 0 #143143,-2px 0px 0 #143143,-2px 1px 0 #143143,-2px 2px 0 #143143,-1px -2px 0 #143143,-1px -1px 0 #143143,-1px 0px 0 #143143,-1px 1px 0 #143143,-1px 2px 0 #143143,0px -2px 0 #143143,0px -1px 0 #143143,0px 0px 0 #143143,0px 1px 0 #143143,0px 2px 0 #143143,1px -2px 0 #143143,1px -1px 0 #143143,1px 0px 0 #143143,1px 1px 0 #143143,1px 2px 0 #143143,2px -2px 0 #143143,2px -1px 0 #143143,2px 0px 0 #143143,2px 1px 0 #143143,2px 2px 0 #143143
     }
     @media (min-width: 1536px) {
-      -webkit-text-stroke-width: 3px;
+      text-shadow: -3px -3px 0 #143143,-3px -2px 0 #143143,-3px -1px 0 #143143,-3px 0px 0 #143143,-3px 1px 0 #143143,-3px 2px 0 #143143,-3px 3px 0 #143143,-2px -3px 0 #143143,-2px -2px 0 #143143,-2px -1px 0 #143143,-2px 0px 0 #143143,-2px 1px 0 #143143,-2px 2px 0 #143143,-2px 3px 0 #143143,-1px -3px 0 #143143,-1px -2px 0 #143143,-1px -1px 0 #143143,-1px 0px 0 #143143,-1px 1px 0 #143143,-1px 2px 0 #143143,-1px 3px 0 #143143,0px -3px 0 #143143,0px -2px 0 #143143,0px -1px 0 #143143,0px 0px 0 #143143,0px 1px 0 #143143,0px 2px 0 #143143,0px 3px 0 #143143,1px -3px 0 #143143,1px -2px 0 #143143,1px -1px 0 #143143,1px 0px 0 #143143,1px 1px 0 #143143,1px 2px 0 #143143,1px 3px 0 #143143,2px -3px 0 #143143,2px -2px 0 #143143,2px -1px 0 #143143,2px 0px 0 #143143,2px 1px 0 #143143,2px 2px 0 #143143,2px 3px 0 #143143,3px -3px 0 #143143,3px -2px 0 #143143,3px -1px 0 #143143,3px 0px 0 #143143,3px 1px 0 #143143,3px 2px 0 #143143,3px 3px 0 #143143
     }
   }
+  
 </style>
