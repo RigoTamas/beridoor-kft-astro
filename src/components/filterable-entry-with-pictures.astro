@@ -190,12 +190,12 @@ const projectIterCounter = {};
   const itemStoreElement = document.getElementById("item-store");
   const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
 
-  const classesToChange = ["bg-beridoorBlue", "ring-2", "ring-cyan-600", "text-white"];
+  const classesToChange = ["dark:bg-white", "bg-beridoorBlue", "ring-2", "ring-cyan-600", "text-white", "dark:text-beridoorBlue"];
   const buttonsMap = Object.keys(items).reduce(
     (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
     {}
   );
-  const changeFilteredItemSize = { smallClass: "sm:w-[290px]", largeClass: "sm:w-[525px]" };
+  const changeFilteredItemSize = { smallClass: "sm:w-[290px]", largeClass: "sm:w-[500px]" };
 
   const fragment = window.location.hash.substring(1);
   const isValidFragment = Boolean(items[fragment]);

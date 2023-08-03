@@ -1,56 +1,25 @@
 ---
 import path from "path";
-import FilterableEntryWithPictures from "../components/filterable-entry-with-pictures.astro";
+import SingleEntryWithPictures from "../components/single-entry-with-pictures.astro";
 
-const items = {
-  // key and id field needs to be the same
-  arnyekolas: {
-    label: "Árnyékolás",
-    id: "arnyekolas",
-    text: `
-        A nap kellemetlen hatásai ellen külső- és belső oldali árnyékolással,
-        redőny, zsalúzia, roló, reluxa, szalagfüggöny, roletta, napvitorla felszerelésével
-        védekezhetünk. Szél - hő - és esőérzékelővel, távvezérlővel felszerelt
-        árnyékolók maximális védelmet nyújtanak.
-        `,
-  },
-  napvitorla: {
-    label: "Napvitorla",
-    id: "napvitorla",
-    text: `
-        A megfelelően telepített napvitorla célzottan, a lehető legnagyobb védelmet
-        nyújtja a nap káros sugarai ellen.
-        `,
-  },
-  filagoria: {
-    label: "Pergola - Pavilon - Filagória",
-    id: "filagoria",
-    text: `
-        A kertben elhelyezett, tetővel fedett, hangulatvilágítással felszerelt,
-        asztallal, padokkal, székekkel berendezett filagória szinte már elengedhetetlen
-        része a nyári grillezős - főzős estéknek. A jakuzzi, dézsafürdő fölé épített
-        pergola, pavilon komfortosabbá teheti az esti éjszakai fürdőzés élményét.
-        `,
-  },
-  kocsibeallo: {
-    label: "Kocsibeálló",
-    id: "kocsibeallo",
-    text: `
-        Egy fedett kocsibeálló gépjárműveinket megvédheti a nap káros sugaraitól, a
-        jeges eső kártékony hatásaitól. Télen az autó hótakarításának gondját is leveszi
-        a vállunkról.
-        `,
-  },
-};
+const textHtml = `
+  <p>
+    A nap kellemetlen hatásait kiküszöbölhetjük külső- és belső oldali árnyékolással, redőny, zsalúzia, roló, reluxa, szalagfüggöny, roletta, napvitorla felszerelésével.
+  </p>
+  <p>
+    A szabadon álló, hangulatvilágítással felszerelt, asztallal, padokkal, székekkel berendezett pergola, filagória, pavilon kiváló védelmet biztosít a napsugárzás és az időjárás egyéb viszontagságai ellen.
+  </p>
+  <p>
+    Futónövények felfuttatásával meglepően hatékony árnyékolást érhetünk el, akár egy kocsibeálló esetében is.
+  </p>`
 
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
-const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/napvedelem/*/*", { import: "default" });
+const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/napvedelem/*", { import: "default" });
 const imagesRenderable: {
   imageRenderable: any;
   alt: string;
   projectType: string;
   pathFromProjectRoot: string;
-  text: string;
 }[] = [];
 for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
   const projectTypePath = path.dirname(imgPath);
@@ -61,9 +30,8 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     projectType,
     pathFromProjectRoot: imgPath.replace("../", "src/"),
     alt: path.basename(imgPath),
-    text: items[projectType].text,
   });
 }
 ---
 
-<FilterableEntryWithPictures imagesRenderable={imagesRenderable} items={items} title="Nap elleni védelem, Árnyékolás" description="Védekezzen a nap ereje ellen a Beridoor Kft által épített árnyékolási berendezésekkel" />
+<SingleEntryWithPictures textHtml={textHtml} imagesRenderable={imagesRenderable} title="Nap elleni védelem, Árnyékolás" description="Védekezzen a nap ereje ellen a Beridoor Kft által épített árnyékolási berendezésekkel" />
