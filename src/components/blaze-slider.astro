@@ -26,22 +26,20 @@ for (const img of images) {
             const [Svg, svgProps, svgChildren] = placeHolderImages[image.pathFromProjectRoot];
             return (
               <div class="inline-block rounded-none overflow-hidden bg-cover bg-center relative w-full h-[calc(100vh-86px)]">
-                {iterCount === 0 ? (
-                  <Svg
-                    {...svgProps}
-                    style={{
-                      ...svgProps.style,
-                      transform: ["scale(1.5)", svgProps.style.transform].join(" "),
-                      filter: "blur(60px)",
-                    }}
-                    class="z-0 absolute svg-placeholders">
-                    {svgChildren.map((child) => {
-                      const [Path, pathProps] = child;
+                <Svg
+                  {...svgProps}
+                  style={{
+                    ...svgProps.style,
+                    transform: ["scale(1.5)", svgProps.style.transform].join(" "),
+                    filter: "blur(60px)",
+                  }}
+                  class="z-0 absolute svg-placeholders">
+                  {svgChildren.map((child) => {
+                    const [Path, pathProps] = child;
 
-                      return <Path {...pathProps} />;
-                    })}
-                  </Svg>
-                ) : null}
+                    return <Path {...pathProps} />;
+                  })}
+                </Svg>
                 <Image
                   src={image.imageRenderable}
                   alt={image.alt}
@@ -145,14 +143,27 @@ for (const img of images) {
   /* used for generation: https://codepen.io/darkylmnx/pen/YVmKbj, https://stackoverflow.com/questions/2570972/css-font-border */
   .outlineText {
     @media (min-width: 10px) {
-      text-shadow: -1px -1px 0 #143143,-1px 0px 0 #143143,-1px 1px 0 #143143,0px -1px 0 #143143,0px 0px 0 #143143,0px 1px 0 #143143,1px -1px 0 #143143,1px 0px 0 #143143,1px 1px 0 #143143
+      text-shadow: -1px -1px 0 #143143, -1px 0px 0 #143143, -1px 1px 0 #143143, 0px -1px 0 #143143, 0px 0px 0 #143143,
+        0px 1px 0 #143143, 1px -1px 0 #143143, 1px 0px 0 #143143, 1px 1px 0 #143143;
     }
     @media (min-width: 1024px) {
-      text-shadow: -2px -2px 0 #143143,-2px -1px 0 #143143,-2px 0px 0 #143143,-2px 1px 0 #143143,-2px 2px 0 #143143,-1px -2px 0 #143143,-1px -1px 0 #143143,-1px 0px 0 #143143,-1px 1px 0 #143143,-1px 2px 0 #143143,0px -2px 0 #143143,0px -1px 0 #143143,0px 0px 0 #143143,0px 1px 0 #143143,0px 2px 0 #143143,1px -2px 0 #143143,1px -1px 0 #143143,1px 0px 0 #143143,1px 1px 0 #143143,1px 2px 0 #143143,2px -2px 0 #143143,2px -1px 0 #143143,2px 0px 0 #143143,2px 1px 0 #143143,2px 2px 0 #143143
+      text-shadow: -2px -2px 0 #143143, -2px -1px 0 #143143, -2px 0px 0 #143143, -2px 1px 0 #143143, -2px 2px 0 #143143,
+        -1px -2px 0 #143143, -1px -1px 0 #143143, -1px 0px 0 #143143, -1px 1px 0 #143143, -1px 2px 0 #143143,
+        0px -2px 0 #143143, 0px -1px 0 #143143, 0px 0px 0 #143143, 0px 1px 0 #143143, 0px 2px 0 #143143,
+        1px -2px 0 #143143, 1px -1px 0 #143143, 1px 0px 0 #143143, 1px 1px 0 #143143, 1px 2px 0 #143143,
+        2px -2px 0 #143143, 2px -1px 0 #143143, 2px 0px 0 #143143, 2px 1px 0 #143143, 2px 2px 0 #143143;
     }
     @media (min-width: 1536px) {
-      text-shadow: -3px -3px 0 #143143,-3px -2px 0 #143143,-3px -1px 0 #143143,-3px 0px 0 #143143,-3px 1px 0 #143143,-3px 2px 0 #143143,-3px 3px 0 #143143,-2px -3px 0 #143143,-2px -2px 0 #143143,-2px -1px 0 #143143,-2px 0px 0 #143143,-2px 1px 0 #143143,-2px 2px 0 #143143,-2px 3px 0 #143143,-1px -3px 0 #143143,-1px -2px 0 #143143,-1px -1px 0 #143143,-1px 0px 0 #143143,-1px 1px 0 #143143,-1px 2px 0 #143143,-1px 3px 0 #143143,0px -3px 0 #143143,0px -2px 0 #143143,0px -1px 0 #143143,0px 0px 0 #143143,0px 1px 0 #143143,0px 2px 0 #143143,0px 3px 0 #143143,1px -3px 0 #143143,1px -2px 0 #143143,1px -1px 0 #143143,1px 0px 0 #143143,1px 1px 0 #143143,1px 2px 0 #143143,1px 3px 0 #143143,2px -3px 0 #143143,2px -2px 0 #143143,2px -1px 0 #143143,2px 0px 0 #143143,2px 1px 0 #143143,2px 2px 0 #143143,2px 3px 0 #143143,3px -3px 0 #143143,3px -2px 0 #143143,3px -1px 0 #143143,3px 0px 0 #143143,3px 1px 0 #143143,3px 2px 0 #143143,3px 3px 0 #143143
+      text-shadow: -3px -3px 0 #143143, -3px -2px 0 #143143, -3px -1px 0 #143143, -3px 0px 0 #143143, -3px 1px 0 #143143,
+        -3px 2px 0 #143143, -3px 3px 0 #143143, -2px -3px 0 #143143, -2px -2px 0 #143143, -2px -1px 0 #143143,
+        -2px 0px 0 #143143, -2px 1px 0 #143143, -2px 2px 0 #143143, -2px 3px 0 #143143, -1px -3px 0 #143143,
+        -1px -2px 0 #143143, -1px -1px 0 #143143, -1px 0px 0 #143143, -1px 1px 0 #143143, -1px 2px 0 #143143,
+        -1px 3px 0 #143143, 0px -3px 0 #143143, 0px -2px 0 #143143, 0px -1px 0 #143143, 0px 0px 0 #143143,
+        0px 1px 0 #143143, 0px 2px 0 #143143, 0px 3px 0 #143143, 1px -3px 0 #143143, 1px -2px 0 #143143,
+        1px -1px 0 #143143, 1px 0px 0 #143143, 1px 1px 0 #143143, 1px 2px 0 #143143, 1px 3px 0 #143143,
+        2px -3px 0 #143143, 2px -2px 0 #143143, 2px -1px 0 #143143, 2px 0px 0 #143143, 2px 1px 0 #143143,
+        2px 2px 0 #143143, 2px 3px 0 #143143, 3px -3px 0 #143143, 3px -2px 0 #143143, 3px -1px 0 #143143,
+        3px 0px 0 #143143, 3px 1px 0 #143143, 3px 2px 0 #143143, 3px 3px 0 #143143;
     }
   }
-  
 </style>
