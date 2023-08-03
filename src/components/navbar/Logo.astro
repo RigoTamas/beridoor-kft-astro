@@ -8,6 +8,6 @@ export interface Props {
 const { width, isInvisible } = Astro.props;
 const invisible = isInvisible ? "invisible": ""
 ---
-<a href="/" class=`${invisible}`>
+<a href="/beridoor-kft-astro/" class=`${invisible}`>
   <Image src={logoImage} alt="logo" loading="eager" format="avif" width={width} aspectRatio={16/9} />
 </a>

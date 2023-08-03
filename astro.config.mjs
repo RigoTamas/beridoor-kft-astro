@@ -9,7 +9,8 @@ export default defineConfig({
   vite: {
     assetsInclude: ['**/*.jpg', '**/*.JPG'],
   },
-  site: "https://beridoor.hu",
+  site: "https://RigoTamas.github.io",
+  base: "/beridoor-kft-astro",
   integrations: [tailwind({ config: { applyBaseStyles: false } }), image({
     serviceEntryPoint: "@astrojs/image/sharp"
   }), mdx(), sitemap()]
