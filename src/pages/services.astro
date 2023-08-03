@@ -1,57 +1,48 @@
 ---
-import Container from "../components/container.astro";
-import Button from "../components/ui/button.astro";
-import FilterScript from "@components/scripts/basic-filter.astro";
-import Layout from "../layouts/Layout.astro";
-import FilterableEntry from "../components/filterable-entry.astro";
+import FilterableEntryWithPictures from "../components/filterable-entry-with-pictures.astro";
+import path from "path";
 
 const items = {
   // key and id field needs to be the same
   lakasfelujitas: {
     label: "Lakásfelújítás",
     id: "lakasfelujitas",
-    html: `
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
-          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
-          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
-          dolores similique iste voluptates pariatur! Possimus, nam.
-        </p>`,
+    text: 'Több megoldás is létezik komfortosan felújítani lakóterünket',
   },
-  belsoepiteszet: {
-    label: "Belsőépítészet",
-    id: "belsoepiteszet",
-    html: `
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
-          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
-          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
-          dolores similique iste voluptates pariatur! Possimus, nam.
-        </p>`,
-  },
-  tervezes: {
-    label: "Tervezés",
-    id: "tervezes",
-    html: `
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
-          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
-          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
-          dolores similique iste voluptates pariatur! Possimus, nam.
-        </p>`,
-  },
-  latvanyterv: {
-    label: "Látványterv",
-    id: "latvanyterv",
-    html: `
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt accusamus, animi sunt illum quibusdam in,
-          laborum culpa eius voluptatum, nisi delectus impedit voluptatibus eaque? Asperiores voluptatum eaque ad ex
-          maiores ullam tenetur, ipsa, laborum voluptatem distinctio eum quos sapiente facilis optio vel repellat,
-          dolores similique iste voluptates pariatur! Possimus, nam.
-        </p>`,
+  nyilaszaro: {
+    label: "Nyílászáró",
+    id: "nyilaszaro",
+    text: 'Az energiatakarékos házakkal szemben állított követelmény az épület megfelelő hő- és hangszigetelése.  A modern nyílászárók minden tekintetben eleget tesznek ezeknek az elvárásoknak.',
   },
 };
+
+// workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
+const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/szolgaltatasok/*/*", { import: "default" });
+  console.log('viteImages', viteImages)
+const imagesRenderable: {
+  imageRenderable: any;
+  alt: string;
+  pathFromProjectRoot: string;
+  projectType: string;
+  text: string;
+}[] = [];
+for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
+  const projectTypePath = path.dirname(imgPath);
+  const projectType = path.basename(projectTypePath);
+  const imageRenderable = await imageFunction();
+  imagesRenderable.push({
+    imageRenderable,
+    pathFromProjectRoot: imgPath.replace("../", "src/"),
+    projectType,
+    alt: path.basename(imgPath),
+    text: items[projectType].text,
+  });
+}
 ---
 
-<FilterableEntry items={items} title="Beridoor kft szolgáltatásai: Lakásfelújítás, Belsőépítészet, Tervezés, Látványterv" description="Ismerje meg a szolgáltatásainkat" />
+<FilterableEntryWithPictures
+  imagesRenderable={imagesRenderable}
+  items={items}
+  title="Beridoor Kft. szolgáltatásai"
+  description="Beridoor Kft. télikert és teraszbeépítésekkel foglalkozó cég által nyújtott szolgáltatások"
+/>
