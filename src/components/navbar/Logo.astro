@@ -1,6 +1,6 @@
 ---
 import logoImage from "assets/logo-new-cropped-3.png";
-import { Image } from "@astrojs/image/components";
+import { Image, Picture } from "@astrojs/image/components";
 export interface Props {
   width: number;
   isInvisible?: boolean;
@@ -9,5 +9,5 @@ const { width, isInvisible } = Astro.props;
 const invisible = isInvisible ? "invisible": ""
 ---
 <a href="/" class=`${invisible}`>
-  <Image src={logoImage} alt="logo" loading="eager" format="avif" width={width} aspectRatio={16/9} />
+  <Picture src={logoImage} alt="logo" loading="eager" sizes={`${width}px`} formats={["avif", "webp"]} widths={[width]} aspectRatio={16/9} />
 </a>

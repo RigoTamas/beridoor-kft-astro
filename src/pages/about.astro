@@ -1,5 +1,5 @@
 ---
-import { Image } from "@astrojs/image/components";
+import { Image, Picture } from "@astrojs/image/components";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import FilterScript from "@components/scripts/basic-filter.astro";
@@ -233,13 +233,14 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
                 {staff.map((staffItem) => (
                   <div class="group">
                     <div class="w-full">
-                      <Image
+                      <Picture
                         src={imageNameToRenderableImageMap[staffItem.pictureName]}
                         alt={staffItem.pictureName}
-                        width={400}
+                        widths={[400]}
+                        sizes="400px"
                         loading={"eager"}
                         aspectRatio="3:2"
-                        format="avif"
+                        formats={["avif", "webp"]}
                         fit="cover"
                         position="center"
                         class="w-full rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl"

@@ -1,5 +1,5 @@
 ---
-import { Image } from "@astrojs/image/components";
+import { Image, Picture } from "@astrojs/image/components";
 import Layout from "@layouts/Layout.astro";
 import fs from "node:fs";
 import "../assets/style/base.css";
@@ -57,13 +57,14 @@ for (const img of imagesRenderable) {
                     "z-0",
                   ]}
                 />
-                <Image
+                <Picture
                   id={`${item.projectType}~${iterCount}`}
                   src={item.imageRenderable}
                   alt={item.alt}
-                  width={800}
+                  sizes="800px"
+                  widths={[800]}
                   aspectRatio="3:2"
-                  format="avif"
+                  formats={["avif", "webp"]}
                   loading="lazy"
                   fit="cover"
                   position="center"
@@ -86,12 +87,13 @@ for (const img of imagesRenderable) {
                   imagesRenderable.map((item, iterCount) => {
                     return (
                       <div>
-                        <Image
+                        <Picture
                           src={item.imageRenderable}
                           alt={item.alt}
-                          width={800}
+                          widths={[800]}
+                          sizes="800px"
                           aspectRatio="3:2"
-                          format="avif"
+                          formats={["avif", "webp"]}
                           loading="lazy"
                           fit="cover"
                           position="center"

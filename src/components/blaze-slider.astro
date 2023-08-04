@@ -1,5 +1,5 @@
 ---
-import { Image } from "@astrojs/image/components";
+import { Image, Picture } from "@astrojs/image/components";
 import "../styles/blaze-slider.css";
 import { Icon } from "astro-icon";
 import { getPlaiceholder } from "plaiceholder";
@@ -42,13 +42,14 @@ for (const img of images) {
                     })}
                   </Svg>
                 ) : null}
-                <Image
+                <Picture
                   src={image.imageRenderable}
                   alt={image.alt}
-                  width={1600}
+                  sizes="1600px"
+                  widths={[1600]}
                   loading={"lazy"}
-                  aspectRatio="4:3"
-                  format="avif"
+                  aspectRatio={4/3}
+                  formats={["avif", "webp"]}
                   fit="cover"
                   position="center"
                   class={`main-page-image-${iterCount} z-10 pointer-events-none absolute w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat`}
