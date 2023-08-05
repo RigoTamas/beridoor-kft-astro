@@ -156,13 +156,9 @@ for (const img of imagesRenderable) {
       animate(image, { scale: 1.0 });
     });
     image.addEventListener("click", (event) => {
-    console.log('event.target', event.target)
       document.getElementById("dialog")!.showModal();
-      console.log('event.target!.id', event.target!.id)
       const splitted = event.target!.id.split("~");
-      console.log('splitted', splitted)
       const clickedElementNumber = parseInt(splitted[1]);
-      console.log('clickedElementNumber', clickedElementNumber)
       const incementSliderBy = clickedElementNumber - slider.stateIndex;
       if (incementSliderBy > 0) {
         slider.next(incementSliderBy);

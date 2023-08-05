@@ -18,7 +18,6 @@ const items = {
 
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
 const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/szolgaltatasok/*/*", { import: "default" });
-  console.log('viteImages', viteImages)
 const imagesRenderable: {
   imageRenderable: any;
   alt: string;
