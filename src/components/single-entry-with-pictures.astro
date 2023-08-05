@@ -34,7 +34,7 @@ for (const img of imagesRenderable) {
       <Fragment set:html={textHtml} />
     </div>
     <div>
-      <div class="flex flex-wrap flex-row pt-16 pb-8 gap-8 justify-center">
+      <div class="grid md:grid-cols-2 grid-cols-1 pt-16 pb-8 gap-8 justify-center mx-6">
         {
           imagesRenderable.map((item, iterCount) => {
             const base64 = placeHolderImages[item.pathFromProjectRoot];
@@ -61,8 +61,8 @@ for (const img of imagesRenderable) {
                   id={`${item.projectType}~${iterCount}`}
                   src={item.imageRenderable}
                   alt={item.alt}
-                  sizes="800px"
-                  widths={[800]}
+                  sizes="93vw"
+                  widths={[1400, 800, 500, 300]}
                   aspectRatio="3:2"
                   formats={["avif", "webp"]}
                   loading="lazy"
@@ -90,8 +90,8 @@ for (const img of imagesRenderable) {
                         <Picture
                           src={item.imageRenderable}
                           alt={item.alt}
-                          widths={[800]}
-                          sizes="800px"
+                          sizes="93vw"
+                          widths={[1400, 800, 500, 300]}
                           aspectRatio="3:2"
                           formats={["avif", "webp"]}
                           loading="lazy"

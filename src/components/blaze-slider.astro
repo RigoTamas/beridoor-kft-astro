@@ -1,5 +1,5 @@
 ---
-import { Image, Picture } from "@astrojs/image/components";
+import { Picture } from "@astrojs/image/components";
 import "../styles/blaze-slider.css";
 import { Icon } from "astro-icon";
 import { getPlaiceholder } from "plaiceholder";
@@ -45,8 +45,8 @@ for (const img of images) {
                 <Picture
                   src={image.imageRenderable}
                   alt={image.alt}
-                  sizes="1600px"
-                  widths={[1600]}
+                  sizes="100vw"
+                  widths={[1600, 1280, 1024, 800, 600]}
                   loading={"lazy"}
                   aspectRatio={4/3}
                   formats={["avif", "webp"]}
@@ -54,7 +54,7 @@ for (const img of images) {
                   position="center"
                   class={`main-page-image-${iterCount} z-10 pointer-events-none absolute left-0 top-0 w-full, h-full object-cover min-w-full min-h-full bg-cover bg-no-repeat`}
                 />
-                <p class="z-20 absolute mx-auto left-0 right-0 text-center outlineText text-white text-2xl xs:text-3xl md:text-4xl lg:text-6xl 2xl:text-7xl 3xl:text-8xl">
+                <p class="z-20 absolute mx-auto left-0 right-0 text-center outlineText text-white text-2xl xxs:text-3xl md:text-4xl lg:text-6xl 2xl:text-7xl 3xl:text-8xl">
                   {image.mainText}
                 </p>
               </div>

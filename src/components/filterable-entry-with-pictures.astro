@@ -1,5 +1,5 @@
 ---
-import { Image, Picture } from "@astrojs/image/components";
+import { Picture } from "@astrojs/image/components";
 import Layout from "@layouts/Layout.astro";
 import fs from "node:fs";
 import "../assets/style/base.css";
@@ -49,7 +49,7 @@ const projectIterCounter = {};
       <p class="md:text-lg" id="textToShow"></p>
     </div>
     <div>
-      <div class="flex flex-wrap flex-row pt-16 pb-8 gap-8 justify-center">
+      <div id="picture-wrapper" class="grid md:grid-cols-3 xs:grid-cols-2 grid-cols-1 pt-16 pb-8 gap-8 justify-center mx-6">
         {
           imagesRenderable.map((item, iterCount) => {
             const base64 = placeHolderImages[item.pathFromProjectRoot];
@@ -57,7 +57,7 @@ const projectIterCounter = {};
               projectIterCounter[item.projectType] === undefined ? 0 : projectIterCounter[item.projectType] + 1;
             return (
               <div
-                class:list={`${item.projectType} hover:cursor-pointer hidden relative images-selector xs:w-[290px] inline-block overflow-hidden rounded-lg`}>
+                class:list={`${item.projectType} hover:cursor-pointer hidden relative images-selector inline-block overflow-hidden rounded-lg`}>
                 <img
                   aria-hidden
                   alt=""
@@ -78,8 +78,8 @@ const projectIterCounter = {};
                   id={`${item.projectType}~${projectIterCounter[item.projectType]}~${iterCount}`}
                   src={item.imageRenderable}
                   alt={item.alt}
-                  sizes="800px"
-                  widths={[800]}
+                  sizes="93vw"
+                  widths={[1400, 800, 500, 300]}
                   aspectRatio="3:2"
                   formats={["avif", "webp"]}
                   loading="lazy"
@@ -196,7 +196,7 @@ const projectIterCounter = {};
     (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
     {}
   );
-  const changeFilteredItemSize = { smallClass: "sm:w-[290px]", largeClass: "sm:w-[500px]" };
+  const classesToChangeOnFilter = { element: document.getElementById('picture-wrapper')!, filterTurnedOffClasses: ["md:grid-cols-3", "xs:grid-cols-2"], filterTurnedOnClasses: ["md:grid-cols-2", "xs:grid-cols-1"] };
 
   const fragment = window.location.hash.substring(1);
   const isValidFragment = Boolean(items[fragment]);
@@ -206,7 +206,7 @@ const projectIterCounter = {};
     selectedButton: buttonsMap[fragment],
     state,
     classesToToggle: classesToChange,
-    changeFilteredItemSize,
+    classesToChangeOnFilter,
   });
   changeSliderElements({ state });
   updateTextShown({ state });
@@ -251,7 +251,7 @@ const projectIterCounter = {};
       classesToRemove: classesToChange,
       classesToToggle: classesToChange,
     });
-    hideAndShowItems({ state, changeFilteredItemSize });
+    hideAndShowItems({ state, classesToChangeOnFilter });
     changeSliderElements({ state });
     updateTextShown({ state });
   });

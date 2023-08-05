@@ -97,45 +97,51 @@ export function setInitialUi({
   state,
   selectedButton,
   classesToToggle,
-  changeFilteredItemSize,
+  classesToChangeOnFilter,
 }: {
   selectedButton?: HTMLElement;
   state: State;
   classesToToggle: string[];
-  changeFilteredItemSize?: { smallClass: string; largeClass: string };
+  classesToChangeOnFilter?: { element: HTMLElement, filterTurnedOffClasses: string[], filterTurnedOnClasses: string[] };
 }) {
   if (selectedButton) {
     toggleStylingOnSelectedButton({ button: selectedButton, classesToToggle });
   }
-  hideAndShowItems({ state, changeFilteredItemSize });
+  hideAndShowItems({ state, classesToChangeOnFilter });
 }
-//TODO: add blurred image until image is loading
-//TODO: add carousel on click for filterable-entry-with-pictures
+
+const convertBoolToNum = (bool: boolean) => bool ? 1 : 0
 
 export function hideAndShowItems({
   state,
-  changeFilteredItemSize,
+  classesToChangeOnFilter,
 }: {
   state: State;
-  changeFilteredItemSize?: { smallClass: string; largeClass: string };
+  classesToChangeOnFilter?: { element: HTMLElement, filterTurnedOffClasses: string[], filterTurnedOnClasses: string[] };
 }) {
-  for (const item of Object.values(state)) {
+  const sortedValuesByVisibleFirst = Object.values(state).sort((item1, item2) => convertBoolToNum(item2.isVisible) - convertBoolToNum(item1.isVisible))
+  let isAnyFilterTurnedOn = false
+  for (const item of sortedValuesByVisibleFirst) {
     const elements = document.getElementsByClassName(item.id);
     for (const element of elements) {
       if (item.isVisible) {
-        if (changeFilteredItemSize) {
-          if (item.isFilterTurnedOn) {
-            element.classList.remove(changeFilteredItemSize.smallClass);
-            element.classList.add(changeFilteredItemSize.largeClass);
-          } else {
-            element.classList.add(changeFilteredItemSize.smallClass);
-            element.classList.remove(changeFilteredItemSize.largeClass);
-          }
+        if (item.isFilterTurnedOn) {
+          isAnyFilterTurnedOn = true;
         }
         element.classList.remove("hidden");
       } else {
         element.classList.add("hidden");
       }
+    }
+  }
+  if (classesToChangeOnFilter) {
+    const classesToAdd = isAnyFilterTurnedOn ? classesToChangeOnFilter.filterTurnedOnClasses : classesToChangeOnFilter.filterTurnedOffClasses
+    const classesToRemove = isAnyFilterTurnedOn ? classesToChangeOnFilter.filterTurnedOffClasses : classesToChangeOnFilter.filterTurnedOnClasses
+    for (const classToAdd of classesToAdd) {
+      classesToChangeOnFilter.element.classList.add(classToAdd)
+    }
+    for (const classToRemove of classesToRemove) {
+      classesToChangeOnFilter.element.classList.remove(classToRemove)
     }
   }
 }
