@@ -34,13 +34,13 @@ for (const img of imagesRenderable) {
       <Fragment set:html={textHtml} />
     </div>
     <div>
-      <div class="grid md:grid-cols-2 grid-cols-1 pt-16 pb-8 gap-8 justify-center mx-6">
+      <div class="grid md:grid-cols-2 grid-cols-1 pt-16 pb-8 gap-8 justify-center mx-6 ">
         {
           imagesRenderable.map((item, iterCount) => {
             const base64 = placeHolderImages[item.pathFromProjectRoot];
             return (
               <div
-                class:list={`${item.projectType} hover:cursor-pointer relative images-selector w-[290px] lg:w-[500px] inline-block overflow-hidden rounded-lg`}>
+                class:list={`${item.projectType} hover:cursor-pointer relative images-selector inline-block overflow-hidden rounded-lg`}>
                 <img
                   aria-hidden
                   alt=""
