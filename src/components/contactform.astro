@@ -57,6 +57,18 @@ import Button from "./ui/button.astro";
   <div class="mb-5">
     <input
       type="text"
+      placeholder="Kivitelezés helyszíne"
+      required
+      class="w-full px-4 py-3 border-2 bg-white placholder:text-beridoorBlue dark:bg-beridoorBlue dark:placeholder:text-white placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
+      name="location"
+    />
+    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
+      Kérlek add meg a kivitelezés helyszínét.
+    </div>
+  </div>
+  <div class="mb-5">
+    <input
+      type="text"
       placeholder="Tárgy"
       required
       class="w-full px-4 py-3 border-2 bg-white placholder:text-beridoorBlue dark:bg-beridoorBlue dark:placeholder:text-white placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
@@ -208,7 +220,7 @@ import Button from "./ui/button.astro";
       if (response.status === 200) {
         result.classList.remove("text-red-500");
         result.classList.add("text-green-500");
-        result.innerHTML = "Üzenet elküldve.";
+        result.innerHTML = "Üzenet elküldésre került. Köszönjük.";
         form.reset();
         form.classList.remove("was-validated");
         setTimeout(() => {
