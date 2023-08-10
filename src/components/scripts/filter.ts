@@ -125,6 +125,9 @@ export function hideAndShowItems({
     const elements = document.getElementsByClassName(item.id);
     for (const element of elements) {
       if (item.isVisible) {
+        element.querySelectorAll("img").forEach((s) => s?.setAttribute("loading", "eager"));
+        // need to change lazy loading to eager, because positioned elements have zero height, and otherwrise they wouldn't get loaded:
+        // https://stackoverflow.com/questions/66308398/images-inside-absolute-positioned-elements
         if (item.isFilterTurnedOn) {
           isAnyFilterTurnedOn = true;
         }
