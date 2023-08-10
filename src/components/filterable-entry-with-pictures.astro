@@ -20,6 +20,8 @@ interface Props {
   description: string;
 }
 
+// animate-t visszatenni, fix szélességet adni a képeknek, valszeg grid-area-val, hogy ne legyen ez a görgetés soráni ugrálás. Ha nem grid-area akkor flex és konkrét széles képek.
+
 const { items, imagesRenderable, title, description } = Astro.props;
 
 const placeHolderImages = {};
@@ -80,6 +82,8 @@ const projectIterCounter = {};
                   alt={item.alt}
                   sizes="93vw"
                   widths={[1400, 800, 500, 300]}
+                  width={300}
+                  height={200}
                   aspectRatio="3:2"
                   formats={["avif", "webp"]}
                   loading="lazy"
