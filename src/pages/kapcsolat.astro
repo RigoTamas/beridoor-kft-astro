@@ -5,6 +5,7 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
 import Contactform from "@components/contactform.astro";
+import Pic from '../assets/fooldal/003_ÁLMAINK OTTHONA.JPG'
 
 const phoneNumbers = [
   { name: "Iroda", number: "+36 30 931 4070" },
@@ -50,7 +51,7 @@ const phoneNumbers = [
           </div>
         </div>
         <Picture
-          src={"src/assets/fooldal/003_ÁLMAINK OTTHONA.JPG"}
+          src={Pic}
           alt={"Télikert"}
           sizes="100vw"
           widths={[800]}
