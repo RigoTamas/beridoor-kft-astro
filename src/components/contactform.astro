@@ -2,12 +2,7 @@
 import Button from "./ui/button.astro";
 ---
 
-<!-- To make this contact form work, create your free access key from https://web3forms.com/
-     Then you will get all form submissions in your email inbox. -->
-<form
-  id="form"
-  class="needs-validation"
-  novalidate>
+<form id="form" class="needs-validation" novalidate>
   <input type="checkbox" class="hidden" style="display:none" name="botcheck" />
   <div class="mb-5">
     <input
@@ -17,9 +12,7 @@ import Button from "./ui/button.astro";
       class="w-full px-4 py-3 border-2 bg-white placholder:text-beridoorBlue dark:bg-beridoorBlue dark:placeholder:text-white placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
       name="name"
     />
-    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
-      Kérlek add meg a teljes nevedet.
-    </div>
+    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">Kérlek add meg a teljes nevedet.</div>
   </div>
   <div class="mb-5">
     <label for="email_address" class="sr-only">Email address</label><input
@@ -30,12 +23,8 @@ import Button from "./ui/button.astro";
       required
       class="w-full px-4 py-3 border-2 bg-white placholder:text-beridoorBlue dark:bg-beridoorBlue dark:placeholder:text-white placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
     />
-    <div class="empty-feedback text-red-400 text-sm mt-1">
-      Kérlek add meg az Email címedet.
-    </div>
-    <div class="invalid-feedback text-red-400 text-sm mt-1">
-      Kérlek egy valódi Email címet adj meg.
-    </div>
+    <div class="empty-feedback text-red-400 text-sm mt-1">Kérlek add meg az Email címedet.</div>
+    <div class="invalid-feedback text-red-400 text-sm mt-1">Kérlek egy valódi Email címet adj meg.</div>
   </div>
   <div class="mb-5">
     <label for="phone" class="sr-only">Phone number</label><input
@@ -47,12 +36,8 @@ import Button from "./ui/button.astro";
       required
       class="w-full px-4 py-3 border-2 bg-white placholder:text-beridoorBlue dark:bg-beridoorBlue dark:placeholder:text-white placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
     />
-    <div class="empty-feedback text-red-400 text-sm mt-1">
-      Kérlek add meg a telefonszámodat.
-    </div>
-    <div class="invalid-feedback text-red-400 text-sm mt-1">
-      Formátum: +36201234567
-    </div>
+    <div class="empty-feedback text-red-400 text-sm mt-1">Kérlek add meg a telefonszámodat.</div>
+    <div class="invalid-feedback text-red-400 text-sm mt-1">Formátum: +36201234567</div>
   </div>
   <div class="mb-5">
     <input
@@ -74,9 +59,7 @@ import Button from "./ui/button.astro";
       class="w-full px-4 py-3 border-2 bg-white placholder:text-beridoorBlue dark:bg-beridoorBlue dark:placeholder:text-white placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
       name="subject"
     />
-    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
-      Kérlek add meg az üzenet tárgyát.
-    </div>
+    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">Kérlek add meg az üzenet tárgyát.</div>
   </div>
   <div class="mb-3">
     <textarea
@@ -85,15 +68,25 @@ import Button from "./ui/button.astro";
       placeholder="Üzenet"
       class="w-full px-4 py-3 border-2 bg-white placholder:text-beridoorBlue dark:bg-beridoorBlue dark:placeholder:text-white placeholder:text-gray-800 rounded-md outline-none h-36 focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
     ></textarea>
-    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
-      Kérlek add meg az üzenetet.
-    </div>
+    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">Kérlek add meg az üzenetet.</div>
   </div>
   <div class="mb-3">
     <p>Fotók feltöltése: (max. 15 MB)</p>
-    <input id="images-to-send" class="w-full" type="file" name="image" multiple="multiple" accept="image/*"/>
+    <input id="images-to-send" class="w-full" type="file" name="image" multiple="multiple" accept="image/*" />
     <div id="too-big-file-error-message" class="text-red-400 text-sm mt-1 hidden">
       A feltöltött fotóid mérete több, mint 15 MB. Kérlek tölts fel kevesebb vagy kisebb fájlokat.
+    </div>
+  </div>
+  <div class="mb-5 inline-block">
+    <input type="checkbox" required name="adatkezeles" value="privacy" class="mr-1 bg-white" />
+    <label for="privacy"
+      >Elolvastam és elfogadom a Beridoor Kft <a class="underline" href="/adatkezeles">Adatvédelmi Nyilatkozatát</a>.
+      Hozzájárulok, hogy a személyes adataimat az <a class="underline" href="/adatkezeles"
+        >Adatkezelési Tájékoztatójának</a
+      > megfelelően kezelje.</label
+    >
+    <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
+      Kérlek fogadd el az adatkezelési nyilatkozatot.
     </div>
   </div>
   <Button id="submit-button" type="submit" size="lg" block>Üzenet elküldése</Button>
@@ -126,38 +119,38 @@ import Button from "./ui/button.astro";
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        let encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
-        if ((encoded.length % 4) > 0) {
-          encoded += '='.repeat(4 - (encoded.length % 4));
+        let encoded = reader.result.toString().replace(/^data:(.*,)?/, "");
+        if (encoded.length % 4 > 0) {
+          encoded += "=".repeat(4 - (encoded.length % 4));
         }
         resolve(encoded);
       };
-      reader.onerror = error => reject(error);
+      reader.onerror = (error) => reject(error);
     });
   }
 
-  const retryUntilSuccess = async (promiseFunc, retryCount = 0, maxRetries = 5)  => {
+  const retryUntilSuccess = async (promiseFunc, retryCount = 0, maxRetries = 5) => {
     if (retryCount >= maxRetries) {
-      return
+      return;
     }
     try {
       const returnVal = await promiseFunc();
       if (returnVal.status !== 200) {
-        console.log(`call failed, retryCount: ${retryCount}, error: ${returnVal}`)
-        return await retryUntilSuccess(promiseFunc, retryCount + 1)
+        console.log(`call failed, retryCount: ${retryCount}, error: ${returnVal}`);
+        return await retryUntilSuccess(promiseFunc, retryCount + 1);
       }
       return returnVal;
     } catch (e) {
-      console.log(`call failed, retryCount: ${retryCount}, error: ${e}`)
-      return await retryUntilSuccess(promiseFunc, retryCount + 1)
+      console.log(`call failed, retryCount: ${retryCount}, error: ${e}`);
+      return await retryUntilSuccess(promiseFunc, retryCount + 1);
     }
-  }
-    
+  };
 
   const form = document.getElementById("form");
   const result = document.getElementById("result");
-  const submitButton = document.getElementById("submit-button")
-  const emailFailedMessage = "Hoppá, úgy tűnik az üzenetet nem sikerült elküldeni. Kérlek próbáld meg újra, vagy küldj egy email-t közvetlenül a beridoorkft@gmail.com-ra. Amennyiben a megadott e-mail címre érkezett visszaigazoló e-mail, úgy az üzenet mégis beérkezett a rendszerünkbe."
+  const submitButton = document.getElementById("submit-button");
+  const emailFailedMessage =
+    "Hoppá, úgy tűnik az üzenetet nem sikerült elküldeni. Kérlek próbáld meg újra, vagy küldj egy email-t közvetlenül a beridoorkft@gmail.com-ra. Amennyiben a megadott e-mail címre érkezett visszaigazoló e-mail, úgy az üzenet mégis beérkezett a rendszerünkbe.";
 
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -168,18 +161,18 @@ import Button from "./ui/button.astro";
       let tooBigFile = false;
       const formData = new FormData(form);
       const object = Object.fromEntries(formData);
-      const files = document.getElementById('images-to-send')
-      const errorMessageDiv = document.getElementById('too-big-file-error-message')
-      let size = 0
+      const files = document.getElementById("images-to-send");
+      const errorMessageDiv = document.getElementById("too-big-file-error-message");
+      let size = 0;
       for (const file of files.files) {
-        size += file.size
+        size += file.size;
       }
       if (size > 15_500_000) {
-        errorMessageDiv.classList.remove('hidden');
-        tooBigFile = true
+        errorMessageDiv.classList.remove("hidden");
+        tooBigFile = true;
       } else {
-        errorMessageDiv.classList.add('hidden');
-        tooBigFile = false
+        errorMessageDiv.classList.add("hidden");
+        tooBigFile = false;
       }
       if (!form.checkValidity()) {
         form.querySelectorAll(":invalid")[0].focus();
@@ -192,10 +185,10 @@ import Button from "./ui/button.astro";
       result.classList.remove("text-red-500");
       result.innerHTML = "Üzenet küldése...";
 
-      const images = []
+      const images = [];
       for (const file of files.files) {
-        const base64Image = await getBase64(file)
-        images.push({imageName: file.name, base64Image})
+        const base64Image = await getBase64(file);
+        images.push({ imageName: file.name, base64Image });
       }
       const json = JSON.stringify({
         ...object,
@@ -204,9 +197,9 @@ import Button from "./ui/button.astro";
 
       timeout = setTimeout(() => {
         result.innerHTML = "Üzenet küldése...<br>küldés folyamatban: nagy méretű fájlok esetén eltarthat egy ideig";
-      }, 5000)
-      await retryUntilSuccess(() => fetch('https://beridoor-kft-email.fly.dev/', { method: "GET" })) // ping server to wake it up
-      const response = await fetch('https://beridoor-kft-email.fly.dev/send-email', {
+      }, 5000);
+      await retryUntilSuccess(() => fetch("https://beridoor-kft-email.fly.dev/", { method: "GET" })); // ping server to wake it up
+      const response = await fetch("https://beridoor-kft-email.fly.dev/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -216,7 +209,7 @@ import Button from "./ui/button.astro";
       });
       clearTimeout(timeout);
       let responseJson = await response.json();
-      console.log('json', JSON.stringify(responseJson, null, 2));
+      console.log("json", JSON.stringify(responseJson, null, 2));
       if (response.status === 200) {
         result.classList.remove("text-red-500");
         result.classList.add("text-green-500");

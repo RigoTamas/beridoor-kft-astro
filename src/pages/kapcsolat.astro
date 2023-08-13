@@ -1,4 +1,5 @@
 ---
+import { Picture } from "@astrojs/image/components";
 import { Icon } from "astro-icon";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
@@ -6,35 +7,36 @@ import Sectionhead from "@components/sectionhead.astro";
 import Contactform from "@components/contactform.astro";
 
 const phoneNumbers = [
-  {name: 'Iroda', number: '+36 30 931 4070'},
-  {name: 'Tervezés', number: '+36 20 931 4070'},
-  {name: 'Kivitelezés', number: '+36 20 205 0956'},
-  {name: 'Design', number: '+36 20 4929 969'},
-]
+  { name: "Iroda", number: "+36 30 931 4070" },
+  { name: "Tervezés", number: "+36 20 931 4070" },
+  { name: "Kivitelezés", number: "+36 20 205 0956" },
+  { name: "Design", number: "+36 20 4929 969" },
+];
 ---
 
 <Layout title="Kapcsolat" description="Lépjen kapcsolatba a Beridoor Kft-vel és építtesse fel álmai télikertjét">
   <Container>
     <Sectionhead>
       <Fragment slot="title">Kapcsolat</Fragment>
-      <Fragment slot="desc">A részletes ajánlat elkészítéséhez kérjük mellékeljen fotót a szerkezet helyszínéről.</Fragment>
+      <Fragment slot="desc">
+        A részletes ajánlat elkészítéséhez kérjük mellékeljen fotót a szerkezet helyszínéről.
+      </Fragment>
     </Sectionhead>
 
     <div class="grid md:grid-cols-2 gap-10 mx-auto max-w-4xl mt-16">
       <div>
         <div class="pt-[2px]">
-          <div class="flex items-center mt-3 space-x-2 ">
+          <div class="flex items-center mt-3 space-x-2">
             <Icon class="w-4 h-4" name="uil:map-marker" />
-            <a href=>Beridoor Kft 2085 Pilisvörösvár, Budai út 7167/6</a>
+            <p>Beridoor Kft 2085 Pilisvörösvár, Budai út 7167/6</p>
           </div>
-          <div class="flex items-center mt-3 space-x-2 ">
-            <Icon class="w-4 h-4" name="uil:envelope" /><a
-              href="mailto:beridoorkft@gmail.com"
-              >beridoorkft@gmail.com</a
-            >
+          <div class="flex items-center mt-3 space-x-2">
+            <Icon class="w-4 h-4" name="uil:envelope" /><a href="mailto:beridoorkft@gmail.com">beridoorkft@gmail.com</a>
           </div>
           <div class="grid grid-cols-2 gap-3 max-w-xs mt-3">
-            {phoneNumbers.map(({name, number})=> (
+            {
+              phoneNumbers.map(({ name, number }) => (
+                <>
                   <div class="flex items-center space-x-2 ">
                     <Icon class="w-4 h-4" name="uil:phone" />
                     <span>{name}</span>
@@ -42,9 +44,25 @@ const phoneNumbers = [
                   <div class="space-x-2">
                     <a href={`tel:${number}`}>{number}</a>
                   </div>
-            ))}
+                </>
+              ))
+            }
           </div>
         </div>
+        <Picture
+          src={"src/assets/fooldal/003_ÁLMAINK OTTHONA.JPG"}
+          alt={"Télikert"}
+          sizes="100vw"
+          widths={[800]}
+          width={300}
+          height={200}
+          aspectRatio="3:2"
+          formats={["avif", "webp"]}
+          loading="lazy"
+          fit="cover"
+          position="center"
+          class="w-full pr-11 pt-12 hidden md:inline-block"
+        />
       </div>
       <div>
         <Contactform />
