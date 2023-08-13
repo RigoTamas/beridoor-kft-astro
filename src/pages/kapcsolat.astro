@@ -1,11 +1,9 @@
 ---
-import { Picture } from "@astrojs/image/components";
 import { Icon } from "astro-icon";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
 import Contactform from "@components/contactform.astro";
-import Pic from '../assets/fooldal/003_ÁLMAINK OTTHONA.JPG'
 
 const phoneNumbers = [
   { name: "Iroda", number: "+36 30 931 4070" },
@@ -50,20 +48,6 @@ const phoneNumbers = [
             }
           </div>
         </div>
-        <Picture
-          src={Pic}
-          alt={"Télikert"}
-          sizes="100vw"
-          widths={[800]}
-          width={300}
-          height={200}
-          aspectRatio="3:2"
-          formats={["avif", "webp"]}
-          loading="lazy"
-          fit="cover"
-          position="center"
-          class="w-full pr-11 pt-12 hidden md:inline-block"
-        />
       </div>
       <div>
         <Contactform />
