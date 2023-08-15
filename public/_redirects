@@ -1,0 +1,5 @@
+# Redirects from what the browser requests to what we serve
+http://telikert-teraszbeepites.hu/* https://beridoor.hu/:splat 301!
+https://telikert-teraszbeepites.hu/* https://beridoor.hu/:splat 301!
+http://www.telikert-teraszbeepites.hu/* https://beridoor.hu/:splat 301!
+https://www.telikert-teraszbeepites.hu/* https://beridoor.hu/:splat 301!
