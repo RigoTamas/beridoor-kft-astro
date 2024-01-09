@@ -1,6 +1,6 @@
 # Beridoor kft homepage
 
-This is the astro project for Beridoors homepage hosted with [netlify](netlify.com) on [beridoor.hu](beridoor.hu). The project was created using the [astroship](https://github.com/surjithctly/astroship) template made by [web3templates](https://web3templates.com/).
+This is the astro project for Beridoors homepage hosted with [netlify](https://netlify.com) on [beridoor.hu](https://beridoor.hu). The project was created using the [astroship](https://github.com/surjithctly/astroship) template made by [web3templates](https://web3templates.com/).
 
 ## Local development
 
