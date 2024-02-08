@@ -12,6 +12,7 @@ interface Props {
   imagesRenderable: {
     imageRenderable: any;
     alt: string;
+    imageLabel: string | undefined
     projectType: string;
     pathFromProjectRoot: string;
     text: string;
@@ -40,7 +41,10 @@ const projectIterCounter = {};
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
         {
           Object.values(items).map((item) => (
-            <Button id={`${item.id}-button`} style="outline" class={`md:text-lg ${item.buttonHidden ? 'hidden' : undefined}`}>
+            <Button
+              id={`${item.id}-button`}
+              style="outline"
+              class={`md:text-lg ${item.buttonHidden ? "hidden" : undefined}`}>
               <p>{item.label}</p>
             </Button>
           ))
@@ -51,46 +55,51 @@ const projectIterCounter = {};
       <p class="md:text-lg" id="textToShow"></p>
     </div>
     <div>
-      <div id="picture-wrapper" class="grid md:grid-cols-3 xs:grid-cols-2 grid-cols-1 pt-16 pb-8 gap-8 justify-center mx-6">
+      <div
+        id="picture-wrapper"
+        class="grid md:grid-cols-3 xs:grid-cols-2 grid-cols-1 pt-16 pb-8 gap-8 justify-center mx-6">
         {
           imagesRenderable.map((item, iterCount) => {
             const base64 = placeHolderImages[item.pathFromProjectRoot];
             projectIterCounter[item.projectType] =
               projectIterCounter[item.projectType] === undefined ? 0 : projectIterCounter[item.projectType] + 1;
             return (
-              <div
-                class:list={`${item.projectType} hover:cursor-pointer hidden relative images-selector inline-block overflow-hidden rounded-lg`}>
-                <img
-                  aria-hidden
-                  alt=""
-                  src={base64}
-                  class:list={[
-                    "absolute",
-                    "inset-0",
-                    "w-full",
-                    "h-full",
-                    "transform",
-                    "scale-150",
-                    "filter",
-                    "blur-2xl",
-                    "z-0",
-                  ]}
-                />
-                <Picture
-                  id={`${item.projectType}~${projectIterCounter[item.projectType]}~${iterCount}`}
-                  src={item.imageRenderable}
-                  alt={item.alt}
-                  sizes="93vw"
-                  widths={[1400, 800, 500, 300]}
-                  width={300}
-                  height={200}
-                  aspectRatio="3:2"
-                  formats={["avif", "webp"]}
-                  loading="lazy"
-                  fit="cover"
-                  position="center"
-                  class="w-full z-20 relative"
-                />
+              <div class={`${item.projectType}`}>
+                <div
+                  class:list={`${item.projectType}~imageDiv ${item.projectType} images-selector hover:cursor-pointer hidden relative inline-block overflow-hidden rounded-lg`}>
+                  <img
+                    aria-hidden
+                    alt=""
+                    src={base64}
+                    class:list={[
+                      "absolute",
+                      "inset-0",
+                      "w-full",
+                      "h-full",
+                      "transform",
+                      "scale-150",
+                      "filter",
+                      "blur-2xl",
+                      "z-0",
+                    ]}
+                  />
+                  <Picture
+                    id={`${item.projectType}~${projectIterCounter[item.projectType]}~${iterCount}`}
+                    src={item.imageRenderable}
+                    alt={item.alt}
+                    sizes="93vw"
+                    widths={[1400, 800, 500, 300]}
+                    width={300}
+                    height={200}
+                    aspectRatio="3:2"
+                    formats={["avif", "webp"]}
+                    loading="lazy"
+                    fit="cover"
+                    position="center"
+                    class="w-full z-20 relative"
+                  />
+                </div>
+                {item.imageLabel ? <p class={`${item.projectType} text-sm lg:text-base text-center hidden pt-1`}>{item.imageLabel}</p> : undefined}
               </div>
             );
           })
@@ -162,7 +171,7 @@ const projectIterCounter = {};
     blazeSliderItemsParent?.replaceChildren();
     const images =
       activeState !== undefined
-        ? Array.from(document.getElementsByClassName(activeState!.id))
+        ? Array.from(document.getElementsByClassName(`${activeState!.id}~imageDiv`)) // activeState.id is ${item.projectType}
         : Array.from(document.getElementsByClassName("images-selector"));
     for (const element of images) {
       const clonedElement = document.importNode(element, true);
@@ -195,12 +204,23 @@ const projectIterCounter = {};
   const itemStoreElement = document.getElementById("item-store");
   const items = JSON.parse(itemStoreElement?.dataset.items!) as Record<string, { label: string; id: string }>;
 
-  const classesToChange = ["dark:bg-white", "bg-beridoorBlue", "ring-2", "ring-cyan-600", "text-white", "dark:text-beridoorBlue"];
+  const classesToChange = [
+    "dark:bg-white",
+    "bg-beridoorBlue",
+    "ring-2",
+    "ring-cyan-600",
+    "text-white",
+    "dark:text-beridoorBlue",
+  ];
   const buttonsMap = Object.keys(items).reduce(
     (acc, id) => ({ ...acc, [id]: document.getElementById(`${id}-button`) }),
     {}
   );
-  const classesToChangeOnFilter = { element: document.getElementById('picture-wrapper')!, filterTurnedOffClasses: ["md:grid-cols-3", "xs:grid-cols-2"], filterTurnedOnClasses: ["md:grid-cols-2", "xs:grid-cols-1"] };
+  const classesToChangeOnFilter = {
+    element: document.getElementById("picture-wrapper")!,
+    filterTurnedOffClasses: ["md:grid-cols-3", "xs:grid-cols-2"],
+    filterTurnedOnClasses: ["md:grid-cols-2", "xs:grid-cols-1"],
+  };
 
   const fragment = window.location.hash.substring(1);
   const isValidFragment = Boolean(items[fragment]);

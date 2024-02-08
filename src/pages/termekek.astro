@@ -47,24 +47,129 @@ const items = {
   },
 };
 
+const labels = {
+  telikert: [
+    "alumínium tolóajtó",
+    "eltolható üvegfalú lakásbővítés",
+    "fa télikert alumínium borítással",
+    "lakótér bővítése fa télikerttel",
+    "alumínium - üvegtető",
+    "műanyag - speciális üveg",
+    "aranytölgy színű műanyag",
+    "nappali bővítés - fa tolóajtók",
+    "antracit szerkezet polikarbonát tető",
+    "matt antracit alumínium tolóajtók",
+    "aranytölgy színű műanyag elemek",
+    "nyílászárók valódi osztókkal",
+    "hőhídmentes alumínium",
+    "klasszikus üvegház",
+    "alumínium - fa szerkezet",
+    "műanyag, legyező formájú tetővel",
+    "beige alumínium - hővédő üveg",
+    "bukó-toló fa ajtók",
+    "kétfelé tolható tolóajtók",
+    "alumínium tolóajtók",
+    "műanyag – üveg szerkezet",
+    "fa télikert üvegtetővel",
+    "félköríves lakótérbővítés",
+    "veranda beépítés",
+    "kertkapcsolat tolóajtókkal",
+    "műanyag - fa - polikarbonát",
+    "aranytölgy színű műanyag",
+    "vintage stílus",
+  ],
+  terasz: [
+    "tolóajtókkal",
+    "legyezőformában",
+    "nappali bővítés",
+    "legyezőformában",
+    "alumínium tolóajtókkal",
+    "lakótérbővítés",
+    "valódi osztós aranytölgy ajtó",
+    "kertkapcsolattal",
+    "lakótér növelésével",
+    "alumínium tolóajtókkal",
+    "speciális elhelyezés",
+    "műanyag tolóajtókkal",
+  ],
+  szelfogo: [
+    "fa – üveg nyílászárók",
+    "fa bukó ablakkal",
+    "fából külső alumínium borítással",
+    "fából külső alumínium borítással",
+    "irodaház bejárat",
+    "műanyag - üveg - téglaburkolat",
+    "üvegtető bukó ablakkal",
+    "lépcsős nyílászárók",
+  ],
+  vedoteto: [
+    "fa szerkezet terasz fölé",
+    "bejárat előtt",
+    "savmart üveggel",
+    "alumínium szerkezet",
+    "hővédő polikarbonáttal",
+    "sorházi üveg terasztető",
+    "fémszerkezet – polikarbonát fedés",
+    "üveg fedés",
+    "folyosó fölötti üveg fedés",
+    "fa szerkezet – polikarbonát fedés",
+    "szélfogó előtt",
+    "bejárat előtt",
+    "alumínium - árnyékoló ponyva",
+    "fa szerkezet - árnyékoló ponyva",
+    "fa- polikarbonát- zsindely fedés",
+    "alumínium szerkezet- üvegtető",
+  ],
+  fuggonyfal: [
+    "teraszbeépítés",
+    "télikert bukóablakokkal",
+    "függönyfallal",
+    "díszüveggel",
+    "alumínium tolóajtóval",
+    "antracit alumínium",
+    "zsalúzia árnyékolóval",
+    "belső térelválasztó",
+    "lépcsőház fa – alumínium - üveg",
+    "klasszikus függönyfal",
+  ],
+  kupola: [
+    "nappali feletti ablaksor",
+    "pontmegfogásos üvegtető",
+    "klasszikus üveg gúla",
+    "alumínium üveg gúla",
+    "alumínium üvegfelülvilágító",
+    "fa üveggúla tetőablakokkal",
+    "cikkelyes üvegtető",
+    "kúp formájú üvegbevilágító",
+    "cikkelyes bevilágító kupola",
+    "alumínium bevilág kupola",
+    "tetőbevilágító",
+    "pincebevilágító",
+  ],
+};
+
 // workaround for dynamic image imports: https://github.com/withastro/astro/issues/3373#issuecomment-1214245870
 const viteImages = import.meta.glob<ImageMetadata>("../assets/portfolio/termekek/*/*", { import: "default" });
 const imagesRenderable: {
   imageRenderable: any;
   alt: string;
+  imageLabel: string | undefined;
   pathFromProjectRoot: string;
   projectType: string;
   text: string;
 }[] = [];
+const counter = {};
 for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
   const projectTypePath = path.dirname(imgPath);
   const projectType = path.basename(projectTypePath);
+  counter[projectType] = counter[projectType] != null ? counter[projectType] + 1 : 0;
   const imageRenderable = await imageFunction();
   imagesRenderable.push({
     imageRenderable,
     pathFromProjectRoot: imgPath.replace("../", "src/"),
     projectType,
-    alt: path.basename(imgPath),
+    imageLabel: labels[projectType]?.[counter[projectType]],
+    alt: labels[projectType]?.[counter[projectType]] || path.basename(imgPath),
     text: items[projectType].text,
   });
 }
