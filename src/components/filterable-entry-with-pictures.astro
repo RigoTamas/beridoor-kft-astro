@@ -40,7 +40,7 @@ const projectIterCounter = {};
       <div class="md:flex md:flex-wrap md:flex-row pt-16 pb-8 grid grid-cols-2 gap-4 justify-center">
         {
           Object.values(items).map((item) => (
-            <Button id={`${item.id}-button`} style="outline" class="md:text-lg">
+            <Button id={`${item.id}-button`} style="outline" class={`md:text-lg ${item.buttonHidden ? 'hidden' : undefined}`}>
               <p>{item.label}</p>
             </Button>
           ))
