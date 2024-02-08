@@ -23,8 +23,26 @@ const makeTitle = `${title} | Beridoor Kft`;
 <html lang="hu">
   <head>
     <!-- Start cookieyes banner -->
-    <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/1c269e6a3d92126b6c67fb78/script.js"></script>
+    <script
+      id="cookieyes"
+      type="text/javascript"
+      src="https://cdn-cookieyes.com/client_data/1c269e6a3d92126b6c67fb78/script.js"
+    ></script>
     <!-- End cookieyes banner -->
+    <!-- Google Tag Manager -->
+    <script is:inline>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-5PJNZ847");
+    </script>
+    <!-- End Google Tag Manager -->
     <script is:inline>
       const htmlRootElement = document.getElementById("html-root");
       const lightModeEnabled = localStorage.getItem("lightMode");
@@ -63,6 +81,15 @@ const makeTitle = `${title} | Beridoor Kft`;
     />
   </head>
   <body class="dark:text-gray-100 dark:bg-beridoorDarkModeBg bg-white text-beridoorBlue">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-5PJNZ847"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"></iframe></noscript
+    >
+    <!-- End Google Tag Manager (noscript) -->
     <div class="wrapper dark:text-gray-100 dark:bg-beridoorDarkModeBg bg-white text-beridoorBlue">
       <Navbar />
       <slot />
