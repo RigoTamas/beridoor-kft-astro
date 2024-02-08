@@ -15,7 +15,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     imageRenderable,
     alt: path.basename(imgPath),
     pathFromProjectRoot: imgPath.replace("../", "src/"),
-    mainText: path.basename(imgPath, ext).slice(4),
+    mainText: path.basename(imgPath, ext).slice(4).replaceAll('_', ' '),
   });
 }
 ---
