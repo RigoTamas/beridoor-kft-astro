@@ -29,7 +29,7 @@ for (const [imgPath, imageFunction] of Object.entries(viteImages)) {
     imageRenderable,
     projectType,
     pathFromProjectRoot: imgPath.replace("../", "src/"),
-    alt: path.basename(imgPath),
+    alt: path.parse(imgPath).name.slice(4).replaceAll('_', ' '),
   });
 }
 ---
