@@ -64,7 +64,7 @@ const projectIterCounter = {};
             projectIterCounter[item.projectType] =
               projectIterCounter[item.projectType] === undefined ? 0 : projectIterCounter[item.projectType] + 1;
             return (
-              <div class={`${item.projectType}`}>
+              <div class={`${item.projectType} hidden`}>
                 <div
                   class:list={`${item.projectType}~imageDiv images-selector hover:cursor-pointer relative overflow-hidden rounded-lg`}>
                   <img
