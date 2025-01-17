@@ -129,7 +129,7 @@ import Button from "./ui/button.astro";
     });
   }
 
-  const retryUntilSuccess = async (promiseFunc, retryCount = 0, maxRetries = 5) => {
+  const retryUntilSuccess = async (promiseFunc, retryCount = 0, maxRetries = 3) => {
     if (retryCount >= maxRetries) {
       return;
     }
